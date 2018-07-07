@@ -1,1 +1,1 @@
-# kintensity
+# Kintensity
