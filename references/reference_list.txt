@@ -1,0 +1,26 @@
++----------------+
+| Reference List |
++----------------+
+(Chronological Order: Modern to Ancient)
+
+
+Book Chapters
+----------------------------
+Keyfitz, Nathan, and Hal Caswell. 2005. The Demographic Theory of Kinship. In "Applied Mathematical Demography" (3rd ed.). 
+
+Keyfitz, Nathan, and Hal Caswell. 2005. Family Demography. In "Applied Mathematical Demography" (3rd ed.). 
+
+Pullum, Thomas W. 1987. Some Mathematical Models of Kinship and the Family. In "Family Demography: Methods and their Application" by John Bongaarts, Thomas Burch, and Kenneth Wachter (eds.)
+
+Coale, Ansley J. 1965. Appendix: Estimates of Average Size of Household. In "Aspects of the Analysis of Family Structure".
+
+
+Articles
+----------------------------
+Goodman, Leo A., Nathan Keyfitz, and Thomas W. Pullum. 1975. Addendum to "Family Formation and the Frequency of Various Kinship Relationships". Theoretical Population Biology 8:376--381.
+
+Goodman, Leo A., Nathan Keyfitz, and Thomas W. Pullum. 1974. Family Formation and the Frequency of Various Kinship Relationships. Theoretical Population Biology 5:1--27.
+
+Le Bras, Herve. 1973. Parents, Grandparents, Diaeresis Bisaieux. Population 28:9--37. [in French]
+
+Burch, Thomas K. 1970. Some demographic determinants of average household size: An Analytic Approach. Demography 7:61-70.
