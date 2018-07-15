@@ -70,7 +70,7 @@ fx <- read_csv(here("data", "wpp_fx.csv"))
 head(fx)
 ```
 
-Start off by looking at the US in the period 1965-1970, in the hope that our estimates are somewhat in the ballpark of Goodman et als. Keep only ages 15 and above. Join the two datasets and tidy up names, etc. 
+Start off by looking at the US in the period 1965-1970, in the hope that our estimates are somewhat in the ballpark of Goodman et als. Join the two datasets and tidy up names, etc. 
 
 ```{r}
 # mortality df
