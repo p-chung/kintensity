@@ -1,0 +1,107 @@
+---
+title: "2.Daughters/grandaughters by country/year"
+output: html_notebook
+---
+
+After getting the functions going, was interested to do a quick comparison across countries and time points.
+
+Load in the data and functions, which are saved in the `code` folder.
+
+```{r}
+library(tidyverse)
+library(here)
+source(here("code", "kin_functions.R"))
+lt <- read_csv(here("data", "wpp_lt.csv"))
+fx <- read_csv(here("data", "wpp_fx.csv"))
+```
+Tidy up and join the two datasets:
+
+```{r}
+# mortality df
+df_mort <- lt %>% 
+  # tidy up names
+  rename(year = Period,
+         region = `Region, subregion, country or area *`,
+         age = `Age (x)`, 
+         Lx = `Number of person-years lived L(x,n)`) %>% 
+  # just keep the columns we need
+  select(year, region, age, Lx)
+
+# fertility df
+df_fert <- fx %>% 
+  # tidy up names
+  rename(year = Period,
+         region = `Region, subregion, country or area *`) %>% 
+  # only keep years/ages/countries we want
+  select(year, region, `15-19`:`45-49`) %>% 
+  # change to long format
+  gather(age_group, Fx, -year, -region) %>% 
+  # make an age column 
+  mutate(age = as.numeric(substring(age_group, 1, 2)))
+
+# join the two bits, and fill in the missing info (fertility only goes to age 49)
+
+df <- df_mort %>% 
+  left_join(df_fert) %>% 
+  mutate(age_group = paste(age, age+4, sep = "-"),
+         Fx = ifelse(is.na(Fx), 0, Fx)) %>% 
+  rename(period = year) %>% 
+  mutate(year = as.numeric(substring(period, 1,4)))
+
+```
+
+Select countries and years of interest:
+
+```{r}
+countries <- c("United States of America", "Japan", "Nigeria", "Venezuela (Bolivarian Republic of)")
+years <- c(1955, 1975, 1995, 2005)
+
+df_data <- df %>% 
+  filter(region %in% countries, year %in% years)
+```
+
+Calculate the expected number of daughters and granddaughters:
+
+```{r}
+# this takes a while, probably lazy coding can be improved
+
+df_res <- c()
+
+for(i in 1:length(countries)){
+  df_country <- c()
+  for(j in 1:length(years)){
+    this_df_data <- df_data %>% 
+      filter(region == countries[i],
+             year == years[j])
+    df_direct <- tibble(mother_age = seq(15, 85, by = 5),
+                        country = countries[i],
+                        year = years[j])
+    df_direct <- df_direct %>% 
+      rowwise() %>% 
+      mutate(daughters = surviving_daughters(this_df_data, mother_age),
+             granddaughters = surviving_granddaughters(this_df_data, mother_age))
+    
+    df_country <- rbind(df_country, df_direct)
+  }
+  df_res <- rbind(df_res, df_country)
+}
+```
+
+Plot the results.
+
+```{r}
+df_res %>% 
+  mutate(country_label = case_when(
+    country=="Venezuela (Bolivarian Republic of)" ~ "Venezuela",
+    country=="United States of America" ~ "USA",
+    TRUE ~ country
+  )) %>% 
+  gather(type, number, -mother_age, -country, -year, -country_label) %>% 
+  ggplot(aes(mother_age, number, color = type)) + geom_line(lwd = 0.8) +
+  facet_grid(country_label~year) + 
+  ylab("expected number") + xlab("age") +
+  ggtitle("Expected number of surviving daughters/grand-daughters") + 
+  theme_bw(base_size = 16) 
+ggsave(here("fig", "country_year.pdf"), width = 12, height = 10)
+```
+
