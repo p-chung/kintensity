@@ -1,8 +1,10 @@
 
 surviving_daughters_cohort <- function(df, # dataframe with LX and Fx
+                                       year,
                                        age_a, # age of mother
                                        ffab = 0.4886 # fraction female at birth)
 ){
+  mother_cohort <- year - age_a
   x_vec <- seq(15,age_a, by = 5)
   daughter_cohorts <- year - (age_a - x_vec)
   
@@ -18,6 +20,7 @@ surviving_daughters_cohort <- function(df, # dataframe with LX and Fx
 }
 
 surviving_daughters_mean_age <- function(df, # dataframe with LX and Fx
+                                         year,
                                          age_a, # age of mother
                                          ffab = 0.4886 # fraction female at birth)
   

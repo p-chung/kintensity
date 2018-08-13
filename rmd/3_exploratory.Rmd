@@ -256,8 +256,8 @@ for(i in 1:length(countries)){
   for(j in 1:length(ages)){
     res <- rbind(res, tibble(country = countries[i], 
                               age = ages[j], 
-                             cohort = surviving_daughters_cohort(df = d_cohort, age_a = ages[j]),
-                             meanage = surviving_daughters_mean_age(df = d_period, age_a = ages[j]),
+                             cohort = surviving_daughters_cohort(df = d_cohort, year = year_test, age_a = ages[j]),
+                             meanage = surviving_daughters_mean_age(df = d_period, year = year_test, age_a = ages[j]),
                              stat = surviving_daughters(df = d_stat, age_a = ages[j])))
   }
 }
@@ -275,3 +275,59 @@ res %>% gather(measure, daughters, -country, -age) %>%
 ```
 
 The mean age measure is all over the place. Seems like the difference between cohort and stationary could be estimated somehow?
+
+```{r}
+res %>% 
+  mutate(ratio = cohort/stat) %>% 
+  ggplot(aes(age, ratio, color = country)) + geom_line()
+```
+Differences very much driven by differences in TFR
+
+```{r}
+tfr_period <- df %>% group_by(year, region) %>% 
+  summarise(tfr_period = sum(Fx*5/1000))
+
+tfr_cohort <- d_all %>% group_by(cohort, region) %>% 
+  summarise(tfr_cohort = sum(Fx*5/1000))
+
+tfr_period %>% filter(year==2010) %>% 
+  left_join(tfr_cohort %>% filter(cohort<1970)) %>% 
+  filter(region %in% countries) %>% 
+  ggplot(aes(2010 - cohort, tfr_cohort/tfr_period, color = region)) + geom_line()
+```
+
+```{r}
+lx_period <- df %>% group_by(year, region) %>% 
+  summarise(lx_period = sum(Lx/100000))
+
+lx_cohort <- d_all %>% group_by(cohort, region) %>% 
+  summarise(lx_cohort = sum(Lx_cohort/100000))
+
+lx_period %>% filter(year==2010) %>% 
+  left_join(lx_cohort %>% filter(cohort<1965)) %>% 
+  filter(region %in% countries) %>% 
+  ggplot(aes(2010 - cohort, lx_cohort/lx_period, color = region)) + geom_line()
+```
+
+
+```{r}
+tfr_period %>% filter(year==2010) %>% 
+  left_join(tfr_cohort %>% filter(cohort<1965)) %>% 
+  left_join(lx_period %>% filter(year==2010) %>% 
+  left_join(lx_cohort %>% filter(cohort<1965))) %>% 
+  filter(region %in% countries) %>% 
+  mutate(mult = (tfr_cohort/tfr_period)*(lx_cohort/lx_period))  %>% 
+  ggplot(aes(2010 - cohort, mult, color = region)) + geom_line()
+```
+
+
+```{r}
+tfr_period %>% 
+  filter(region %in% countries) %>% 
+  group_by(region) %>% 
+  arrange(region) %>% 
+  mutate(tfr_std = tfr_period/tfr_period[year==1950], 
+         ratio = (tfr_period[year==1975])/tfr_period[year==2010]) %>% 
+  ggplot(aes(year, ratio, color = region)) + geom_line()
+```
+
