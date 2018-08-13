@@ -257,7 +257,8 @@ for(i in 1:length(countries)){
     res <- rbind(res, tibble(country = countries[i], 
                               age = ages[j], 
                              cohort = surviving_daughters_cohort(df = d_cohort, year = year_test, age_a = ages[j]),
-                             meanage = surviving_daughters_mean_age(df = d_period, year = year_test, age_a = ages[j]),
+                             meanage = surviving_daughters_mean_age(df = d_period, 
+                                                                    year = year_test, age_a = ages[j], mean_age = 25),
                              stat = surviving_daughters(df = d_stat, age_a = ages[j])))
   }
 }
@@ -278,7 +279,8 @@ The mean age measure is all over the place. Seems like the difference between co
 
 ```{r}
 res %>% 
-  mutate(ratio = cohort/stat) %>% 
+  mutate(ratio = cohort/stat,
+         ratio_ma = cohort/meanage) %>% 
   ggplot(aes(age, ratio, color = country)) + geom_line()
 ```
 Differences very much driven by differences in TFR
@@ -319,15 +321,3 @@ tfr_period %>% filter(year==2010) %>%
   mutate(mult = (tfr_cohort/tfr_period)*(lx_cohort/lx_period))  %>% 
   ggplot(aes(2010 - cohort, mult, color = region)) + geom_line()
 ```
-
-
-```{r}
-tfr_period %>% 
-  filter(region %in% countries) %>% 
-  group_by(region) %>% 
-  arrange(region) %>% 
-  mutate(tfr_std = tfr_period/tfr_period[year==1950], 
-         ratio = (tfr_period[year==1975])/tfr_period[year==2010]) %>% 
-  ggplot(aes(year, ratio, color = region)) + geom_line()
-```
-
