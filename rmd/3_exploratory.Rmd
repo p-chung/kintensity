@@ -1,0 +1,277 @@
+---
+title: "3. Adding time to the daughter equations"
+output: html_notebook
+---
+
+The equations from the first couple of exploratory notebooks were stationary i.e. assume the mortality and fertility rates don't change over time. It would be nice to be able to make these a bit more realistic and add a time varying component to this. 
+
+For the daughter and grand-daughter equations, We know how old the mother is (age $A$ at time $t$) so everything can be indexed based on that. Time-indexing the fertility rates should be straight forward. For example, fertility rates at age $x$ would be $_nF_x (t - (A-x))$. 
+
+For the $L_x$'s we can recalculate 'cohort' measures based on the information we have: use the 5-year $_np_x$'s from the appropriate cohorts to reconstruct $L_x$'s that would be closer to cohort measures. 
+
+The problem with both of these approaches is that we quickly run out of data: for the WPP that we have, which spans 1950-2010, we could only get cohort-based measures of number of daughters surviving in 2010 for the 1935-1955 cohorts, for example. 
+
+An alternative potential fix using period data is to index the fertility / (mortality?) data based on mean age at child bearing: for example, for the 1950 cohort, consider data from 1980. 
+
+This notebook shows how to calculate cohort-based measures, and shows how they vary quite a bit from the stationary measures calculated earlier. Calculations are then done based on using period data corresponding to mean age at childbearing years. 
+
+Read in the data:
+
+```{r, message=F}
+library(tidyverse)
+library(here)
+source(here("code", "kin_functions.R"))
+lt <- read_csv(here("data", "wpp_lt.csv"))
+fx <- read_csv(here("data", "wpp_fx.csv"))
+```
+
+Tidy up the data:
+
+```{r}
+df_mort <- lt %>% 
+  # tidy up names
+  rename(year = Period,
+         region = `Region, subregion, country or area *`,
+         age = `Age (x)`, 
+         Lx = `Number of person-years lived L(x,n)`) %>% 
+  # just keep the columns we need
+  select(year, region, age, Lx)
+
+# fertility df
+df_fert <- fx %>% 
+  # tidy up names
+  rename(year = Period,
+         region = `Region, subregion, country or area *`) %>% 
+  # only keep years/ages/countries we want
+  select(year, region, `15-19`:`45-49`) %>% 
+  # change to long format
+  gather(age_group, Fx, -year, -region) %>% 
+  # make an age column 
+  mutate(age = as.numeric(substring(age_group, 1, 2)))
+
+# join the two bits, and fill in the missing info (fertility only goes to age 49)
+
+df <- df_mort %>% 
+  left_join(df_fert) %>% 
+  mutate(age_group = paste(age, age+4, sep = "-"),
+         Fx = ifelse(is.na(Fx), 0, Fx)) %>% 
+  rename(period = year) %>% 
+  mutate(year = as.numeric(substring(period, 1,4)))
+
+## make the first two age groups into one
+
+df <- df %>% group_by(year, region) %>% 
+  mutate(Lx = ifelse(age==0, Lx[age==0]+Lx[age==1], Lx)) %>% 
+  filter(age!=1) %>% 
+  ungroup()
+```
+
+Make a cohort version of the mortality data:
+
+```{r}
+df_cohort <- lt %>% 
+  # tidy up names
+  rename(period = Period,
+         region = `Region, subregion, country or area *`,
+         age = `Age (x)`, 
+         Lx = `Number of person-years lived L(x,n)`,
+         px = `Probability of surviving p(x,n)`,
+         dx = `Number of deaths d(x,n)`,
+         ax = `Average number of years lived a(x,n)`) %>% 
+  mutate(px = as.numeric(px)) %>% 
+  # just keep the columns we need
+  select(period, region, age, Lx, px, dx, ax) %>% 
+  mutate(year = as.numeric(substring(period, 1,4))) %>% 
+  mutate(cohort = year - age) %>% 
+  group_by(year, region) %>% 
+  mutate(Lx = ifelse(age==0, Lx[age==0]+Lx[age==1], Lx),
+         px = ifelse(age==0, px[age==0]*px[age==1], px),
+         dx = ifelse(age==0, dx[age==0]+dx[age==1], dx),
+         ax = ifelse(age==0, ax[age==0]+ax[age==1], ax)) %>% 
+  filter(age!=1) %>% 
+  ungroup()
+
+cohorts <- seq(1935, 2010, by = 5)
+regions <- unique(df$region)
+
+d_all <-c()
+for(k in 1:length(regions)){
+  dc <- c()
+  for(i in 1:length(cohorts)){
+    d_cohort <- df_cohort %>% filter(region == regions[k], cohort == cohorts[i])
+    d_cohort$lx <- 1
+    d_cohort$dx_cohort <- NA
+    d_cohort$Lx_cohort <- NA
+    ages_in_cohort <- d_cohort$age
+    if(length(ages_in_cohort)>2){
+      for(j in 2:length(ages_in_cohort)){
+        d_cohort$lx[j] <- d_cohort$lx[j-1]*d_cohort$px[j]
+      }
+      for(j in 1:(length(ages_in_cohort)-1)){
+        d_cohort$dx_cohort[j] <- d_cohort$lx[j] - d_cohort$lx[j+1]
+        d_cohort$Lx_cohort[j] <- (5*d_cohort$lx[j+1] + d_cohort$ax[j]* d_cohort$dx_cohort[j])*100000
+      }
+      d_cohort$dx_cohort[length(ages_in_cohort)] <- 2*d_cohort$dx_cohort[(length(ages_in_cohort)-1)] - d_cohort$dx_cohort[(length(ages_in_cohort)-2)]
+      d_cohort$Lx_cohort[length(ages_in_cohort)] <- (5*(d_cohort$lx[length(ages_in_cohort)] - d_cohort$dx_cohort[length(ages_in_cohort)]) + d_cohort$ax[length(ages_in_cohort)]* d_cohort$dx_cohort[length(ages_in_cohort)])*100000
+      dc <- rbind(dc, d_cohort)
+    }
+    
+  }
+  d_all <- rbind(d_all, dc)
+}
+
+```
+
+Join on the fertility data:
+
+```{r}
+d_all <- d_all %>% 
+  left_join(df_fert %>% rename(period = year) %>%  mutate(year = as.numeric(substring(period, 1,4)))) %>% 
+  mutate(Fx = ifelse(is.na(Fx), 0, Fx))
+  
+```
+
+Now compare this cohort-based measure to the stationary measure used before. Try 75 year olds in Kenya in 2010, there's a difference on 1 person.
+
+```{r}
+
+age_a <- 75
+year <- 2010
+mother_cohort <- year - age_a
+d <- d_all %>% filter(region == "Kenya")
+ffab <- 0.4886
+
+x_vec <- seq(15,age_a, by = 5)
+daughter_cohorts <- year - (age_a - x_vec)
+
+# calculate based on cohorts
+LF_prod <- c()
+for(i in 1:length(x_vec)){
+  this_L <- d %>% filter(age == age_a - x_vec[i], cohort == daughter_cohorts[i]) %>% select(Lx_cohort) %>% pull()
+  this_F <- d %>% filter(age == x_vec[i], cohort == mother_cohort) %>% select(Fx) %>% pull()
+  LF_prod <- c(LF_prod, this_L/10^5*this_F/10^3*ffab)
+}
+
+sum(LF_prod)
+
+# original stationary measure
+surviving_daughters(df %>% filter(year==2010, region == "Kenya"), age_a)
+
+```
+
+For low mortality/ fertlity country like Australia, there's still a difference, but it's much smaller:
+
+```{r}
+age_a <- 75
+year <- 2010
+mother_cohort <- year - age_a
+d <- d_all %>% filter(region == "Australia")
+ffab <- 0.4886
+
+x_vec <- seq(15,age_a, by = 5)
+daughter_cohorts <- year - (age_a - x_vec)
+
+# calculate based on cohorts
+LF_prod <- c()
+for(i in 1:length(x_vec)){
+  this_L <- d %>% filter(age == age_a - x_vec[i], cohort == daughter_cohorts[i]) %>% select(Lx_cohort) %>% pull()
+  this_F <- d %>% filter(age == x_vec[i], cohort == mother_cohort) %>% select(Fx) %>% pull()
+  LF_prod <- c(LF_prod, this_L/10^5*this_F/10^3*ffab)
+}
+
+sum(LF_prod)
+
+# original stationary measure
+surviving_daughters(df %>% filter(year==2010, region == "Australia"), age_a)
+```
+
+Try using the mean age at child bearing year... For 75 year olds in 2010, this is 1965, i.e. birth cohort + 30. This gives a value much closer to the cohort measure for Kenya. For Australia, the difference is about the same. 
+
+```{r}
+#Kenya:
+age_a <- 75
+year <- 2010
+mother_cohort <- year - age_a
+d <- df %>% filter(region == "Kenya")
+ffab <- 0.4886
+
+x_vec <- seq(15,age_a, by = 5)
+
+# calculate based on period of mean childbearing age = 30
+LF_prod <- c()
+for(i in 1:length(x_vec)){
+  this_L <- d %>% filter(age == age_a - x_vec[i], year == mother_cohort+30) %>% select(Lx) %>% pull()
+  this_F <- d %>% filter(age == x_vec[i], year == mother_cohort+30) %>% select(Fx) %>% pull()
+  LF_prod <- c(LF_prod, this_L/10^5*this_F/10^3*ffab)
+}
+
+sum(LF_prod)
+
+# Australia:
+age_a <- 75
+year <- 2010
+mother_cohort <- year - age_a
+d <- df %>% filter(region == "Australia")
+ffab <- 0.4886
+
+x_vec <- seq(15,age_a, by = 5)
+
+# calculate based on period of mean childbearing age = 30
+LF_prod <- c()
+for(i in 1:length(x_vec)){
+  this_L <- d %>% filter(age == age_a - x_vec[i], year == mother_cohort+30) %>% select(Lx) %>% pull()
+  this_F <- d %>% filter(age == x_vec[i], year == mother_cohort+30) %>% select(Fx) %>% pull()
+  LF_prod <- c(LF_prod, this_L/10^5*this_F/10^3*ffab)
+}
+
+sum(LF_prod)
+
+```
+
+Try and make this a bit more automated. Load in functions
+
+```{r}
+source(here("code", "alternative_daughters.R"))
+
+ages <- seq(55, 75, by = 5)
+year_test <- 2010
+countries <- c("United States of America", 
+               "Japan", 
+               "Australia",
+               "Kenya",
+               "Nigeria", 
+               "Ireland",
+               "Yemen",
+               "Bangladesh",
+               "Venezuela (Bolivarian Republic of)",
+               "Mexico",
+               "Canada",
+               "China")
+
+res <- tibble(country = NA, age = NA, cohort = NA, meanage = NA, stat = NA)
+for(i in 1:length(countries)){
+  d_cohort <- d_all %>% filter(region == countries[i])
+  d_period <- df %>% filter(region == countries[i])
+  d_stat <- df %>% filter(region==countries[i], year==2010)
+  for(j in 1:length(ages)){
+    res <- rbind(res, tibble(country = countries[i], 
+                              age = ages[j], 
+                             cohort = surviving_daughters_cohort(df = d_cohort, age_a = ages[j]),
+                             meanage = surviving_daughters_mean_age(df = d_period, age_a = ages[j]),
+                             stat = surviving_daughters(df = d_stat, age_a = ages[j])))
+  }
+}
+
+res <- res[-1,]
+res
+
+```
+
+Plot
+
+```{r}
+res %>% gather(measure, daughters, -country, -age) %>% 
+  ggplot(aes(age, daughters, color = measure)) + geom_line() + facet_wrap(~country)
+```
+
+The mean age measure is all over the place. Seems like the difference between cohort and stationary could be estimated somehow?
