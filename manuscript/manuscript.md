@@ -7,35 +7,35 @@ bibliography: kintensity.bib
 **abstract**: We introduce a set of life table equations for estimating the number of living kin over ages using readily-available data on fertility and mortality. These equations extend the classic measurement strategy of Goodman et al. (1974) by dropping the stable population assumption, thereby allowing estimation of kin counts under demographic conditions that may vary over time. To check the plausibility of our method's estimates, we compare them to kin counts reported in a set of large, nationally-representative surveys. We end with a discussion about the strengths and limitations of our method, and ways that future work may improve it.
 
 # Introduction
-Starting in the mid-1960s a line of demographic research began to develop a formal measurement strategy for estimating the number of living kin (hereafter: kin availability) from fundamental demographic rates. Recognizing that kinship (biologically-defined) was heavily determined by rates of fertility and mortality, population researchers began to elaborate a set of methods to estimate kin availability from these quantities. This research culminated in a set of formal life table equations by @Goodman1974 that enabled this estimation under stable population assumptions. These equations represented the strongest effort, at that time, to formally relate the structure of kinship to its demographic determinants; and they opened up exciting new possibilities for systematically exploring the relationship between fertility, mortality, and kinship wherever data on such quantities could be found.
+Starting in the mid-1960s a line of demographic research began to develop a formal measurement strategy for estimating the number of living kin (hereafter: kin availability) from fundamental demographic rates. Recognizing that kinship (biologically-defined) was heavily determined by rates of fertility and mortality, population researchers began to elaborate a set of methods to estimate kin availability from these quantities. This research culminated in a set of formal life table equations by @Goodman1974 that enabled this estimation under stable population assumptions. These equations represented the strongest effort, at that time, to formally relate the structure of kinship to its demographic determinants; and they opened up exciting new possibilities for systematically exploring the relationship between fertility, mortality, and kinship wherever data on such quantities could be found.^[For notable examples of work in this tradition see: @Uhlenberg1980, @Hagestad1986, and @Watkins1987]
 
-- Examples of research either using the Goodman method or informed by the formal demographic logic behind the method: e.g. Watkins - "Demographic Foundations of Family Change"; Uhlenberg; Hagestad; Glick; etc.
-
-<!-- NOT SURE WHETHER TO INCLUDE: However, this line of methodological development hit a lull beginning in the late-1980s. The exact cause is not clear, but some arguments could be made for: (a) the increasing heterogeneity of family arrangements across different geographic and socio-economic contexts [@Cherlin2010] {>>look into international citations, maybe?<<} that may render population-level estimates of kinship not particularly useful; (b) increasing heterogeneity in the socially-accepted definition of family [CITE?]that makes measurement of biological kinship less relevant; or simply waning interest in the formal demography of kinship among population researchers. -->
-
-In recent years, there has been signs of increasing interest in demographic measurements of kin availability though the interest has been driven by more practical concerns rather than concerns about the measurement itself. For example...
+In recent years, interest in demographic measurements of kin availability has been increasingly driven by more material concerns rather than concerns about the measurement itself. For example, scholars studying wealth inequality have attempted to get a handle on the role of intra-family transfers in reproducing. 
 
 - example: consanguinity/nepotism still mattering for social stratification processes and reproduction of socio-economic inequality
     + GSS/HRS survey Qs demonstrating that people still consider blood relations the most important across most domains
     + Intergenerational transmission of wealth studies linking family inheritance to reproduction of wealth inequality/gap
+    + How these studies tend to measure family (survey or census?)
+
+Work examining the consequences of population aging have also attempted to measure the likely social and material support provided by kin. 
 
 - example: population aging and its likely implications for intergenerational/old-age support
     + a major vehicle by which population aging will be managed is via intergenerational transfers (Ron Lee’s stuff)
     + Verdery's stuff on old age isolation
     + Murphy's stuff on age distribution
 
-- the collateral consequences of the justice system expansion
+In the United States, the rapid expansion of the incarcerated population, especially among historically-disadvantaged minority populations, have driven efforts to estimate the so-called "collateral consequences" of imprisonment on the friends and family of the affected. An important methodological consideration of this research is how to properly establish the prevalence of incarceration within community and kinship networks.
+- example: In the United States... the collateral consequences of the justice system expansion
     + Western & Wildeman's stuff on lifetime incarceration hazard
     + Chung's stuff on number of family members with prison records
 
--In many of these recent works, newer methods of measuring kinship have been leveraged... 
+-In these recent works on population aging and incarceration, newer methods of measuring kinship have been leveraged... 
     + computationally-expensive microsimulation methods that do an impressive job of predicting observed kinship configurations, but difficult to implement and access by non-experts 
     + There is a space for simpler methods
 
-In this paper, we present an extended version of Goodman and Colleague's classic method of calculating kin availability as a reasonable alternative when the microsimulation methods discussed above are deemed either inappropriate or impractical. The idea is relies on readily-available age-specific fertility and mortality data and a set of easily calculable life table equations. We then extend this original method by dropping the stable population assumption, thus allowing for the estimation of kin availability as a function of demographic rates that need not be constant over time. As a validation check, we compare the results of this procedure against kin network estimates from a set of nationally-representative surveys. We end with a discussion about the strengths and limitations of this technique in modern populations, and future opportunities for improvements to kinship measurement in demographic research.
+In this paper, we present an extended version of Goodman and Colleague's classic method of calculating kin availability as a reasonable alternative when the microsimulation methods discussed above are determined to be too impractical or costly to implement. Our method relies on readily-available age-specific fertility and mortality data and a set of easily calculable life table equations. We then extend this original method by dropping the stable population assumption, thus allowing for the estimation of kin availability as a function of demographic rates that need not be constant over time. As a validation check, we compare the results of this procedure against kin network estimates from a set of nationally-representative surveys. We end with a discussion about the strengths and limitations of this technique in modern populations, and future opportunities for improvements to kinship measurement in demographic research.
 
 # Measuring Kin Availability
-The formal demography of kinship estimation has had a long but somewhat sparse history...
+The formal demography of kinship estimation has had a long history. Perhaps the earliest example is work published in 1931 by Alfred Lotka, which derived estimates of orphanhood rates from data on mortality and the mean of childbearing [@Lotka1931]. Subsequent work by @Fourastié, 
 
 - Ref: BURCH(1979) for summary of early history
     - Lotka was the first working in parallel with cultural anthropologists
@@ -51,7 +51,7 @@ The formal demography of kinship estimation has had a long but somewhat sparse h
         + Chung study
 
 # Extending the Goodman Method
-- Today, there remains active interest in the accurate estimation of kin availability: academic interest (e,g, kin support literature), economic policy planning (dependency ratio literature), etc. However, computationally intensive microsimulation methods are not yet developed enough for mainstream use.
+- Today, there remains active interest in the measurement of kin availability. However, computationally intensive microsimulation methods, which are the current state of the art, have not yet been fully developed for mainstream use.
 - Outside of these computational methods, the two most common methods for estimating kin availability include household surveys and specialized social network questionnaires (often embedded as occasional modules in larger social surveys). 
     - describe strengths and weaknesses of household surveys (e.g. Census):
         + household boundaries: CITE Ruggles and others in Burch (1979)
@@ -64,7 +64,7 @@ The formal demography of kinship estimation has had a long but somewhat sparse h
 ## The original method
 - a quick description of the logic behind Goodman's method and a presentation of some key equations
 
-## An extended method
+## The extended method
 - a discussion of how the original equations may be modified/generalized to drop the stable population assumption 
 
 # Outcomes of Interest

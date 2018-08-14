@@ -1,0 +1,16 @@
+infile dictionary {
+    _column(1)    numeric                               YEAR   %20f  "Gss year for this respondent                       "
+   _column(21)    numeric                            UNAUNUM   %20f  "Number of aunts and uncles"
+   _column(41)    numeric                           GRKIDNUM   %20f  "Number of adult grandchildren"
+   _column(61)    numeric                           GRPARNUM   %20f  "Number of grandparents"
+   _column(81)    numeric                             PALIVE   %20f  "Father still alive?"
+  _column(101)    numeric                             MALIVE   %20f  "Mother still alive?"
+  _column(121)    numeric                            PALIVE1   %20f  "R father alive"
+  _column(141)    numeric                            MALIVE1   %20f  "R mother alive"
+  _column(161)    numeric                            MADEATH   %20f  "Death of mother"
+  _column(181)    numeric                            PADEATH   %20f  "Death of father"
+  _column(201)    numeric                             CHILDS   %20f  "Number of children"
+  _column(221)    numeric                               SIBS   %20f  "Number of brothers and sisters"
+  _column(241)    numeric                                ID_   %20f  "Respondent id number"
+  _column(261)    numeric                             BALLOT   %20f  "Ballot used for interview"
+}
