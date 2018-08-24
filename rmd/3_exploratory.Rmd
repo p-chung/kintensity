@@ -248,7 +248,7 @@ countries <- c("United States of America",
                "Canada",
                "China")
 
-res <- tibble(country = NA, age = NA, cohort = NA, meanage = NA, stat = NA)
+res <- tibble(country = NA, age = NA, cohort = NA, meanage = NA, meanage_adjust = NA, stat = NA)
 for(i in 1:length(countries)){
   d_cohort <- d_all %>% filter(region == countries[i])
   d_period <- df %>% filter(region == countries[i])
@@ -258,6 +258,8 @@ for(i in 1:length(countries)){
                               age = ages[j], 
                              cohort = surviving_daughters_cohort(df = d_cohort, year = year_test, age_a = ages[j]),
                              meanage = surviving_daughters_mean_age(df = d_period, 
+                                                                    year = year_test, age_a = ages[j], mean_age = 25),
+                             meanage_adjust = surviving_daughters_mean_age_adjustment(df = d_period, 
                                                                     year = year_test, age_a = ages[j], mean_age = 25),
                              stat = surviving_daughters(df = d_stat, age_a = ages[j])))
   }
@@ -313,11 +315,79 @@ lx_period %>% filter(year==2010) %>%
 
 
 ```{r}
-tfr_period %>% filter(year==2010) %>% 
-  left_join(tfr_cohort %>% filter(cohort<1965)) %>% 
-  left_join(lx_period %>% filter(year==2010) %>% 
-  left_join(lx_cohort %>% filter(cohort<1965))) %>% 
-  filter(region %in% countries) %>% 
-  mutate(mult = (tfr_cohort/tfr_period)*(lx_cohort/lx_period))  %>% 
-  ggplot(aes(2010 - cohort, mult, color = region)) + geom_line()
+tfr_period %>% 
+  filter(region %in% countries, year>1955) %>% 
+  group_by(region) %>% 
+  mutate(ratio = (tfr_period - tfr_period[year==2010])/tfr_period) %>% 
+  filter(year<1985) %>% 
+  ggplot(aes(year, ratio, color = region)) + geom_line()
 ```
+
+
+```{r}
+res %>% 
+  mutate(ratio = meanage/cohort) %>% 
+  ggplot(aes(2010-age, ratio, color = country)) + geom_line()
+```
+
+```{r}
+df %>% 
+  filter(region %in% countries, year>1955, age>10&age<50) %>% 
+  group_by(region, age) %>% 
+  mutate(ratio = Fx/Fx[year==2010]) %>% 
+  filter(year<1985) %>% 
+  ggplot(aes(year, ratio, color = factor(age))) + facet_wrap(~region) + geom_line()
+```
+
+```{r}
+df %>% 
+  filter(region %in% countries, year>1955, age>10&age<50) %>% 
+  group_by(region, age) %>% 
+  mutate(ratio = (Fx-Fx[year==2010])/Fx) %>% 
+  filter(year<1985, region=="China") %>% 
+  ggplot(aes(age, ratio, color = factor(year))) + facet_wrap(~region) + geom_line()
+```
+
+
+```{r}
+years <- seq(1970, 2010, by = 5)
+
+df_data <- df %>% 
+  filter(region %in% countries)
+
+df_res <- c()
+
+for(i in 1:length(countries)){
+  df_country <- c()
+  for(j in 1:length(years)){
+    this_df_data <- df_data %>% 
+      filter(region == countries[i])
+    df_direct <- tibble(mother_age = seq(15, 85, by = 5),
+                        country = countries[i],
+                        year = years[j])
+    df_direct <- df_direct %>% 
+      rowwise() %>% 
+      mutate(daughters = surviving_daughters_mean_age_adjustment(df = this_df_data, 
+                                                                 year = years[j], age_a = mother_age, mean_age = 25))
+    
+    df_country <- rbind(df_country, df_direct)
+  }
+  df_res <- rbind(df_res, df_country)
+}
+```
+
+```{r}
+df_res %>% 
+  mutate(country_label = case_when(
+    country=="Venezuela (Bolivarian Republic of)" ~ "Venezuela",
+    country=="United States of America" ~ "USA",
+    TRUE ~ country
+  )) %>% 
+  gather(type, number, -mother_age, -country, -year, -country_label) %>% 
+  ggplot(aes(mother_age, number, color = factor(year))) + geom_line(lwd = 0.8) +
+  facet_wrap(~country_label) + 
+  ylab("expected number") + xlab("age") +
+  ggtitle("Expected number of surviving daughters") + 
+  theme_bw(base_size = 16) 
+```
+
