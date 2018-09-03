@@ -274,120 +274,200 @@ Plot
 
 ```{r}
 res %>% gather(measure, daughters, -country, -age) %>% 
-  ggplot(aes(age, daughters, color = measure)) + geom_line() + facet_wrap(~country)
+  #filter(measure!="meanage_adjust") %>% 
+  ggplot(aes(age, daughters, color = measure, lty = measure)) + geom_line() + facet_wrap(~country)
 ```
 
-The mean age measure is all over the place. Seems like the difference between cohort and stationary could be estimated somehow?
+Ignoring mortality changes (which we don't want to do, but I'm doing for now), the mean age measure is much closer to the cohort measure, and the adjusted mean age measure is exactly the same. Oh because it's just getting the cohort fertility rates. Silly me. this doesn't help. 
+
+Look at percent differences between cohort and mean age 
 
 ```{r}
-res %>% 
-  mutate(ratio = cohort/stat,
-         ratio_ma = cohort/meanage) %>% 
-  ggplot(aes(age, ratio, color = country)) + geom_line()
-```
-Differences very much driven by differences in TFR
-
-```{r}
-tfr_period <- df %>% group_by(year, region) %>% 
-  summarise(tfr_period = sum(Fx*5/1000))
-
-tfr_cohort <- d_all %>% group_by(cohort, region) %>% 
-  summarise(tfr_cohort = sum(Fx*5/1000))
-
-tfr_period %>% filter(year==2010) %>% 
-  left_join(tfr_cohort %>% filter(cohort<1970)) %>% 
-  filter(region %in% countries) %>% 
-  ggplot(aes(2010 - cohort, tfr_cohort/tfr_period, color = region)) + geom_line()
-```
-
-```{r}
-lx_period <- df %>% group_by(year, region) %>% 
-  summarise(lx_period = sum(Lx/100000))
-
-lx_cohort <- d_all %>% group_by(cohort, region) %>% 
-  summarise(lx_cohort = sum(Lx_cohort/100000))
-
-lx_period %>% filter(year==2010) %>% 
-  left_join(lx_cohort %>% filter(cohort<1965)) %>% 
-  filter(region %in% countries) %>% 
-  ggplot(aes(2010 - cohort, lx_cohort/lx_period, color = region)) + geom_line()
+res %>% mutate(per_diff = (meanage - cohort)/cohort) %>% 
+  ggplot(aes(age, per_diff, color = country)) + geom_line()
 ```
 
 
+
+Try and plot cohort, period, and mean age fertility schedules to see the differences. Start with 75 year olds in 2010. 
+
 ```{r}
-tfr_period %>% 
-  filter(region %in% countries, year>1955) %>% 
+f_cohort <- d_all %>%  filter(cohort == 1945, region %in% countries) %>% select(region, age, Fx) %>% mutate(measure = "cohort")
+f_period <- df %>% filter(year==2010, region %in% countries) %>% select(region, age, Fx) %>% mutate(measure = "period")
+f_meanage <- df %>% filter(year==1970, region %in% countries) %>% select(region, age, Fx) %>% mutate(measure = "meanage")
+
+f_all <- bind_rows(f_cohort, f_period, f_meanage)
+
+ggplot(f_all, aes(age, Fx, color = measure)) + geom_line() + facet_wrap(~region)
+```
+
+Mean age measure is always higher because it suggests the older age groups have higher fertility than the cohort actually does. Interesting that this is more of a problem at older ages...
+
+Need a way of essentially adjusting the period mean age schedules to look more like cohort schedules. 
+
+
+```{r}
+df %>%  
+  filter(region %in% countries, age>25) %>% 
+  group_by(year, region) %>% 
+  summarise(tfr = sum(Fx/1000)) %>% 
+  ggplot(aes(year, tfr, color = region)) + geom_line() + 
+  geom_vline(xintercept = 1970)
+  
+```
+
+
+```{r}
+df %>%  
+  filter(region %in% countries, age > 25) %>% 
+  group_by(region, year) %>% 
+  summarise(tfr = sum(Fx/1000)) %>% 
+  mutate(diff = (tfr - lag(tfr))/lag(tfr)) %>% 
+  ggplot(aes(year, diff, color = region)) + geom_line() + 
+  geom_vline(xintercept = 1970)
+```
+
+```{r}
+adjs <- df %>%  
+  filter(region %in% countries, age >25, year >1965, year < 1995) %>% 
+  group_by(region, year) %>% 
+  summarise(tfr = sum(Fx/1000)) %>% 
+  mutate(diff = (tfr - lag(tfr))/lag(tfr)) %>% 
+  #filter(year>1965, year< 1995) %>% 
   group_by(region) %>% 
-  mutate(ratio = (tfr_period - tfr_period[year==2010])/tfr_period) %>% 
-  filter(year<1985) %>% 
-  ggplot(aes(year, ratio, color = region)) + geom_line()
-```
-
-
-```{r}
-res %>% 
-  mutate(ratio = meanage/cohort) %>% 
-  ggplot(aes(2010-age, ratio, color = country)) + geom_line()
+  summarise(ave = mean(diff, na.rm = T))
 ```
 
 ```{r}
-df %>% 
-  filter(region %in% countries, year>1955, age>10&age<50) %>% 
-  group_by(region, age) %>% 
-  mutate(ratio = Fx/Fx[year==2010]) %>% 
-  filter(year<1985) %>% 
-  ggplot(aes(year, ratio, color = factor(age))) + facet_wrap(~region) + geom_line()
-```
-
-```{r}
-df %>% 
-  filter(region %in% countries, year>1955, age>10&age<50) %>% 
-  group_by(region, age) %>% 
-  mutate(ratio = (Fx-Fx[year==2010])/Fx) %>% 
-  filter(year<1985, region=="China") %>% 
-  ggplot(aes(age, ratio, color = factor(year))) + facet_wrap(~region) + geom_line()
-```
-
-
-```{r}
-years <- seq(1970, 2010, by = 5)
-
-df_data <- df %>% 
-  filter(region %in% countries)
-
-df_res <- c()
-
-for(i in 1:length(countries)){
-  df_country <- c()
-  for(j in 1:length(years)){
-    this_df_data <- df_data %>% 
-      filter(region == countries[i])
-    df_direct <- tibble(mother_age = seq(15, 85, by = 5),
-                        country = countries[i],
-                        year = years[j])
-    df_direct <- df_direct %>% 
-      rowwise() %>% 
-      mutate(daughters = surviving_daughters_mean_age_adjustment(df = this_df_data, 
-                                                                 year = years[j], age_a = mother_age, mean_age = 25))
-    
-    df_country <- rbind(df_country, df_direct)
+this_year <- year
+country <- "China"
+mother_cohort <- year - age_a
+x_vec <- seq(15,age_a, by = 5)
+mean_age <- 25
+  
+  # calculate based on period of mean childbearing age = 30
+  LF_prod <- c()
+  for(i in 1:length(x_vec)){
+    this_L <- df %>% filter(age == age_a - x_vec[i], year==this_year, region == country) %>% select(Lx) %>% pull()
+    this_F <- df %>% filter(age == x_vec[i], year == mother_cohort+mean_age, region == country) %>% select(Fx) %>% pull()
+    adjustment_F <- ifelse(x_vec[i]>mean_age,adjs$ave[adjs$region==country], 0)
+    this_F_adjust <- this_F*(1+adjustment_F)
+    LF_prod <- c(LF_prod, this_L/10^5*this_F_adjust/10^3*ffab)
   }
-  df_res <- rbind(df_res, df_country)
-}
+  
+  sum(LF_prod)
 ```
 
-```{r}
-df_res %>% 
-  mutate(country_label = case_when(
-    country=="Venezuela (Bolivarian Republic of)" ~ "Venezuela",
-    country=="United States of America" ~ "USA",
-    TRUE ~ country
-  )) %>% 
-  gather(type, number, -mother_age, -country, -year, -country_label) %>% 
-  ggplot(aes(mother_age, number, color = factor(year))) + geom_line(lwd = 0.8) +
-  facet_wrap(~country_label) + 
-  ylab("expected number") + xlab("age") +
-  ggtitle("Expected number of surviving daughters") + 
-  theme_bw(base_size = 16) 
-```
+
+
+<!-- The mean age measure is all over the place. Seems like the difference between cohort and stationary could be estimated somehow? -->
+
+<!-- ```{r} -->
+<!-- res %>%  -->
+<!--   mutate(ratio = cohort/stat, -->
+<!--          ratio_ma = cohort/meanage) %>%  -->
+<!--   ggplot(aes(age, ratio, color = country)) + geom_line() -->
+<!-- ``` -->
+<!-- Differences very much driven by differences in TFR -->
+
+<!-- ```{r} -->
+<!-- tfr_period <- df %>% group_by(year, region) %>%  -->
+<!--   summarise(tfr_period = sum(Fx*5/1000)) -->
+
+<!-- tfr_cohort <- d_all %>% group_by(cohort, region) %>%  -->
+<!--   summarise(tfr_cohort = sum(Fx*5/1000)) -->
+
+<!-- tfr_period %>% filter(year==2010) %>%  -->
+<!--   left_join(tfr_cohort %>% filter(cohort<1970)) %>%  -->
+<!--   filter(region %in% countries) %>%  -->
+<!--   ggplot(aes(2010 - cohort, tfr_cohort/tfr_period, color = region)) + geom_line() -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- lx_period <- df %>% group_by(year, region) %>%  -->
+<!--   summarise(lx_period = sum(Lx/100000)) -->
+
+<!-- lx_cohort <- d_all %>% group_by(cohort, region) %>%  -->
+<!--   summarise(lx_cohort = sum(Lx_cohort/100000)) -->
+
+<!-- lx_period %>% filter(year==2010) %>%  -->
+<!--   left_join(lx_cohort %>% filter(cohort<1965)) %>%  -->
+<!--   filter(region %in% countries) %>%  -->
+<!--   ggplot(aes(2010 - cohort, lx_cohort/lx_period, color = region)) + geom_line() -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- tfr_period %>%  -->
+<!--   filter(region %in% countries, year>1955) %>%  -->
+<!--   group_by(region) %>%  -->
+<!--   mutate(ratio = (tfr_period - tfr_period[year==2010])/tfr_period) %>%  -->
+<!--   filter(year<1985) %>%  -->
+<!--   ggplot(aes(year, ratio, color = region)) + geom_line() -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- res %>%  -->
+<!--   mutate(ratio = meanage/cohort) %>%  -->
+<!--   ggplot(aes(2010-age, ratio, color = country)) + geom_line() -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- df %>%  -->
+<!--   filter(region %in% countries, year>1955, age>10&age<50) %>%  -->
+<!--   group_by(region, age) %>%  -->
+<!--   mutate(ratio = Fx/Fx[year==2010]) %>%  -->
+<!--   filter(year<1985) %>%  -->
+<!--   ggplot(aes(year, ratio, color = factor(age))) + facet_wrap(~region) + geom_line() -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- df %>%  -->
+<!--   filter(region %in% countries, year>1955, age>10&age<50) %>%  -->
+<!--   group_by(region, age) %>%  -->
+<!--   mutate(ratio = (Fx-Fx[year==2010])/Fx) %>%  -->
+<!--   filter(year<1985, region=="China") %>%  -->
+<!--   ggplot(aes(age, ratio, color = factor(year))) + facet_wrap(~region) + geom_line() -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- years <- seq(1970, 2010, by = 5) -->
+
+<!-- df_data <- df %>%  -->
+<!--   filter(region %in% countries) -->
+
+<!-- df_res <- c() -->
+
+<!-- for(i in 1:length(countries)){ -->
+<!--   df_country <- c() -->
+<!--   for(j in 1:length(years)){ -->
+<!--     this_df_data <- df_data %>%  -->
+<!--       filter(region == countries[i]) -->
+<!--     df_direct <- tibble(mother_age = seq(15, 85, by = 5), -->
+<!--                         country = countries[i], -->
+<!--                         year = years[j]) -->
+<!--     df_direct <- df_direct %>%  -->
+<!--       rowwise() %>%  -->
+<!--       mutate(daughters = surviving_daughters_mean_age_adjustment(df = this_df_data,  -->
+<!--                                                                  year = years[j], age_a = mother_age, mean_age = 25)) -->
+
+<!--     df_country <- rbind(df_country, df_direct) -->
+<!--   } -->
+<!--   df_res <- rbind(df_res, df_country) -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- df_res %>%  -->
+<!--   mutate(country_label = case_when( -->
+<!--     country=="Venezuela (Bolivarian Republic of)" ~ "Venezuela", -->
+<!--     country=="United States of America" ~ "USA", -->
+<!--     TRUE ~ country -->
+<!--   )) %>%  -->
+<!--   gather(type, number, -mother_age, -country, -year, -country_label) %>%  -->
+<!--   ggplot(aes(mother_age, number, color = factor(year))) + geom_line(lwd = 0.8) + -->
+<!--   facet_wrap(~country_label) +  -->
+<!--   ylab("expected number") + xlab("age") + -->
+<!--   ggtitle("Expected number of surviving daughters") +  -->
+<!--   theme_bw(base_size = 16)  -->
+<!-- ``` -->
 
