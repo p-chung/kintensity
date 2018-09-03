@@ -13,6 +13,7 @@ INCLUDE:
 - introduce our extension of the method
 - demonstration: "kin dependency ratio"
 	+ contrast with "old age dependency ratio"
+	+ index 'kin dependency ratio' and 'old age dependency ratio'
 - next steps
 
 EXCLUDE: 
