@@ -11,11 +11,13 @@ Starting in the mid-1960s a line of demographic research began to develop a form
 
 In recent years, interest in demographic measurements of kin availability has been increasingly driven by material concerns surrounding the aging of national populations. A 2015 report by the United Nations Population Division predicts that by the year 2050, the world's share of people aged 60 years or older will increase almost two-fold from one-in-eight persons to one-in-five [@UNPopDiv2015]. This unprecedented shift in the age distribution raises the question of how society will organize to materially support the post-retirement population as its growth outpaces that of the working-age population. 
 
-A diverse literature has emerged surrounding this issue.^[For an extensive review, see @Lee2011] In general, researchers distinguish between public and private mechanisms of old-age support. Public support systems, in this context, refer to...
+A diverse literature has emerged surrounding this issue.^[For an extensive review, see @Lee2011] In general, researchers distinguish between public and private mechanisms of old-age support. Public support systems, in this context, typically refer to...
 
 - example: social security/paygo systems
 
-So-called "old age dependency ratios"---usually defined as the number of individuals 65 years or older divided by the number of "working-age" individuals (18-64 years old)---provide rough measures of the likely public support burden^[note the many adjustments to this basic OADR measure like the prospective old age dependency ratio POADR and disability adjusted OADR]  (esp. in many public pension/social security systems that rely on paygo style taxes levied on working age people)
+So-called "old age dependency ratios"---usually defined as the number of individuals 65 years or older divided by the number of "working-age" individuals (18-64 years old)---provide rough measures of the likely public support burden^[note the many adjustments to this basic OADR measure like the prospective old age dependency ratio POADR and disability adjusted OADR]  (esp. in many public pension/social security systems that rely on paygo style taxes levied on working age people).
+
+- example statistics: OADR
 
 With respect to private mechanisms of old-age support, intergenerational transfers within families is often seen as the primary form of private support. Even in economically-advanced nations, such as the United States, where there exist universal public pension systems, individuals continue to rely heavily on family members for material support (GSS) over the course of their lives.
 
