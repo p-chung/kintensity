@@ -1,0 +1,104 @@
+---
+title: "5. Going up in an unstable way"
+output: html_notebook
+---
+
+Now we want to account for the fact that the distribution of women of reproductive ages changes through time. Note the formulas presented in Goodman etc are of the form
+
+$$
+M_1(a) = \int_{\alpha}^{\beta} \frac{l_{x+a}}{l_x} W(x|t-a)dx
+$$
+
+This accounts for a changing age distribution but not changing mortality. (I think? I'm confused by the fact they say it's an unstable version when it doesn't seem to be fully). Anyway, let's work on getting the changing age distributions first. Should be able to get these age distributions from WPP data
+
+```{r}
+library(tidyverse)
+library(here)
+source(here("code", "kin_functions.R"))
+lt <- read_csv(here("data", "wpp_lt.csv"))
+fx <- read_csv(here("data", "wpp_fx.csv"))
+pop <- read_csv(here("data", "wpp_pop.csv"))
+```
+Clean up the data
+
+```{r}
+
+# as before
+df_mort <- lt %>% 
+  # tidy up names
+  rename(year = Period,
+         region = `Region, subregion, country or area *`,
+         age = `Age (x)`, 
+         Lx = `Number of person-years lived L(x,n)`) %>% 
+  rename(period = year) %>% 
+  mutate(year = as.numeric(substring(period, 1,4))) %>% 
+  # just keep the columns we need
+  select(year, region, age, Lx)
+
+# fertility df
+df_fert <- fx %>% 
+  # tidy up names
+  rename(year = Period,
+         region = `Region, subregion, country or area *`) %>% 
+  # only keep years/ages/countries we want
+  select(year, region, `15-19`:`45-49`) %>% 
+  # change to long format
+  gather(age_group, Fx, -year, -region) %>% 
+  rename(period = year) %>% 
+  mutate(year = as.numeric(substring(period, 1,4))) %>% 
+    # make an age column 
+  mutate(age = as.numeric(substring(age_group, 1, 2)))
+
+df_pop <- pop %>% 
+  # tidy up names
+  rename(year = `Reference date (as of 1 July)`,
+         region = `Region, subregion, country or area *`) %>% 
+  select(year, region, `15-19`:`45-49`) %>% 
+  # change to long format
+  gather(age_group, pop, -year, -region) %>% 
+  # make an age column 
+  mutate(age = as.numeric(substring(age_group, 1, 2)))
+
+df <- df_mort %>% 
+  left_join(df_fert) %>% 
+  left_join(df_pop) %>% 
+  mutate(age_group = paste(age, age+4, sep = "-"),
+         pop = ifelse(is.na(pop), 0, pop),
+         Fx = ifelse(is.na(Fx), 0, Fx)) 
+df
+```
+
+The populations equal to zero above and below reproductive ages are probably misleading but we don't need them anyway. 
+
+Right, now have to turn the numbers into a distribution. 
+
+```{r}
+df <- df %>% 
+  group_by(year, region) %>% 
+  mutate(prop = pop/sum(pop))
+```
+
+Okay now I think we have all the info we need
+
+```{r}
+this_year <- 2010
+age_a <- 50
+country <- "Australia"
+
+this_d <- df %>% ungroup() %>% filter(region == country, year == this_year)
+Ws <- df %>% ungroup %>% filter(region == country, year == this_year - age_a) %>% select(age, prop)
+
+surviving_mothers_notstable(this_d, Ws, age_a)
+
+# compare with stable
+repro_measures <- df %>%
+  group_by(region, year) %>% 
+  summarise(nrr = sum(Fx/10^3*Lx/10^5*0.4886),
+            intr_r = log(nrr)/25)
+
+this_r <- repro_measures %>% ungroup() %>% filter(region==country, year == this_year) %>% select(intr_r) %>% pull()
+surviving_mothers_stable(this_d, age_a, this_r)
+
+```
+
+
