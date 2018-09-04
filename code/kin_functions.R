@@ -81,6 +81,24 @@ surviving_mothers_stable <- function(df, # dataframe with Lx and Fx
 }
 
 
+surviving_mothers_notstable <- function(df, # dataframe with Lx 
+                                        W, # age distribution of wra 
+                                     age_a # age of ego
+){
+  
+  x_vec <- seq(15,45, by = 5)
+  LF_prod <- c()
+  for(x in x_vec){
+    this_Lxa <- df %>% filter(age == age_a + x) %>% select(Lx) %>% pull()
+    this_Lx <- df %>% filter(age == x) %>% select(Lx) %>% pull()
+    this_W <- W %>% filter(age == x) %>% select(prop) %>% pull()
+    LF_prod <- c(LF_prod, this_Lxa/this_Lx*this_W)
+  }
+  
+  return(sum(LF_prod))
+}
+
+
 ## function to calculate grandmothers
 
 surviving_grandmothers_stable <- function(df, # dataframe with Lx and Fx
