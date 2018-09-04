@@ -79,3 +79,24 @@ surviving_mothers_stable <- function(df, # dataframe with Lx and Fx
   
   return(sum(LF_prod))
 }
+
+
+## function to calculate grandmothers
+
+surviving_grandmothers_stable <- function(df, # dataframe with Lx and Fx
+                                     age_a, # age of ego
+                                     intrinsic_r, # intrinsic rate of increase
+                                     ffab = 0.4886 # fraction female at birth
+){
+  
+  x_vec <- seq(15,45, by = 5)
+  LF_prod <- c()
+  for(x in x_vec){
+    M_1 <- surviving_mothers_stable(df, age_a+x, intrinsic_r)
+    this_L <- df %>% filter(age == x) %>% select(Lx) %>% pull()
+    this_F <- df %>% filter(age == x) %>% select(Fx) %>% pull()
+    LF_prod <- c(LF_prod, M_1*this_L/10^5*this_F/10^3*ffab*exp(-intrinsic_r*(x+2.5)))
+  }
+  
+  return(sum(LF_prod))
+}
