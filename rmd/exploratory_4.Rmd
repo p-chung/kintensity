@@ -8,10 +8,16 @@ So far I've just been looking at daughters / grand-daughters. Need to look at mo
 The formula for mothers is 
 
 $$
-\int_{\alpha}^{\beta} \frac{l_{x+a}}{l_x} W(x|t-a)dx
+M_1(a) = \int_{\alpha}^{\beta} \frac{l_{x+a}}{l_x} W(x|t-a)dx
 $$
 
-Here, $W(x|t-a)$ is the age distribution of women who gave birth to a daughter at time $t-a$. The stable population version is 
+Here, $W(x|t-a)$ is the age distribution of women who gave birth to a daughter at time $t-a$. There's a nice recurrence relation here; the granmothers equation is 
+
+$$
+M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
+$$
+
+The stable population version of mothers is 
 
 $$
 \int_{\alpha}^{\beta} l_{x+a}m_x e^{-rx}dx
@@ -89,7 +95,7 @@ repro_measures %>%
   ggplot(aes(year, intr_r, color = region)) + geom_line() +geom_hline(yintercept = 0)
 ```
 
-Right, let's give it a go (function to calculate number of mothers is in the `kin_functions` file). 
+Right, let's give it a go (function to calculate number of mothers and grandmother is in the `kin_functions` file). 
 
 ```{r}
 this_year <- 2010
@@ -100,6 +106,7 @@ this_d <- df %>% filter(region == country, year == this_year)
 this_r <- repro_measures %>% ungroup() %>% filter(region==country, year == this_year) %>% select(intr_r) %>% pull()
 
 surviving_mothers_stable(this_d, age_a, this_r)
+surviving_grandmothers_stable(this_d, age_a, this_r)
 ```
 
 Seems to work, let's do it for a few years / countries. 
@@ -125,7 +132,8 @@ for(i in 1:length(countries)){
                         year = years[j])
     df_direct <- df_direct %>% 
       rowwise() %>% 
-      mutate(mothers = surviving_mothers_stable(this_df_data, mother_age, this_r))
+      mutate(mothers = surviving_mothers_stable(this_df_data, mother_age, this_r), 
+             grandmothers = surviving_grandmothers_stable(this_df_data, mother_age, this_r))
     
     df_country <- rbind(df_country, df_direct)
   }
@@ -141,11 +149,12 @@ df_res %>%
     country=="United States of America" ~ "USA",
     TRUE ~ country
   )) %>% 
-  ggplot(aes(mother_age, mothers, color = factor(year))) + geom_line(lwd = 0.8) +
-  facet_wrap(~country_label) + 
+  gather(type, number, -mother_age, -country, -year, -country_label) %>% 
+  ggplot(aes(mother_age, number, color = type)) + geom_line(lwd = 0.8) +
+  facet_grid(country_label~year) + 
   ylab("expected number") + xlab("age") +
-  ggtitle("Expected number of surviving mothers") + 
+  ggtitle("Expected number of surviving mothers and grandmothers") + 
   theme_bw(base_size = 16) 
-ggsave(here("fig", "country_year.pdf"), width = 12, height = 10)
+ggsave(here("fig", "country_year_mother_gmother.pdf"), width = 12, height = 10)
 ```
 

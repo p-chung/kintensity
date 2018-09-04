@@ -102,6 +102,6 @@ df_res %>%
   ylab("expected number") + xlab("age") +
   ggtitle("Expected number of surviving daughters/grand-daughters") + 
   theme_bw(base_size = 16) 
-ggsave(here("fig", "country_year.pdf"), width = 12, height = 10)
+ggsave(here("fig", "country_year_daugther_gdaugther.pdf"), width = 12, height = 10)
 ```
 
