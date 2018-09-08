@@ -82,13 +82,14 @@ Okay now I think we have all the info we need
 
 ```{r}
 this_year <- 2010
-age_a <- 50
+age_a <- 20
 country <- "Australia"
 
 this_d <- df %>% ungroup() %>% filter(region == country, year == this_year)
-Ws <- df %>% ungroup %>% filter(region == country, year == this_year - age_a) %>% select(age, prop)
+Ws <- df %>% ungroup() %>% filter(region == country) %>% select(age, prop, year)
 
-surviving_mothers_notstable(this_d, Ws, age_a)
+surviving_mothers_notstable(this_d, Ws, age_a, this_year)
+surviving_grandmothers_notstable(this_d, Ws, age_a, this_year)
 
 # compare with stable
 repro_measures <- df %>%
@@ -98,6 +99,7 @@ repro_measures <- df %>%
 
 this_r <- repro_measures %>% ungroup() %>% filter(region==country, year == this_year) %>% select(intr_r) %>% pull()
 surviving_mothers_stable(this_d, age_a, this_r)
+surviving_grandmothers_stable(this_d, age_a, this_r)
 
 ```
 

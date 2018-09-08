@@ -83,15 +83,17 @@ surviving_mothers_stable <- function(df, # dataframe with Lx and Fx
 
 surviving_mothers_notstable <- function(df, # dataframe with Lx 
                                         W, # age distribution of wra 
-                                     age_a # age of ego
+                                     age_a, # age of ego
+                                     this_year # year of estimation
 ){
   
   x_vec <- seq(15,45, by = 5)
   LF_prod <- c()
+  W_year <- W %>% filter(year == this_year - age_a)
   for(x in x_vec){
     this_Lxa <- df %>% filter(age == age_a + x) %>% select(Lx) %>% pull()
     this_Lx <- df %>% filter(age == x) %>% select(Lx) %>% pull()
-    this_W <- W %>% filter(age == x) %>% select(prop) %>% pull()
+    this_W <- W_year %>% filter(age == x) %>% select(prop) %>% pull()
     LF_prod <- c(LF_prod, this_Lxa/this_Lx*this_W)
   }
   
@@ -114,6 +116,25 @@ surviving_grandmothers_stable <- function(df, # dataframe with Lx and Fx
     this_L <- df %>% filter(age == x) %>% select(Lx) %>% pull()
     this_F <- df %>% filter(age == x) %>% select(Fx) %>% pull()
     LF_prod <- c(LF_prod, M_1*this_L/10^5*this_F/10^3*ffab*exp(-intrinsic_r*(x+2.5)))
+  }
+  
+  return(sum(LF_prod))
+}
+
+
+surviving_grandmothers_notstable <- function(df, # dataframe with Lx and Fx
+                                             W, # age distribution of wra 
+                                          age_a, # age of ego
+                                          this_year # year of estimation
+){
+  
+  x_vec <- seq(15,45, by = 5)
+  LF_prod <- c()
+  W_year <- W %>% filter(year == this_year - age_a)
+  for(x in x_vec){
+    M_1 <- surviving_mothers_notstable(df, W, age_a+x, this_year)
+    this_W <- W_year %>% filter(age == x) %>% select(prop) %>% pull()
+    LF_prod <- c(LF_prod, M_1*this_W)
   }
   
   return(sum(LF_prod))
