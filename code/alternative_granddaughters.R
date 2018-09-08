@@ -28,7 +28,7 @@ calculate_inner_integral_meanage <- function(df, # dataframe with Lx and Fx
 
 
 
-surviving_granddaughters_meanage <- function(df, # dataframe with Lx and Fx
+surviving_granddaughters_mean_age <- function(df, # dataframe with Lx and Fx
                                             year, # year being considered
                                             age_a, # age of mother
                                             mean_age = 30, # assumed mean age at childbearing

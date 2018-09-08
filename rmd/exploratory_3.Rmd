@@ -429,32 +429,34 @@ mean_age <- 25
 <!--   ggplot(aes(age, ratio, color = factor(year))) + facet_wrap(~region) + geom_line() -->
 <!-- ``` -->
 
-<!-- ```{r} -->
-<!-- years <- seq(1970, 2010, by = 5) -->
+```{r}
+years <- seq(1970, 2010, by = 5)
 
-<!-- df_data <- df %>%  -->
-<!--   filter(region %in% countries) -->
+df_data <- df %>%
+  filter(region %in% countries)
 
-<!-- df_res <- c() -->
+df_res <- c()
 
-<!-- for(i in 1:length(countries)){ -->
-<!--   df_country <- c() -->
-<!--   for(j in 1:length(years)){ -->
-<!--     this_df_data <- df_data %>%  -->
-<!--       filter(region == countries[i]) -->
-<!--     df_direct <- tibble(mother_age = seq(15, 85, by = 5), -->
-<!--                         country = countries[i], -->
-<!--                         year = years[j]) -->
-<!--     df_direct <- df_direct %>%  -->
-<!--       rowwise() %>%  -->
-<!--       mutate(daughters = surviving_daughters_mean_age_adjustment(df = this_df_data,  -->
-<!--                                                                  year = years[j], age_a = mother_age, mean_age = 25)) -->
+for(i in 1:length(countries)){
+  df_country <- c()
+  for(j in 1:length(years)){
+    this_df_data <- df_data %>%
+      filter(region == countries[i])
+    df_direct <- tibble(mother_age = seq(15, 85, by = 5),
+                        country = countries[i],
+                        year = years[j])
+    df_direct <- df_direct %>%
+      rowwise() %>%
+      mutate(daughters = surviving_daughters_mean_age_adjustment(df = this_df_data,
+                                                                 year = years[j], 
+                                                                 age_a = mother_age, 
+                                                                 mean_age = 25))
 
-<!--     df_country <- rbind(df_country, df_direct) -->
-<!--   } -->
-<!--   df_res <- rbind(df_res, df_country) -->
-<!-- } -->
-<!-- ``` -->
+    df_country <- rbind(df_country, df_direct)
+  }
+  df_res <- rbind(df_res, df_country)
+}
+```
 
 <!-- ```{r} -->
 <!-- df_res %>%  -->
