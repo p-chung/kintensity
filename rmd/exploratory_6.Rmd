@@ -130,7 +130,7 @@ df_res %>%
     TRUE ~ country
   )) %>% 
   gather(type, number, -mother_age, -country, -year, -country_label) %>% 
-  filter(year==2010, mother_age > 15, mother_age<85) %>% 
+  filter(year==2010, mother_age<85) %>% 
   ggplot(aes(mother_age, number, color = type)) + geom_line(lwd = 0.8) +
   facet_wrap(~country_label) + 
   ylab("expected number") + xlab("age") +

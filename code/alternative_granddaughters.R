@@ -18,7 +18,7 @@ calculate_inner_integral_meanage <- function(df, # dataframe with Lx and Fx
     for(z in daughter_z_vec){
       daughter_cohort <- this_year - z
       this_L <- df %>% filter(age == z, year == this_year) %>% select(Lx) %>% pull()
-      this_F <- df %>% filter(age == z, year == daughter_cohort+mean_age) %>% select(Fx) %>% pull()
+      this_F <- df %>% filter(age == z, year == ifelse(daughter_cohort+mean_age<2010, daughter_cohort+mean_age, 2010)) %>% select(Fx) %>% pull()
       this_L_2 <- df %>% filter(age == age_a - x - z, year == this_year) %>% select(Lx) %>% pull()
       LFL_prod <- c(LFL_prod, this_L/10^5*this_F/10^3*ffab*this_L_2/10^5)
     }
@@ -43,7 +43,8 @@ surviving_granddaughters_mean_age <- function(df, # dataframe with Lx and Fx
     Ix <- calculate_inner_integral_meanage(df, year, age_a, x, mean_age)
     Ixp5 <- calculate_inner_integral_meanage(df, year, age_a, x+5, mean_age)
     Ix_bar <- 0.5*(Ix + Ixp5)
-    this_F <- df %>% filter(age == x, year == mother_cohort+mean_age) %>% select(Fx) %>% pull()
+    this_F <- df %>% filter(age == x, year == ifelse(mother_cohort+mean_age<2010, 
+                                                     mother_cohort+mean_age, 2010)) %>% select(Fx) %>% pull()
     IF_prod <- c(IF_prod, Ix_bar*this_F/10^3*ffab)
   }
   return(sum(IF_prod))

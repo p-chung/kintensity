@@ -36,7 +36,11 @@ surviving_daughters_mean_age <- function(df, # dataframe with LX and Fx
   for(i in 1:length(x_vec)){
     #this_L <- df %>% filter(age == age_a - x_vec[i], year == mother_cohort+30) %>% select(Lx) %>% pull()
     this_L <- df %>% filter(age == age_a - x_vec[i], year==this_year) %>% select(Lx) %>% pull()
-    this_F <- df %>% filter(age == x_vec[i], year == mother_cohort+mean_age) %>% select(Fx) %>% pull()
+    this_F <- df %>% 
+      filter(age == x_vec[i], 
+                            year == ifelse(mother_cohort+mean_age<2010, 
+                                           mother_cohort+mean_age, 2010)) %>% 
+      select(Fx) %>% pull()
     LF_prod <- c(LF_prod, this_L/10^5*this_F/10^3*ffab)
   }
   
