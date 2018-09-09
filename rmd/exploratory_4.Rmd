@@ -11,7 +11,7 @@ $$
 M_1(a) = \int_{\alpha}^{\beta} \frac{l_{x+a}}{l_x} W(x|t-a)dx
 $$
 
-Here, $W(x|t-a)$ is the age distribution of women who gave birth to a daughter at time $t-a$. There's a nice recurrence relation here; the granmothers equation is 
+Here, $W(x|t-a)$ is the age distribution of women who gave birth to a daughter at time $t-a$. There's a nice recurrence relation here; the grandmothers equation is 
 
 $$
 M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
