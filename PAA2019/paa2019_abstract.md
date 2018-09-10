@@ -45,9 +45,9 @@ $$
 M_1(a) = \int_{\alpha}^{\beta} \frac{l_{x+a}}{l_x} W(x|t-a)dx
 $$
 
-Here, $\frac{l_{x+a}}{l_x}$ is the mean probability that a mother who gave birth to a girl who is now age $a$ when she was age $x$ is still alive; and $W(x|t-a)$ is the age distribution---at time $t-a$---of women who gave birth to a daughter at time $t-a$. 
+Here, $\frac{l_{x+a}}{l_x}$ is the mean probability that a mother who gave birth to a girl who is now age $a$ (when the mother was age $x$) is still alive; and $W(x|t-a)$ is the age distribution (at time $t-a$) of women who gave birth to a daughter at time $t-a$. 
 
-The %M(a)% function can be recursively re-written to characterize the probability of grandmother's survival:
+Conveniently, the $M(a)$ function can be recursively re-written to characterize the probability of any older-generation maternal ancestor. For example, grandmother's survival is given by:
 
 $$
 M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
@@ -57,21 +57,44 @@ $$
 
 ## The Extended Method
 
-[Monica, can you fill out this section?]
+The main extension of Goodman's method, which we present here, is to allow rates of fertility and mortality to vary over time. Accounting for this variation is important because: (a) rates of fertility and mortality across much of the world have shifted dramatically over the last several decades; and (b) the availability of living kin is likely to be highly sensitive to generational changes in these rates. As written and presented, the original kin availability equations by @Goodman1974 assume that age-specific rates of survival and fertility remain constant. In order to derive more historically-plausible estimates of kin availability from these data, we propose a simple set of adjustments that allow time to enter the equation in an intuitive way.
+
+[Monica, can you provide a description of how we do the adjustment? things to include: non-stable equations for daughter, granddaughter, mother, and grandmother; the period mean age adjustment factor, why we can't simply use cohort info to do the adjustment (lack of data), and our comparison of results derived using it to Goodman's un-adjusted results.]
 
 -PLOT: comparison of stable-rate/Goodman curves vs. non-stable/Monica curves of number of living kin (grandmother + mother + daughter + granddaughter) over ages
+    - Monica has already done this.
 
 ## The Kin Dependency Ratio (KDR)
 
-We define a _kin dependency ratio_ (KDR) as the number of plausibly dependent kin types divided by the number of plausibly non-dependent kin types.^[Alternatively, we could take the inverse of the KDR as a measure of potential kin support---a _kin support ratio_ (KSR).] 
+We define a _kin dependency ratio_ (KDR) as the number of plausibly dependent kin at age $x$ divided by the number of plausibly non-dependent kin at age $x$:^[Alternatively, we could take the inverse of the KDR as a measure of potential kin support---something like a _kin support ratio_ (KSR).]
+
+$$
+KDR(x) = \frac{\text{dependent kin at age x}}{\text{non-dependent kin at age x}}
+$$
+
+- defining 'dependent' and 'non-dependent' kin
 
 ## KDR vs. OADR
 
--PLOT: KDR(at working ages) vs. OADR
+-PLOT1: KDR(at working ages) and OADR over calendar time
+    -x: calendar time
+    -y: KDR and OADR
+    -facets: a couple countries w/varying fertility & mortality patterns
+
+-PLOT2: KDR(at working ages) and OADR tracked over fertility/mortality surface
+    -x: fertility(TFR or some ASFR)
+    -y: mortality(e0 or some ASMR)
+    -lines: one for OADR and one for KDR (for each country over a sequence of decades)
 
 ## Next Steps
--Adding additional kin types: sibling, cousins, aunts, nieces?
--Validating kin counts using kinship modules in nationally representative surveys
--R Package? 
+In the final paper...
+
+### 1. Additional Kin Relations
+@Goodman1974 details additional equations to describe the age-specific counts of sisters, aunts, cousins, and nieces. These equations all follow the basic life table approach outlined above. For the purposes of this extended abstract, we have only considered grandmothers, mothers, daughters, and granddaughters in our calculations, but...
+
+### 2. Validating Kin Counts
+
+### 3. R Package
+[Monica, should we promise this?]
 
 ## References

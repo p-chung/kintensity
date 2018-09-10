@@ -57,22 +57,35 @@
 <p><span class="math display">\[
 M_1(a) = \int_{\alpha}^{\beta} \frac{l_{x+a}}{l_x} W(x|t-a)dx
 \]</span></p>
-<p>Here, <span class="math inline">\(\frac{l_{x+a}}{l_x}\)</span> is the mean probability that a mother who gave birth to a girl who is now age <span class="math inline">\(a\)</span> when she was age <span class="math inline">\(x\)</span> is still alive; and <span class="math inline">\(W(x|t-a)\)</span> is the age distribution—at time <span class="math inline">\(t-a\)</span>—of women who gave birth to a daughter at time <span class="math inline">\(t-a\)</span>.</p>
-<p>The %M(a)% function can be recursively re-written to characterize the probability of grandmother’s survival:</p>
+<p>Here, <span class="math inline">\(\frac{l_{x+a}}{l_x}\)</span> is the mean probability that a mother who gave birth to a girl who is now age <span class="math inline">\(a\)</span> (when the mother was age <span class="math inline">\(x\)</span>) is still alive; and <span class="math inline">\(W(x|t-a)\)</span> is the age distribution (at time <span class="math inline">\(t-a\)</span>) of women who gave birth to a daughter at time <span class="math inline">\(t-a\)</span>.</p>
+<p>Conveniently, the <span class="math inline">\(M(a)\)</span> function can be recursively re-written to characterize the probability of any older-generation maternal ancestor. For example, grandmother’s survival is given by:</p>
 <p><span class="math display">\[
 M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
 \]</span></p>
 <p>[Monica, can you look over and let me know if I’ve screwed anything up or should include more description?]</p>
 <h2 id="the-extended-method">The Extended Method</h2>
-<p>[Monica, can you fill out this section?]</p>
-<p>-PLOT: comparison of stable-rate/Goodman curves vs. non-stable/Monica curves of number of living kin (grandmother + mother + daughter + granddaughter) over ages</p>
+<p>The main extension of Goodman’s method, which we present here, is to allow rates of fertility and mortality to vary over time. Accounting for this variation is important because: (a) rates of fertility and mortality across much of the world have shifted dramatically over the last several decades; and (b) the availability of living kin is likely to be highly sensitive to generational changes in these rates. As written and presented, the original kin availability equations by <span class="citation" data-cites="Goodman1974">Goodman, Keyfitz, and Pullum (1974)</span> assume that age-specific rates of survival and fertility remain constant. In order to derive more historically-plausible estimates of kin availability from these data, we propose a simple set of adjustments that allow time to enter the equation in an intuitive way.</p>
+<p>[Monica, can you provide a description of how we do the adjustment? things to include: non-stable equations for daughter, granddaughter, mother, and grandmother; the period mean age adjustment factor, why we can’t simply use cohort info to do the adjustment (lack of data), and our comparison of results derived using it to Goodman’s un-adjusted results.]</p>
+<p>-PLOT: comparison of stable-rate/Goodman curves vs. non-stable/Monica curves of number of living kin (grandmother + mother + daughter + granddaughter) over ages - Monica has already done this.</p>
 <h2 id="the-kin-dependency-ratio-kdr">The Kin Dependency Ratio (KDR)</h2>
-<p>We define a <em>kin dependency ratio</em> (KDR) as the number of plausibly dependent kin types divided by the number of plausibly non-dependent kin types.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p>We define a <em>kin dependency ratio</em> (KDR) as the number of plausibly dependent kin at age <span class="math inline">\(x\)</span> divided by the number of plausibly non-dependent kin at age <span class="math inline">\(x\)</span>:<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></p>
+<p><span class="math display">\[
+KDR(x) = \frac{\text{dependent kin at age x}}{\text{non-dependent kin at age x}}
+\]</span></p>
+<ul>
+<li>defining ‘dependent’ and ‘non-dependent’ kin</li>
+</ul>
 <h2 id="kdr-vs.oadr">KDR vs. OADR</h2>
-<p>-PLOT: KDR(at working ages) vs. OADR</p>
+<p>-PLOT1: KDR(at working ages) and OADR over calendar time -x: calendar time -y: KDR and OADR -facets: a couple countries w/varying fertility &amp; mortality patterns</p>
+<p>-PLOT2: KDR(at working ages) and OADR tracked over fertility/mortality surface -x: fertility(TFR or some ASFR) -y: mortality(e0 or some ASMR) -lines: one for OADR and one for KDR (for each country over a sequence of decades)</p>
 <h2 id="next-steps">Next Steps</h2>
-<p>-Adding additional kin types: sibling, cousins, aunts, nieces? -Validating kin counts using kinship modules in nationally representative surveys -R Package?</p>
-<h1 id="references" class="unnumbered">References</h1>
+<p>In the final paper…</p>
+<h3 id="additional-kin-relations">1. Additional Kin Relations</h3>
+<p><span class="citation" data-cites="Goodman1974">Goodman, Keyfitz, and Pullum (1974)</span> details additional equations to describe the age-specific counts of sisters, aunts, cousins, and nieces. These equations all follow the basic life table approach outlined above. For the purposes of this extended abstract, we have only considered grandmothers, mothers, daughters, and granddaughters in our calculations, but…</p>
+<h3 id="validating-kin-counts">2. Validating Kin Counts</h3>
+<h3 id="r-package">3. R Package</h3>
+<p>[Monica, should we promise this?]</p>
+<h2 id="references" class="unnumbered">References</h2>
 <div id="refs" class="references">
 <div id="ref-Goldman1978">
 <p>Goldman, Noreen. 1978. “Estimating the intrinsic rate of increase of a population from the average numbers of younger and older sisters.” <em>Demography</em> 15 (4):499–507.</p>
@@ -108,7 +121,7 @@ M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
 <li id="fn1"><p>For notable examples of work in this tradition see: <span class="citation" data-cites="Goldman1978">Goldman (1978)</span>, <span class="citation" data-cites="Uhlenberg1980">Uhlenberg (1980)</span>, <span class="citation" data-cites="Hagestad1986">Hagestad (1986)</span>, <span class="citation" data-cites="Watkins1987">Watkins, Menken, and Bongaarts (1987)</span><a href="#fnref1" class="footnote-back">↩</a></p></li>
 <li id="fn2"><p>For an extensive review, see <span class="citation" data-cites="Lee2011">R. D. Lee and Mason (2011)</span><a href="#fnref2" class="footnote-back">↩</a></p></li>
 <li id="fn3"><p>It is worth noting that alternative versions of the basic <em>old age dependency ratio</em> (OADR) measure have been proposed. Perhaps the most prominent of these is the <em>prospective old age dependency ratio</em> (POADR) <span class="citation" data-cites="Sanderson2005">(Sanderson and Scherbov 2005)</span>, which further adjusts for future gains in life expectancy.<a href="#fnref3" class="footnote-back">↩</a></p></li>
-<li id="fn4"><p>Alternatively, we could take the inverse of the KDR as a measure of potential kin support—a <em>kin support ratio</em> (KSR).<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>Alternatively, we could take the inverse of the KDR as a measure of potential kin support—something like a <em>kin support ratio</em> (KSR).<a href="#fnref4" class="footnote-back">↩</a></p></li>
 </ol>
 </section>
 </body>
