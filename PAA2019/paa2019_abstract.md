@@ -2,7 +2,7 @@
 title: 'Kin Dependency Ratios: An Extension and Application of the Goodman Method for Estimating the Availability of Kin'
 author: 
 - name: Pil H. Chung 
-- affiliation: UC Berkeley
+- affiliation: University of California, Berkeley
 - name: Monica Alexander
 - affiliation: University of Toronto
 bibliography: kintensity.bib
@@ -13,7 +13,7 @@ abstract: 'We introduce a set of life table equations for estimating the number 
 
 Starting in the mid-1960s a line of demographic research began to develop a formal measurement strategy for estimating the number of living kin (hereafter: kin availability) from fundamental demographic rates. Recognizing that kinship (biologically-defined) was heavily determined by rates of fertility and mortality, population researchers began to elaborate a set of methods to estimate kin availability from these quantities. This research culminated in a set of formal life table equations by @Goodman1974 that enabled this estimation under stable population assumptions. These equations represented the strongest effort, at that time, to formally relate the structure of kinship to its demographic determinants; and they opened up exciting new possibilities for systematically exploring the relationship between fertility, mortality, and kinship wherever data on such quantities could be found.^[For notable examples of work in this tradition see: @Goldman1978, @Uhlenberg1980, @Hagestad1986, @Watkins1987]
 
-In recent years, interest in demographic measurements of kin availability has been increasingly driven by material concerns surrounding the aging of national populations. A 2015 report by the United Nations Population Division predicts that by the year 2050, the world's share of people aged 60 years or older will increase almost two-fold from one-in-eight persons to one-in-five [@UNPopDiv2015]. This unprecedented shift in the age distribution raises the question of how society will organize to materially support the post-retirement population as its growth outpaces that of the working-age population. 
+In recent years, interest in demographic measurements of kin availability has been increasingly driven by material concerns surrounding the aging of populations. A 2015 report by the United Nations Population Division predicts that by the year 2050, the world's share of people aged 60 years or older will increase almost two-fold from one-in-eight persons to one-in-five [@UNPopDiv2015]. This unprecedented shift in the age distribution raises the question of how society will organize to materially support the post-retirement population as its growth outpaces that of the working-age population. 
 
 A diverse literature has emerged surrounding this issue.^[For an extensive review, see @Lee2011] Broadly speaking, researchers distinguish between public and private mechanisms of old-age support. Public support systems, in this context, typically refer to public pension programs (e.g. _Social Security_ in the United States) or other in-kind transfer programs that are largely funded by the working age population. The _old age dependency ratio_ (OADR)---usually defined as the number of individuals 65 years or older divided by the number of "working-age" individuals (15-64 years old)---provides a rough measure of the likely support burden faced by these public systems.^[It is worth noting that alternative versions of the basic _old age dependency ratio_ (OADR) measure have been proposed. Perhaps the most prominent of these is the _prospective old age dependency ratio_ (POADR) [@Sanderson2005], which further adjusts for future gains in life expectancy.]
 
@@ -37,7 +37,7 @@ $$
 \int_{\alpha}^a \left[\int_{\alpha}^{a-x}l_y m_y l_{a-x-y}dy \right] m_x dx
 $$
 
-Here, $y$ indexes the daughter's age (i.e. the age of the mothers of the grand daughters being counted).
+Here, $y$ indexes the daughter's age (i.e. the age of the mothers of the grand-daughters being counted).
 
 Now moving _up_ generations, the probability of mother's survival can also be written in terms of age-specific survival and fertility:
 
@@ -59,32 +59,34 @@ $$
 
 The main extension of Goodman's method, which we present here, is to allow rates of fertility and mortality to vary over time. Accounting for this variation is important because: (a) rates of fertility and mortality across much of the world have shifted dramatically over the last several decades; and (b) the availability of living kin is likely to be highly sensitive to generational changes in these rates. As written and presented, the original kin availability equations by @Goodman1974 assume that age-specific rates of survival and fertility remain constant. In order to derive more historically-plausible estimates of kin availability from these data, we propose a simple set of adjustments that allow time to enter the equation in an intuitive way.
 
-[Monica, can you provide a description of how we do the adjustment? things to include: non-stable equations for daughter, granddaughter, mother, and grandmother; the period mean age adjustment factor, why we can't simply use cohort info to do the adjustment (lack of data), and our comparison of results derived using it to Goodman's un-adjusted results.]
+[Monica, can you provide a description of how we do the adjustment? things to include: non-stable equations for daughter, grand-daughter, mother, and grandmother; the period mean age adjustment factor, why we can't simply use cohort info to do the adjustment (lack of data), and our comparison of results derived using it to Goodman's un-adjusted results.]
 
--PLOT: comparison of stable-rate/Goodman curves vs. non-stable/Monica curves of number of living kin (grandmother + mother + daughter + granddaughter) over ages
-    - Monica has already done this.
+* PLOT: comparison of stable-rate/Goodman curves vs. non-stable/Monica curves of number of living kin (grandmother + mother + daughter + grand-daughter) over ages
+    * Monica has already done something like this.
 
 ## The Kin Dependency Ratio (KDR)
 
-We define a _kin dependency ratio_ (KDR) as the number of plausibly dependent kin at age $x$ divided by the number of plausibly non-dependent kin at age $x$:^[Alternatively, we could take the inverse of the KDR as a measure of potential kin support---something like a _kin support ratio_ (KSR).]
+We define a _kin dependency ratio_ (KDR) as the number of plausibly dependent kin at age $x$ divided by the number of plausibly non-dependent kin at age $x$:^[Alternatively, we could take the inverse of the KDR as a measure of potential kin support---something we could call a _kin support ratio_ (KSR).]
 
 $$
 KDR(x) = \frac{\text{dependent kin at age x}}{\text{non-dependent kin at age x}}
 $$
 
-- defining 'dependent' and 'non-dependent' kin
+"Dependent kin" is defined along two dimensions: (1) The type of kin; and (2) the age of ego. For example, a daughter or grand-daughter is likely to be a dependent when ego is younger, but when ego is older, those same daughters and grand-daughters are likely to be independent (and possibly even sources of material support). For the purposes of the present demonstration, we define _dependent kin_ to be daughters and grand-daughters when ego is 44-years or younger; daughters, granddaughters, mothers, and grandmothers when ego is age 45 to 64; and mothers and grandmothers when ego is 65-years or older.
+
+Of course, these age boundaries are arbitrary...
 
 ## KDR vs. OADR
 
--PLOT1: KDR(at working ages) and OADR over calendar time
-    -x: calendar time
-    -y: KDR and OADR
-    -facets: a couple countries w/varying fertility & mortality patterns
+* PLOT1: Country-specific KDR(at working ages) and OADR over calendar time
+    * x: calendar time
+    * y: KDR and OADR
+    * facets: a couple countries w/varying fertility & mortality patterns
 
--PLOT2: KDR(at working ages) and OADR tracked over fertility/mortality surface
-    -x: fertility(TFR or some ASFR)
-    -y: mortality(e0 or some ASMR)
-    -lines: one for OADR and one for KDR (for each country over a sequence of decades)
+* PLOT2: Country-specific KDR(at working ages) and OADR tracked over fertility/mortality surface
+    * x: fertility(TFR or some ASFR)
+    * y: mortality(e0 or some ASMR)
+    * lines: one for OADR and one for KDR (for each country over a sequence of decades)
 
 ## Next Steps
 In the final paper...
