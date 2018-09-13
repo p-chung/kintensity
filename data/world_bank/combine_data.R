@@ -36,3 +36,5 @@ d.inds = d.inds %>% gather(year,value,-cntry_lab,-cntry,-ind,-ind_lab) %>% mutat
 
 # write data
 saveRDS(d.inds,file="all_indicators.rds")
+
+readRDS("all_indicators.rds")
