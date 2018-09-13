@@ -53,50 +53,77 @@ $$
 M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
 $$
 
-[Monica, can you look over and let me know if I've screwed anything up or should include more description?]
+{>> Monica, can you look over and let me know if I've screwed anything up or should include more description? <<}
 
 ## The Extended Method
 
 The main extension of Goodman's method, which we present here, is to allow rates of fertility and mortality to vary over time. Accounting for this variation is important because: (a) rates of fertility and mortality across much of the world have shifted dramatically over the last several decades; and (b) the availability of living kin is likely to be highly sensitive to generational changes in these rates. As written and presented, the original kin availability equations by @Goodman1974 assume that age-specific rates of survival and fertility remain constant. In order to derive more historically-plausible estimates of kin availability from these data, we propose a simple set of adjustments that allow time to enter the equation in an intuitive way.
 
-[Monica, can you provide a description of how we do the adjustment? things to include: non-stable equations for daughter, grand-daughter, mother, and grandmother; the period mean age adjustment factor, why we can't simply use cohort info to do the adjustment (lack of data), and our comparison of results derived using it to Goodman's un-adjusted results.]
+{>> Monica, can you provide a description of how we do the adjustment? things to include: non-stable equations for daughter, grand-daughter, mother, and grandmother; the period mean age adjustment factor, why we can't simply use cohort info to do the adjustment (lack of data), and our comparison of results derived using it to Goodman's un-adjusted results. <<}
 
 * PLOT: comparison of stable-rate/Goodman curves vs. non-stable/Monica curves of number of living kin (grandmother + mother + daughter + grand-daughter) over ages
     * Monica has already done something like this.
 
 ## The Kin Dependency Ratio (KDR)
 
-We define a _kin dependency ratio_ (KDR) as the number of plausibly dependent kin at age $x$ divided by the number of plausibly non-dependent kin at age $x$:^[Alternatively, we could take the inverse of the KDR as a measure of potential kin support---something we could call a _kin support ratio_ (KSR).]
+We define a _kin dependency ratio_ (KDR) as the number of plausibly dependent kin at age $x$ divided by the number of plausibly non-dependent kin at age $x$:
 
 $$
 KDR(x) = \frac{\text{dependent kin at age x}}{\text{non-dependent kin at age x}}
 $$
 
-"Dependent kin" is defined along two dimensions: (1) The type of kin; and (2) the age of ego. For example, a daughter or grand-daughter is likely to be a dependent when ego is younger, but when ego is older, those same daughters and grand-daughters are likely to be independent (and possibly even sources of material support). For the purposes of the present demonstration, we define _dependent kin_ to be daughters and grand-daughters when ego is 44-years or younger; daughters, granddaughters, mothers, and grandmothers when ego is age 45 to 64; and mothers and grandmothers when ego is 65-years or older.
+"Dependent kin" is defined along two dimensions: (1) The type of kin; and (2) the age of ego. For example, a daughter or grand-daughter is likely to be a dependent when ego is younger, but when ego is older, those same daughters and grand-daughters are likely to be independent (and possibly even sources of material support). For the purposes of the present demonstration, we define _dependent kin_ to be daughters and grand-daughters when ego is 44-years or younger; daughters, granddaughters, mothers, and grandmothers when ego is age 45 to 64; and mothers and grandmothers when ego is 65-years or older (Table 1).
 
-Of course, these age boundaries are arbitrary...
+**Table 1.** Dependent kin types by age of ego
 
-## KDR vs. OADR
+| Ages      | Who counts as "dependent kin"?                      |
+| :-------: | --------------------------------------------------- |
+| 0--44     | daughters, grand-daughters                          |
+| 45--64    | daughters, grand-daughters, mothers, grandmothers   |
+| 65+       | mothers, grandmothers                               |
 
-* PLOT1: Country-specific KDR(at working ages) and OADR over calendar time
+These age boundaries are based on our own sense of plausible values, but could---in better practice---be defined in any number of more scientifically-rigorous ways. However, for the sake of demonstration, they suit our needs well enough.
+
+The following is a plot of KDR over ages for a selection of countries in the year {>> YEAR <<} (Figure 1).
+
+* PLOT: KDR over ages (by country)
+    - x: age
+    - y: KDR
+    - facets: countries
+
+{>> Quick summary of notable features of the country-specific KDR curves. <<}
+
+## KDR vs. TADR
+
+A more general version of the _old age dependency ratio_ (OADR) is called the _total age dependency ratio_ (TADR). The TADR includes in its numerator, not only those 65-years and older, but also those 14-years and younger. The motivation for a measure like the TADR is that while the OADR can be viewed as a rough measure of the old-age support burden faced by public programs funded largely by the working age population, the TADR can be viewed as a rough measure of the old-age _plus_ the young-age burden faced by these public programs. The KDR (examined over the so-called "working ages," 14-64), can be viewed similarly as a rough measure of the _private_ support burden faced by families. 
+
+Thus, comparing the TADR and the KDR can provide a useful (even if rough) summary of the likely _public_ versus _private_ support burden that comes with population aging. 
+
+The following is a plot of the mean KDR (measured over ages 14-64) and the OADR over time for a selection of countries that vary in their relative levels of economic development.
+
+* PLOT: Country-specific KDR(at working ages) and OADR over calendar time
     * x: calendar time
     * y: KDR and OADR
     * facets: a couple countries w/varying fertility & mortality patterns
 
-* PLOT2: Country-specific KDR(at working ages) and OADR tracked over fertility/mortality surface
+{>> Quick summary of notable features. <<}
+
+Because trends in both mortality and fertility can influence the OADR and KDR in different ways, we also track the movement of country-specific OADR and KDR curves over a mortality vs. fertility surface.
+
+* PLOT: Country-specific KDR(at working ages) and OADR tracked over fertility/mortality surface
     * x: fertility(TFR or some ASFR)
     * y: mortality(e0 or some ASMR)
     * lines: one for OADR and one for KDR (for each country over a sequence of decades)
 
+{>> Quick summary of notable features. <<}
+
 ## Next Steps
-In the final paper...
+In the final paper, we plan to expand the scope of this project in three directions.
 
-### 1. Additional Kin Relations
-@Goodman1974 details additional equations to describe the age-specific counts of sisters, aunts, cousins, and nieces. These equations all follow the basic life table approach outlined above. For the purposes of this extended abstract, we have only considered grandmothers, mothers, daughters, and granddaughters in our calculations, but...
+1. **Account for additional kin relations**: For the purposes of this extended abstract, we have only considered grandmothers, mothers, daughters, and granddaughters in our calculations, but in the final paper we intend to broaden our scope to include equations for other types of kin: sisters, aunts, cousins, and nieces. 
 
-### 2. Validating Kin Counts
+2. **Validate kin availability estimates**: We will compare the estimates of kin availability derived via our method against kin counts derived from a set of nationally-representative surveys.^[In the United States, for example, large-scale surveys like the _General Social Survey_ and the _Health and Retirement Survey_ contain questions regarding surviving family members.]
 
-### 3. R Package
-[Monica, should we promise this?]
+3. **Build an R package**: To enhance the practical usefulness of our method, we are preparing an R package that will enable researchers to easily implement it to derive expected numbers of kin given data on age-specific rates of fertility and mortality.  
 
 ## References
