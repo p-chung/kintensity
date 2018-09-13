@@ -20,9 +20,13 @@ library(tidyverse)
 	# Old-Age Dependency Ratio
 	d.oadr = read_csv("old_age_dependency.csv",skip=4)[1:61] 
 	d.oadr$`Indicator Code`="oadr"
-
+	
+	# Total Age Dependency Ratio
+	d.tadr = read_csv("age_dependency.csv",skip=4)[1:61]
+	d.tadr$`Indicator Code`="tadr"
+  
 # stack tables
-d.inds = rbind(d.cbr,d.cdr,d.e0,d.tfr,d.oadr)
+d.inds = rbind(d.cbr,d.cdr,d.e0,d.tfr,d.oadr,d.tadr)
 
 # assign friendlier variable names
 names(d.inds) = c("cntry_lab","cntry","ind_lab","ind",paste0(1960:2016))
