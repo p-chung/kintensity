@@ -89,7 +89,7 @@ surviving_mothers_notstable <- function(df, # dataframe with Lx
   
   x_vec <- seq(15,45, by = 5)
   LF_prod <- c()
-  W_year <- W %>% filter(year == this_year - age_a)
+  W_year <- W %>% filter(year == ifelse((this_year - age_a)<1950, 1950, this_year - age_a))
   for(x in x_vec){
     this_Lxa <- df %>% filter(age == age_a + x) %>% select(Lx) %>% pull()
     this_Lx <- df %>% filter(age == x) %>% select(Lx) %>% pull()
@@ -130,7 +130,7 @@ surviving_grandmothers_notstable <- function(df, # dataframe with Lx and Fx
   
   x_vec <- seq(15,45, by = 5)
   LF_prod <- c()
-  W_year <- W %>% filter(year == this_year - age_a)
+  W_year <- W %>% filter(year == ifelse((this_year - age_a)<1950, 1950, this_year - age_a))
   for(x in x_vec){
     M_1 <- surviving_mothers_notstable(df, W, age_a+x, this_year)
     this_W <- W_year %>% filter(age == x) %>% select(prop) %>% pull()
