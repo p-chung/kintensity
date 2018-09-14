@@ -171,3 +171,23 @@ wb %>%
 ggsave("../fig/kdr_tadr_scatter_all.pdf", width = 10, height = 6)
 ```
 
+Do the different types of kin fro 2010 for different countries 
+
+```{r}
+df_res %>% 
+  select(-kdr) %>% 
+  mutate(country_label = case_when(
+    country=="Venezuela (Bolivarian Republic of)" ~ "Venezuela",
+    country=="United States of America" ~ "USA",
+    TRUE ~ country
+  )) %>% 
+  gather(type, number, -mother_age, -country, -year, -country_label) %>% 
+  filter(mother_age<85, year ==2010, country_label %in% c("USA", "Japan", "Nigeria", "Kenya")) %>% 
+  ggplot(aes(mother_age, number, color = type)) + geom_line(lwd = 1.2) +
+  facet_grid(~country_label) + 
+  ylab("expected number") + xlab("age") +
+  ggtitle("Expected number of surviving kin, 2010") + 
+  theme_bw(base_size = 16) 
+ggsave("../fig/kin_country_facet_2010.pdf", width = 10, height = 6)
+```
+
