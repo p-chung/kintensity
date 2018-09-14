@@ -155,14 +155,19 @@ wb <- wb %>%
 
 ```{r}
 wb %>% 
-  filter(ind=="oadr", year>1985) %>% 
+  filter(ind=="tadr", year>1985, cntry %in% c("JPN", "KEN", "VEN", "NGA", "USA")) %>% 
   left_join(kdrs) %>% 
   select(-ind, -ind_lab, -cntry_lab) %>% 
-  rename(oadr = value) %>% 
-  #mutate(oadr = oadr/100) %>% 
+  rename(tadr = value) %>% 
+  #mutate(tadr = tadr/100) %>% 
   #gather(ind, value, -cntry, -country, -year) %>% 
   #ggplot(aes(year, value, color = ind)) + geom_line() + facet_wrap(~cntry, scales = "free")
-  ggplot(aes(kdr, oadr, color = year)) + geom_point(size = 3) + facet_wrap(~cntry, scales = "free") + scale_color_viridis_c() 
-ggsave("../fig/kdr_oadr_scatter.pdf", width = 10, height = 8)
+  ggplot(aes(kdr, tadr, color = year, group = cntry)) + 
+  #facet_wrap(~cntry, scales = "free") + geom_point(size = 4) + 
+  geom_point(aes(pch = cntry), size = 4)  +
+  scale_color_viridis_c() + scale_shape_discrete(name = "country") + 
+  ggtitle("Total (population level) and kin (individual level) dependency ratios \n1990-2010")+
+  ylab("Total dependency ratio (%)") + xlab("Kin dependency ratio (number per person)") + theme_bw(base_size = 16)+
+ggsave("../fig/kdr_tadr_scatter_all.pdf", width = 10, height = 6)
 ```
 
