@@ -1,0 +1,147 @@
+---
+title: "Stable v not-stable"
+output: html_notebook
+---
+
+```{r, message = F}
+library(tidyverse)
+library(here)
+library(ggrepel)
+source(here("code", "kin_functions.R"))
+source(here("code", "alternative_daughters.R"))
+source(here("code", "alternative_granddaughters.R"))
+lt <- read_csv(here("data", "wpp_lt.csv"))
+fx <- read_csv(here("data", "wpp_fx.csv"))
+pop <- read_csv(here("data", "wpp_pop.csv"))
+
+
+```
+
+
+```{r}
+df_mort <- lt %>% 
+  # tidy up names
+  rename(year = Period,
+         region = `Region, subregion, country or area *`,
+         age = `Age (x)`, 
+         Lx = `Number of person-years lived L(x,n)`) %>% 
+  rename(period = year) %>% 
+  mutate(year = as.numeric(substring(period, 1,4))) %>% 
+  # just keep the columns we need
+  select(year, region, age, Lx)
+
+# fertility df
+df_fert <- fx %>% 
+  # tidy up names
+  rename(year = Period,
+         region = `Region, subregion, country or area *`) %>% 
+  # only keep years/ages/countries we want
+  select(year, region, `15-19`:`45-49`) %>% 
+  # change to long format
+  gather(age_group, Fx, -year, -region) %>% 
+  rename(period = year) %>% 
+  mutate(year = as.numeric(substring(period, 1,4))) %>% 
+    # make an age column 
+  mutate(age = as.numeric(substring(age_group, 1, 2)))
+
+df_pop <- pop %>% 
+  # tidy up names
+  rename(year = `Reference date (as of 1 July)`,
+         region = `Region, subregion, country or area *`) %>% 
+  select(year, region, `15-19`:`45-49`) %>% 
+  # change to long format
+  gather(age_group, pop, -year, -region) %>% 
+  # make an age column 
+  mutate(age = as.numeric(substring(age_group, 1, 2)))
+
+df <- df_mort %>% 
+  left_join(df_fert) %>% 
+  left_join(df_pop) %>% 
+  mutate(age_group = paste(age, age+4, sep = "-"),
+         pop = ifelse(is.na(pop), 0, pop),
+         Fx = ifelse(is.na(Fx), 0, Fx)) 
+
+df <- df %>% 
+  group_by(year, region) %>% 
+  mutate(prop = pop/sum(pop))
+```
+
+```{r}
+countries <- c("United States of America", 
+               "Japan", "Nigeria", 
+               "Venezuela (Bolivarian Republic of)",
+               "Kenya",
+               "Australia", 
+               "Indonesia")
+years <- c(1990, 1995, 2000, 2005, 2010)
+
+df_data <- df %>% 
+  filter(region %in% countries)
+
+Ws <- df %>% ungroup() %>% filter(region %in% countries) %>% select(region, age, prop, year)
+
+repro_measures <- df %>%
+  group_by(region, year) %>% 
+  summarise(nrr = sum(Fx/10^3*Lx/10^5*0.4886),
+            intr_r = log(nrr)/25)
+
+```
+
+```{r}
+df_res <- c()
+
+for(i in 1:length(countries)){
+  df_country <- c()
+  for(j in 1:length(years)){
+    this_df_data <- df_data %>% ungroup() %>% filter(region == countries[i])
+    this_df_data_year <- this_df_data %>% filter(year == years[j])
+    this_d_for_mothers <- df_data %>% ungroup() %>% filter(region == countries[i], year == years[j])
+    this_W <- Ws %>% filter(region == countries[i])
+    this_r <- repro_measures %>% ungroup() %>% filter(region==countries[i], year == years[j]) %>% select(intr_r) %>% pull()
+    df_direct <- tibble(mother_age = seq(15, 60, by = 5),
+                        country = countries[i],
+                        year = years[j])
+    df_direct <- df_direct %>% 
+      rowwise() %>% 
+      mutate(daughters = surviving_daughters_mean_age(df = this_df_data,
+                                                                 year = years[j], 
+                                                                 age_a = mother_age, 
+                                                                 mean_age = 25),
+             granddaughters = surviving_granddaughters_mean_age(df = this_df_data,
+                                                                 year = years[j], 
+                                                                 age_a = mother_age, 
+                                                                 mean_age = 25),
+             mothers = surviving_mothers_notstable(this_d_for_mothers, this_W, age_a = mother_age, years[j]),
+             grandmothers = surviving_grandmothers_notstable(this_d_for_mothers, this_W, age_a = mother_age, years[j]),
+             daughters_stable = surviving_daughters(this_df_data_year, mother_age),
+             granddaughters_stable = surviving_granddaughters(this_df_data_year, mother_age),
+             mothers_stable = surviving_mothers_stable(this_df_data_year, mother_age, this_r),
+             grandmothers_stable = surviving_grandmothers_stable(this_df_data_year, mother_age, this_r) 
+             )
+    
+    df_country <- rbind(df_country, df_direct)
+  }
+  df_res <- rbind(df_res, df_country)
+}
+```
+
+
+```{r}
+df_res %>% 
+  mutate(stable = daughters_stable+granddaughters_stable+mothers_stable+grandmothers_stable,
+         non_stable = daughters + granddaughters+mothers+grandmothers) %>% 
+  mutate(country_label = case_when(
+    country=="Venezuela (Bolivarian Republic of)" ~ "Venezuela",
+    country=="United States of America" ~ "USA",
+    TRUE ~ country
+  )) %>% 
+  select(mother_age, country_label, year, stable, non_stable) %>% 
+  filter(year %in% c(1990, 2010), country_label %in% c("USA", "Japan", "Nigeria", "Kenya")) %>% 
+  gather(ind, value, -mother_age, -country_label, - year) %>% 
+  ggplot(aes(mother_age, value, color = ind)) + geom_line(lwd = 1.5) + facet_grid(country_label~year, scales = "free_y") + 
+  scale_color_brewer(name = "method", palette = "Set1") + 
+  ylab("no. kin") + xlab("age") + theme_bw(base_size = 14) + 
+  ggtitle("Comparison of number of surviving kin\nStable versus non-stable measure")
+ggsave("../fig/stable_nonstable.pdf", width = 7, height = 6)
+```
+

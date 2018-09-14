@@ -188,8 +188,40 @@ df_res %>%
   ggplot(aes(mother_age, number, color = type)) + geom_line(lwd = 1.2) +
   facet_grid(~country_label) + 
   ylab("expected number") + xlab("age") +
-  ggtitle("Expected number of surviving kin, 2010") + 
+  ggtitle("Expected number of surviving kin for women at different ages, 2010") + 
   theme_bw(base_size = 16) 
 ggsave("../fig/kin_country_facet_2010.pdf", width = 10, height = 6)
 ```
+
+```{r}
+df_res %>% 
+  select(-kdr) %>% 
+  mutate(country_label = case_when(
+    country=="Venezuela (Bolivarian Republic of)" ~ "Venezuela",
+    country=="United States of America" ~ "USA",
+    TRUE ~ country
+  )) %>% 
+  gather(type, number, -mother_age, -country, -year, -country_label) %>% 
+  filter(mother_age<85, year ==2010, country_label %in% c("Indonesia", "Japan", "Nigeria")) %>% 
+  ggplot(aes(mother_age, number, color = type)) + geom_line(lwd = 1.2) +
+  facet_grid(~country_label) + 
+  ylab("no. per woman") + xlab("age") +
+  ggtitle("Expected number of surviving kin \nfor women at different ages, 2010") + 
+  theme_bw(base_size = 14) 
+ggsave("../fig/kin_country_facet_2010_three.png", width = 8, height = 4)
+```
+
+
+TFR v e0 with kdr plotted on top (this does not work)
+
+```{r}
+wb %>% filter(ind %in% c("tfr", "e0"), country %in% countries) %>% 
+  select(-ind_lab) %>% 
+  spread(ind, value) %>% 
+  left_join(kdrs) %>% 
+  ggplot(aes(tfr, e0, color = country)) + geom_point() + geom_line(aes(kdr))
+```
+
+
+
 
