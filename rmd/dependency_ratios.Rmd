@@ -11,6 +11,7 @@ Do all the code from last time to get some working data.
 ```{r, message = F}
 library(tidyverse)
 library(here)
+library(ggrepel)
 source(here("code", "kin_functions.R"))
 source(here("code", "alternative_daughters.R"))
 source(here("code", "alternative_granddaughters.R"))
@@ -162,12 +163,13 @@ wb %>%
   #mutate(tadr = tadr/100) %>% 
   #gather(ind, value, -cntry, -country, -year) %>% 
   #ggplot(aes(year, value, color = ind)) + geom_line() + facet_wrap(~cntry, scales = "free")
-  ggplot(aes(kdr, tadr, color = year, group = cntry)) + 
+  ggplot(aes(kdr, tadr, color = cntry, group = cntry)) + 
   #facet_wrap(~cntry, scales = "free") + geom_point(size = 4) + 
-  geom_point(aes(pch = cntry), size = 4)  +
-  scale_color_viridis_c() + scale_shape_discrete(name = "country") + 
+  geom_point(size = 3)  + geom_line() + 
+  scale_color_viridis_d()  + geom_text_repel(aes(label = year)) + 
   ggtitle("Total (population level) and kin (individual level) dependency ratios \n1990-2010")+
-  ylab("Total dependency ratio (%)") + xlab("Kin dependency ratio (number per person)") + theme_bw(base_size = 16)+
+  ylab("Total dependency ratio (%)") + xlab("Kin dependency ratio (number per person)") + 
+  theme_bw(base_size = 16)+ ylim(c(35, 110))
 ggsave("../fig/kdr_tadr_scatter_all.pdf", width = 10, height = 6)
 ```
 
