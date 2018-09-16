@@ -170,8 +170,30 @@ wb %>%
   ggtitle("Total (population level) and kin (individual level) dependency ratios \n1990-2010")+
   ylab("Total dependency ratio (%)") + xlab("Kin dependency ratio (number per person)") + 
   theme_bw(base_size = 16)+ ylim(c(35, 110))
-ggsave("../fig/kdr_tadr_scatter_all.pdf", width = 10, height = 6)
+ggsave("../fig/kdr_tadr_scatter_all.png", width = 10, height = 6)
 ```
+
+Facet 
+
+```{r}
+wb %>% 
+  filter(ind=="tadr", year>1985, cntry %in% c("JPN", "KEN", "NGA", "USA")) %>% 
+  left_join(kdrs) %>% 
+  select(-ind, -ind_lab, -cntry_lab) %>% 
+  rename(tadr = value) %>% 
+  #mutate(tadr = tadr/100) %>% 
+  #gather(ind, value, -cntry, -country, -year) %>% 
+  #ggplot(aes(year, value, color = ind)) + geom_line() + facet_wrap(~cntry, scales = "free")
+  ggplot(aes(kdr, tadr, color = year)) + 
+  facet_wrap(~cntry, scales = "free") + geom_point(size = 4) + geom_line() + 
+  #geom_point(size = 3)  + 
+  scale_color_viridis_c()  + #geom_text_repel(aes(label = year)) + 
+  ggtitle("Total (population level) and kin (individual level) dependency ratios \n1990-2010")+
+  ylab("Total dependency ratio (%)") + xlab("Kin dependency ratio (number per person)") + 
+  theme_bw(base_size = 16)
+ggsave("../fig/kdr_tadr_scatter_facet.png", width = 10, height = 6)
+```
+
 
 Do the different types of kin fro 2010 for different countries 
 
@@ -190,7 +212,7 @@ df_res %>%
   ylab("expected number") + xlab("age") +
   ggtitle("Expected number of surviving kin for women at different ages, 2010") + 
   theme_bw(base_size = 16) 
-ggsave("../fig/kin_country_facet_2010.pdf", width = 10, height = 6)
+ggsave("../fig/kin_country_facet_2010.png", width = 10, height = 5)
 ```
 
 ```{r}

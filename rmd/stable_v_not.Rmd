@@ -142,6 +142,6 @@ df_res %>%
   scale_color_brewer(name = "method", palette = "Set1") + 
   ylab("no. kin") + xlab("age") + theme_bw(base_size = 14) + 
   ggtitle("Comparison of number of surviving kin\nStable versus non-stable measure")
-ggsave("../fig/stable_nonstable.pdf", width = 7, height = 6)
+ggsave("../fig/stable_nonstable.png", width = 7, height = 6)
 ```
 
