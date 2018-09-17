@@ -61,8 +61,7 @@ The main extension of Goodman's method, which we present here, is to allow rates
 
 {>> Monica, can you provide a description of how we do the adjustment? things to include: non-stable equations for daughter, grand-daughter, mother, and grandmother; the period mean age adjustment factor, why we can't simply use cohort info to do the adjustment (lack of data), and our comparison of results derived using it to Goodman's un-adjusted results. <<}
 
-* PLOT: comparison of stable-rate/Goodman curves vs. non-stable/Monica curves of number of living kin (grandmother + mother + daughter + grand-daughter) over ages
-    * Monica has already done something like this.
+![Fig.1 Comparison of kin availability estimates under stable versus non-stable rate assumptions.](stable_nonstable.png){width=600px}
 
 ## The Kin Dependency Ratio (KDR)
 
@@ -84,12 +83,9 @@ $$
 
 These age boundaries are based on our own sense of plausible values, but could---in better practice---be defined in any number of more scientifically-rigorous ways. However, for the sake of demonstration, they suit our needs well enough.
 
-The following is a plot of KDR over ages for a selection of countries in the year {>> YEAR <<} (Figure 1).
+The following is a plot of KDR over ages for a selection of countries in the year 2010 (Figure 2).
 
-* PLOT: KDR over ages (by country)
-    - x: age
-    - y: KDR
-    - facets: countries
+![Fig.2 Comparison of kin availability estimates under stable versus non-stable rate assumptions.](kin_country_facet_2010.png){width=800px}
 
 {>> Quick summary of notable features of the country-specific KDR curves. <<}
 
@@ -101,10 +97,9 @@ Thus, comparing the TADR and the KDR can provide a useful (even if rough) summar
 
 The following is a plot of the mean KDR (measured over ages 14-64) and the OADR over time for a selection of countries that vary in their relative levels of economic development.
 
-* PLOT: Country-specific KDR(at working ages) and OADR over calendar time
-    * x: calendar time
-    * y: KDR and OADR
-    * facets: a couple countries w/varying fertility & mortality patterns
+![Fig.3 Comparison of kin availability estimates under stable versus non-stable rate assumptions.](kdr_tadr_scatter_facet.png){width=800px}
+
+![Fig.4 Comparison of kin availability estimates under stable versus non-stable rate assumptions.](kdr_tadr_scatter_all.png){width=800px}
 
 {>> Quick summary of notable features. <<}
 

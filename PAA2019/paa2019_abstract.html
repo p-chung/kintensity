@@ -8,7 +8,7 @@
   <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-  <link rel="stylesheet" href="\Users\Paul\OneDrive\Documents\bib\kultiad-serif.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
 </head>
 <body>
@@ -66,12 +66,9 @@ M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
 <h2 id="the-extended-method">The Extended Method</h2>
 <p>The main extension of Goodman’s method, which we present here, is to allow rates of fertility and mortality to vary over time. Accounting for this variation is important because: (a) rates of fertility and mortality across much of the world have shifted dramatically over the last several decades; and (b) the availability of living kin is likely to be highly sensitive to generational changes in these rates. As written and presented, the original kin availability equations by <span class="citation" data-cites="Goodman1974">Goodman, Keyfitz, and Pullum (1974)</span> assume that age-specific rates of survival and fertility remain constant. In order to derive more historically-plausible estimates of kin availability from these data, we propose a simple set of adjustments that allow time to enter the equation in an intuitive way.</p>
 <p>{&gt;&gt; Monica, can you provide a description of how we do the adjustment? things to include: non-stable equations for daughter, grand-daughter, mother, and grandmother; the period mean age adjustment factor, why we can’t simply use cohort info to do the adjustment (lack of data), and our comparison of results derived using it to Goodman’s un-adjusted results. &lt;&lt;}</p>
-<ul>
-<li>PLOT: comparison of stable-rate/Goodman curves vs. non-stable/Monica curves of number of living kin (grandmother + mother + daughter + grand-daughter) over ages
-<ul>
-<li>Monica has already done something like this.</li>
-</ul></li>
-</ul>
+<figure>
+<img src="stable_nonstable.png" alt="Fig.1 Comparison of kin availability estimates under stable versus non-stable rate assumptions." width="600" /><figcaption>Fig.1 Comparison of kin availability estimates under stable versus non-stable rate assumptions.</figcaption>
+</figure>
 <h2 id="the-kin-dependency-ratio-kdr">The Kin Dependency Ratio (KDR)</h2>
 <p>We define a <em>kin dependency ratio</em> (KDR) as the number of plausibly dependent kin at age <span class="math inline">\(x\)</span> divided by the number of plausibly non-dependent kin at age <span class="math inline">\(x\)</span>:</p>
 <p><span class="math display">\[
@@ -102,28 +99,21 @@ KDR(x) = \frac{\text{dependent kin at age x}}{\text{non-dependent kin at age x}}
 </tbody>
 </table>
 <p>These age boundaries are based on our own sense of plausible values, but could—in better practice—be defined in any number of more scientifically-rigorous ways. However, for the sake of demonstration, they suit our needs well enough.</p>
-<p>The following is a plot of KDR over ages for a selection of countries in the year {&gt;&gt; YEAR &lt;&lt;} (Figure 1).</p>
-<ul>
-<li>PLOT: KDR over ages (by country)
-<ul>
-<li>x: age</li>
-<li>y: KDR</li>
-<li>facets: countries</li>
-</ul></li>
-</ul>
+<p>The following is a plot of KDR over ages for a selection of countries in the year 2010 (Figure 2).</p>
+<figure>
+<img src="kin_country_facet_2010.png" alt="Fig.2 Comparison of kin availability estimates under stable versus non-stable rate assumptions." width="800" /><figcaption>Fig.2 Comparison of kin availability estimates under stable versus non-stable rate assumptions.</figcaption>
+</figure>
 <p>{&gt;&gt; Quick summary of notable features of the country-specific KDR curves. &lt;&lt;}</p>
 <h2 id="kdr-vs.tadr">KDR vs. TADR</h2>
 <p>A more general version of the <em>old age dependency ratio</em> (OADR) is called the <em>total age dependency ratio</em> (TADR). The TADR includes in its numerator, not only those 65-years and older, but also those 14-years and younger. The motivation for a measure like the TADR is that while the OADR can be viewed as a rough measure of the old-age support burden faced by public programs funded largely by the working age population, the TADR can be viewed as a rough measure of the old-age <em>plus</em> the young-age burden faced by these public programs. The KDR (examined over the so-called “working ages,” 14-64), can be viewed similarly as a rough measure of the <em>private</em> support burden faced by families.</p>
 <p>Thus, comparing the TADR and the KDR can provide a useful (even if rough) summary of the likely <em>public</em> versus <em>private</em> support burden that comes with population aging.</p>
 <p>The following is a plot of the mean KDR (measured over ages 14-64) and the OADR over time for a selection of countries that vary in their relative levels of economic development.</p>
-<ul>
-<li>PLOT: Country-specific KDR(at working ages) and OADR over calendar time
-<ul>
-<li>x: calendar time</li>
-<li>y: KDR and OADR</li>
-<li>facets: a couple countries w/varying fertility &amp; mortality patterns</li>
-</ul></li>
-</ul>
+<figure>
+<img src="kdr_tadr_scatter_facet.png" alt="Fig.3 Comparison of kin availability estimates under stable versus non-stable rate assumptions." width="800" /><figcaption>Fig.3 Comparison of kin availability estimates under stable versus non-stable rate assumptions.</figcaption>
+</figure>
+<figure>
+<img src="kdr_tadr_scatter_all.png" alt="Fig.4 Comparison of kin availability estimates under stable versus non-stable rate assumptions." width="800" /><figcaption>Fig.4 Comparison of kin availability estimates under stable versus non-stable rate assumptions.</figcaption>
+</figure>
 <p>{&gt;&gt; Quick summary of notable features. &lt;&lt;}</p>
 <p>Because trends in both mortality and fertility can influence the OADR and KDR in different ways, we also track the movement of country-specific OADR and KDR curves over a mortality vs. fertility surface.</p>
 <ul>
