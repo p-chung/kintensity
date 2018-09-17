@@ -41,7 +41,7 @@
 <p>In recent years, interest in demographic measurements of kin availability has been increasingly driven by material concerns surrounding the aging of populations. A 2015 report by the United Nations Population Division predicts that by the year 2050, the world’s share of people aged 60 years or older will increase almost two-fold from one-in-eight persons to one-in-five <span class="citation" data-cites="UNPopDiv2015">(United Nations, Department of Economic and Social Affairs 2015)</span>. This unprecedented shift in the age distribution raises the question of how society will organize to materially support the post-retirement population as its growth outpaces that of the working-age population.</p>
 <p>A diverse literature has emerged surrounding this issue.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> Broadly speaking, researchers distinguish between public and private mechanisms of old-age support. Public support systems, in this context, typically refer to public pension programs (e.g. <em>Social Security</em> in the United States) or other in-kind transfer programs that are largely funded by the working age population. The <em>old age dependency ratio</em> (OADR)—usually defined as the number of individuals 65 years or older divided by the number of “working-age” individuals (15-64 years old)—provides a rough measure of the likely support burden faced by these public systems.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
 <p>As for private mechanisms of old-age support, the family is the principal vehicle <span class="citation" data-cites="Lee2011a">(R. Lee and Donehower 2011)</span>. Especially in nations where public old age support is scarce, the family is likely to be the primary source of material support for dependent elders. Curiously, there are no widely-reported measures of expected family support burden like there are for the expected public support burden (i.e. the OADR just mentioned). This is likely due to the general dearth of data on kinship structures. While the OADR derives entirely from readily-observed population age distributions, an analogous <em>kin dependency ratio</em> (KDR) would require information, not only about the age of individuals in a population, but also about how those individuals are related to one another via familial ties.</p>
-<p>In this paper, we present an extended version of Goodman and Colleague’s classic method of calculating kin availability as a reasonable estimation strategy when actual data on kinship is absent. Our method relies solely on readily-available age-specific fertility and mortality data and a set of easily-calculable life table equations. We improve on Goodman’s original method by dropping the stationary population assumption, thus allowing for the estimation of kin availability as a function of demographic rates that need not be constant over time. Then, as a demonstration of the practical applicability of this type of estimation, we define a <em>kin dependency ratio</em> as a measure of expected kin support burden, which we compare to existing <em>old age support ratios</em> across a sample of nations at different points in time.</p>
+<p>In this paper, we present an extended version of Goodman and Colleague’s classic method of calculating kin availability as a reasonable estimation strategy when actual data on kinship is absent. Our method relies solely on readily-available age-specific fertility and mortality data and a set of easily-calculable life table equations. We improve on Goodman’s original method by dropping the stationary population assumption, thus allowing for the estimation of kin availability as a function of demographic rates that need not be constant over time. Then, as a demonstration of the practical applicability of this type of estimation, we define a <em>kin dependency ratio</em> as a measure of expected kin support burden, which we compare to existing <em>total age support ratios</em> (a generalization of the OADR) across a sample of countries at different points in time.</p>
 <h2 id="the-original-method">The Original Method</h2>
 <p>In <span class="citation" data-cites="Goodman1974">Goodman, Keyfitz, and Pullum (1974)</span>, a method is laid out by which the expected number of living female relatives of different relations (e.g. mothers, daughters, etc.) is derived from age-specific rates of survival and fertility. For example, the number of surviving daughters to a woman of age <span class="math inline">\(a\)</span> (<span class="math inline">\(a&gt;{\alpha}\)</span>) at time <span class="math inline">\(t\)</span> is given by the formula:</p>
 <p><span class="math display">\[
@@ -69,6 +69,8 @@ M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
 <figure>
 <img src="stable_nonstable.png" alt="Fig.1 Comparison of kin availability estimates under stable versus non-stable rate assumptions." width="600" /><figcaption>Fig.1 Comparison of kin availability estimates under stable versus non-stable rate assumptions.</figcaption>
 </figure>
+<p>In Figure 1, we plot total kin counts (i.e. the sum of grandmothers, mothers, daughters, and grand-daughters) over age and period for a selection of countries. We do this using both the original Goodman method (labeled “stable”) and our extended method (labeled “non_stable”). What we observe is…</p>
+<p>{&gt;&gt; Monica, can you complete? Perhaps speculate a bit about why we observe the differences that we do (e.g. Nigeria’s vital rates have remained largely stable for a while, while Japan’s has not… something like that?) and why our curve is more right than Goodman’s. &lt;&lt;}</p>
 <h2 id="the-kin-dependency-ratio-kdr">The Kin Dependency Ratio (KDR)</h2>
 <p>We define a <em>kin dependency ratio</em> (KDR) as the number of plausibly dependent kin at age <span class="math inline">\(x\)</span> divided by the number of plausibly non-dependent kin at age <span class="math inline">\(x\)</span>:</p>
 <p><span class="math display">\[
@@ -103,18 +105,22 @@ KDR(x) = \frac{\text{dependent kin at age x}}{\text{non-dependent kin at age x}}
 <figure>
 <img src="kin_country_facet_2010.png" alt="Fig.2 Comparison of kin availability estimates under stable versus non-stable rate assumptions." width="800" /><figcaption>Fig.2 Comparison of kin availability estimates under stable versus non-stable rate assumptions.</figcaption>
 </figure>
-<p>{&gt;&gt; Quick summary of notable features of the country-specific KDR curves. &lt;&lt;}</p>
+<p>{&gt;&gt; PAUL WILL ADD: Quick summary of notable features of the country-specific KDR curves. &lt;&lt;}</p>
 <h2 id="kdr-vs.tadr">KDR vs. TADR</h2>
-<p>A more general version of the <em>old age dependency ratio</em> (OADR) is called the <em>total age dependency ratio</em> (TADR). The TADR includes in its numerator, not only those 65-years and older, but also those 14-years and younger. The motivation for a measure like the TADR is that while the OADR can be viewed as a rough measure of the old-age support burden faced by public programs funded largely by the working age population, the TADR can be viewed as a rough measure of the old-age <em>plus</em> the young-age burden faced by these public programs. The KDR (examined over the so-called “working ages,” 14-64), can be viewed similarly as a rough measure of the <em>private</em> support burden faced by families.</p>
-<p>Thus, comparing the TADR and the KDR can provide a useful (even if rough) summary of the likely <em>public</em> versus <em>private</em> support burden that comes with population aging.</p>
+<p>A more general version of the <em>old age dependency ratio</em> (OADR) is called the <em>total age dependency ratio</em> (TADR). The TADR includes in its numerator, not only those 65-years and older, but also those 14-years and younger. The motivation for a measure like the TADR is that while the OADR can be viewed as a rough measure of the old-age support burden faced by public programs funded largely by the working age population, the TADR can be viewed as a rough measure of the old-age <em>plus</em> the young-age burden faced by these public programs. The KDR (examined over the so-called “working ages,” 14-64), can be viewed similarly as a rough measure of the <em>private</em> support burden faced by families. Thus, comparing the TADR and the KDR can provide a useful (even if rough) summary of the likely <em>public</em> versus <em>private</em> support burden that comes with population aging.</p>
 <p>The following is a plot of the mean KDR (measured over ages 14-64) and the OADR over time for a selection of countries that vary in their relative levels of economic development.</p>
 <figure>
-<img src="kdr_tadr_scatter_facet.png" alt="Fig.3 Comparison of kin availability estimates under stable versus non-stable rate assumptions." width="800" /><figcaption>Fig.3 Comparison of kin availability estimates under stable versus non-stable rate assumptions.</figcaption>
+<img src="kdr_tadr_scatter_all.png" alt="Fig.3 TADR versus KDR in select countries, 1990-2010." width="800" /><figcaption>Fig.3 TADR versus KDR in select countries, 1990-2010.</figcaption>
 </figure>
+<p>{&gt;&gt; PAUL WILL ADD: Quick summary of notable features. &lt;&lt;}</p>
+<p>A striking feature of the association between TADR and KDR is how much this association varies over time within countries…</p>
+<p>{&gt;&gt; PAUL WILL COMPLETE THIS SECTION &lt;&lt;}</p>
+<!-- Note to self: probably these differences in time-trends are resolved if we look at the fertility trend in each country... -->
 <figure>
-<img src="kdr_tadr_scatter_all.png" alt="Fig.4 Comparison of kin availability estimates under stable versus non-stable rate assumptions." width="800" /><figcaption>Fig.4 Comparison of kin availability estimates under stable versus non-stable rate assumptions.</figcaption>
+<img src="kdr_tadr_scatter_facet.png" alt="Fig.4 Time trends in the association between TADR and KDR for select countries, 1990-2010." width="800" /><figcaption>Fig.4 Time trends in the association between TADR and KDR for select countries, 1990-2010.</figcaption>
 </figure>
-<p>{&gt;&gt; Quick summary of notable features. &lt;&lt;}</p>
+<p>{&gt;&gt; PAUL WILL ADD: Quick summary of notable features. &lt;&lt;}</p>
+<p>//////// PROBABLY OMIT FOR PAA /////////</p>
 <p>Because trends in both mortality and fertility can influence the OADR and KDR in different ways, we also track the movement of country-specific OADR and KDR curves over a mortality vs. fertility surface.</p>
 <ul>
 <li>PLOT: Country-specific KDR(at working ages) and OADR tracked over fertility/mortality surface
@@ -124,7 +130,7 @@ KDR(x) = \frac{\text{dependent kin at age x}}{\text{non-dependent kin at age x}}
 <li>lines: one for OADR and one for KDR (for each country over a sequence of decades)</li>
 </ul></li>
 </ul>
-<p>{&gt;&gt; Quick summary of notable features. &lt;&lt;}</p>
+<p>//////// PROBABLY OMIT FOR PAA /////////</p>
 <h2 id="next-steps">Next Steps</h2>
 <p>In the final paper, we plan to expand the scope of this project in three directions.</p>
 <ol type="1">
