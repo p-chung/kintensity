@@ -3,7 +3,7 @@ title: 'Kin Dependency Ratios: An Extension and Application of the Goodman Metho
 author: 
 - name: Pil H. Chung 
 - affiliation: University of California, Berkeley
-- name: Monica Alexander
+- name: Monica J. Alexander
 - affiliation: University of Toronto
 bibliography: kintensity.bib
 abstract: 'We introduce a set of life table equations for estimating the number of living kin over ages using readily-available data on fertility and mortality. These equations extend the classic measurement strategy of Goodman et al. (1974, 1975) by offering a way to estimate kin counts under demographic conditions that need not be stationary over time. We demonstrate a practical application of this technique: the derivation of a _kin dependency ratio_ (KDR)---a measure of expected kin support burden---which we compare to the _old age dependency ratio_ (OADR), a commonly-reported measure of public support burden in aging populations. We end with an overview of the immediate next steps for this project.'
@@ -91,38 +91,23 @@ The following is a plot of KDR over ages for a selection of countries in the yea
 
 ![Fig.2 Comparison of kin availability estimates under stable versus non-stable rate assumptions.](kin_country_facet_2010.png){width=800px}
 
-{>> PAUL WILL ADD: Quick summary of notable features of the country-specific KDR curves. <<}
+The most striking feature of these plots is the much larger expected numbers of daughters and grand-daughters in Kenya and Nigeria (versus the USA or Japan) at each age. This is, of course, a function of historically higher birth rates in these countries. On the other hand, we observe much higher expected numbers (i.e. survival probabilities) of mothers and grand-mothers in the USA and Japan (versus Kenya or Nigeria) at each age. This is a consequence of historically lower death rates in these countries. Thus, we see how both the fertility and mortality experiences of these populations are naturally reflected in these kin availability estimates.  
 
 ## KDR vs. TADR
 
 A more general version of the _old age dependency ratio_ (OADR) is called the _total age dependency ratio_ (TADR). The TADR includes in its numerator, not only those 65-years and older, but also those 14-years and younger. The motivation for a measure like the TADR is that while the OADR can be viewed as a rough measure of the old-age support burden faced by public programs funded largely by the working age population, the TADR can be viewed as a rough measure of the old-age _plus_ the young-age burden faced by these public programs. The KDR (examined over the so-called "working ages," 14-64), can be viewed similarly as a rough measure of the _private_ support burden faced by families. Thus, comparing the TADR and the KDR can provide a useful (even if rough) summary of the likely _public_ versus _private_ support burden that comes with population aging. 
 
-The following is a plot of the mean KDR (measured over ages 14-64) and the OADR over time for a selection of countries that vary in their relative levels of economic development.
+The following is a plot of the mean KDR (measured over ages 14-64) and the TADR over the period 1990--2010 for a selection of countries that vary in their demography and relative levels of economic development.
 
 ![Fig.3 TADR versus KDR in select countries, 1990-2010.](kdr_tadr_scatter_all.png){width=800px}
 
-{>> PAUL WILL ADD: Quick summary of notable features. <<}
-
-A striking feature of the association between TADR and KDR is how much this association varies over time within countries...
-
-{>> PAUL WILL COMPLETE THIS SECTION <<}
-
-<!-- Note to self: probably these differences in time-trends are resolved if we look at the fertility trend in each country... -->
+In general, we observe what we expect: KDR tends to increase along with TADR. That is to say, as the ratio of "dependent" age groups to the "working-age" group increases, so too does the ratio of "dependent" kin to non-"dependent" kin. However, this association does not hold perfectly in all cases. If we look closely at the plot in Figure 3, we see that the relationship between KDR and TADR varies greatly across different national contexts (Figure 4). 
 
 ![Fig.4 Time trends in the association between TADR and KDR for select countries, 1990-2010.](kdr_tadr_scatter_facet.png){width=800px}
 
-{>> PAUL WILL ADD: Quick summary of notable features. <<}
+In Kenya, for example, we see a positive, linear correlation between KDR and TADR. This aligns well with the general trend observed in Figure 3: TADR and KDR increases or declines at roughly similar speeds. In all of our other countries, however, we see deviations from this canonical pattern. In the USA, there is also a net positive relationship between KDR and TADR, but that relationship does not appear to be linear---KDR does not always move in the same direction as TADR. In Nigeria, there appears to be a weakly _negative_ relationship between KDR and TADR; and in Japan, this relationship appears to be strongly negative and very nearly linear---KDR actually declines as TADR increases.
 
-//////// PROBABLY OMIT FOR PAA /////////
-
-Because trends in both mortality and fertility can influence the OADR and KDR in different ways, we also track the movement of country-specific OADR and KDR curves over a mortality vs. fertility surface.
-
-* PLOT: Country-specific KDR(at working ages) and OADR tracked over fertility/mortality surface
-    * x: fertility(TFR or some ASFR)
-    * y: mortality(e0 or some ASMR)
-    * lines: one for OADR and one for KDR (for each country over a sequence of decades)
-
-//////// PROBABLY OMIT FOR PAA /////////
+In summary, the relationship between KDR and TADR is not constant. It can vary dramatically over time and across different national populations. To the extent that KDR and TADR can be interpreted as measures of, respectively, the _private_ and _public_ support burdens faced by countries, understanding the shape and source of the variation in the KDR-TADR relationship may help inform the future work of researchers and policy-makers as they prepare for the aging of their populations. 
 
 ## Next Steps
 In the final paper, we plan to expand the scope of this project in three directions.
@@ -131,6 +116,8 @@ In the final paper, we plan to expand the scope of this project in three directi
 
 2. **Validate kin availability estimates**: We will compare the estimates of kin availability derived via our method against kin counts derived from a set of nationally-representative surveys.^[In the United States, for example, large-scale surveys like the _General Social Survey_ and the _Health and Retirement Survey_ contain questions regarding surviving family members.]
 
-3. **Build an R package**: To enhance the practical usefulness of our method, we are preparing an R package that will enable researchers to easily implement it to derive expected numbers of kin given data on age-specific rates of fertility and mortality.  
+3. **Explain the variation in the KDR vs. TADR relationship**:  We will use country-specific time trends in fertility and mortality to explain the observed over-time variation in the KDR vs. TADR association in those countries. In particular, we will attempt to answer the question: under what conditions do we expect KDR and TADR to have a positive (or negative) relationship?
+
+4. **Build an R package**: To enhance the practical usefulness of our method, we are preparing an R package that will enable researchers to easily implement it to derive expected numbers of kin given data on age-specific rates of fertility and mortality.  
 
 ## References
