@@ -135,9 +135,20 @@ kdrs <- df_res %>%
     summarise(kdr = sum(kdr*pop/sum(pop)))
 ```
 Plot
+
+
+```{r}
+df_res %>% 
+  filter(year==2010) %>% 
+  ggplot(aes(mother_age, kdr)) + geom_line()+ facet_grid(~country)
+```
+
 ```{r}
 kdrs %>% 
-  ggplot(aes(year, kdr, color = country)) + geom_line()
+  filter(country %in% c("Japan", "United States of America", "Kenya", "Nigeria") ) %>% 
+  ggplot(aes(year, kdr, color = country)) + geom_line(lwd = 1.2) + geom_point(size = 2)+
+  theme_bw(base_size = 14) + ggtitle("Kin dependency ratios, 1990-2010")
+ggsave("../fig/kdr_ts.png", width = 6, height = 4)
 ```
 
 Now let's calculate OADR at the population level

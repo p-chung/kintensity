@@ -6,7 +6,7 @@ author:
 - name: Monica J. Alexander
 - affiliation: University of Toronto
 bibliography: kintensity.bib
-abstract: 'We introduce a set of life table equations for estimating the number of living kin over ages using readily-available data on fertility and mortality. These equations extend the classic measurement strategy of Goodman et al. (1974, 1975) by offering a way to estimate kin counts under demographic conditions that need not be stationary over time. We demonstrate a practical application of this technique: the derivation of a _kin dependency ratio_ (KDR)---a measure of expected kin support burden---which we compare to the _old age dependency ratio_ (OADR), a commonly-reported measure of public support burden in aging populations. We end with an overview of the immediate next steps for this project.'
+abstract: 'We introduce a set of life table equations for estimating the number of living kin over ages using readily-available data on fertility and mortality. These equations extend the classic measurement strategy of Goodman et al. (1974, 1975) by offering a way to estimate kin counts under demographic conditions that need not be stationary over time. We demonstrate a practical application of this technique: the derivation of a _kin dependency ratio_ (KDR)---a measure of expected kin support burden---which we compare to the _total age dependency ratio_ (TADR), a commonly-reported measure of public support burden in aging populations. We end with an overview of the immediate next steps for this project.'
 ---
 
 ## Premise
@@ -45,27 +45,51 @@ $$
 M_1(a) = \int_{\alpha}^{\beta} \frac{l_{x+a}}{l_x} W(x|t-a)dx
 $$
 
-Here, $\frac{l_{x+a}}{l_x}$ is the mean probability that a mother who gave birth to a girl who is now age $a$ (when the mother was age $x$) is still alive; and $W(x|t-a)$ is the age distribution (at time $t-a$) of women who gave birth to a daughter at time $t-a$. 
+Here, $\frac{l_{x+a}}{l_x}$ is the mean probability that a mother who gave birth to a girl who is now age $a$ (when the mother was age $x$) is still alive; and $W(x|t-a)$ is the age distribution (at time $t-a$) of women who gave birth to a daughter at time $t-a$. In their original paper, the authors assumed a stable population, such that 
 
-Conveniently, the $M(a)$ function can be recursively re-written to characterize the probability of any older-generation maternal ancestor. For example, grandmother's survival is given by:
+$$W(x|t-a) = W(x) = l_xm_xe^{rx}$$
+
+where $r$ is the intrinsic population growth rate. Conveniently, the $M(a)$ function can be recursively re-written to characterize the probability of any older-generation maternal ancestor. For example, grandmother's survival is given by:
 
 $$
 M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
 $$
 
-{>> Monica, can you look over and let me know if I've screwed anything up or should include more description? <<}
-
-## The Extended Method
+## A Non-Stable Method
 
 The main extension of Goodman's method, which we present here, is to allow rates of fertility and mortality to vary over time. Accounting for this variation is important because: (a) rates of fertility and mortality across much of the world have shifted dramatically over the last several decades; and (b) the availability of living kin is likely to be highly sensitive to generational changes in these rates. As written and presented, the original kin availability equations by @Goodman1974 assume that age-specific rates of survival and fertility remain constant. In order to derive more historically-plausible estimates of kin availability from these data, we propose a simple set of adjustments that allow time to enter the equation in an intuitive way.
 
-{>> Monica, can you provide a description of how we do the adjustment? things to include: non-stable equations for daughter, grand-daughter, mother, and grandmother; the period mean age adjustment factor, why we can't simply use cohort info to do the adjustment (lack of data), and our comparison of results derived using it to Goodman's un-adjusted results. <<}
+If cohort rates were readily available, we would be able to calculate the above expressions representing the true changes in fertility and mortality over time. However, in practice usually only period data are readily available across a wide range of counties. In addition, the cohort approach quickly becomes rather data intensive, given the number of different cohorts involved in each of the calculations. For example, if we were trying to calculate the expected number of daughters to a mother aged 50, we would need the full set of cohort fertility rates for that mother, plus survival information for seven separate cohorts for the daughters. 
+
+To best utilize the period data available, we index Goodman's methods based on the mean age at childbearing. This centers the period fertility schedule so that the fertility rates at the time of peak childbearing (25-30 years) is correct for that particular cohort of women. For daughters, the equation becomes
+
+$$
+\int_{\alpha}^a l_{a-x}(t^*) \cdot m_x(t^*) dx
+$$
+
+where $t^*$ is the year in which the woman of age $a$ was aged the mean age at childbearing $A$. Thus $m_x(t^*)$ is the fertility rate at age $x$ in the year $t^*$. If age $a$ is less than $A$, then $t^*$ is just set to be the current period. Note that the mean age of childbearing may vary depending on the population and time period being considered. 
+
+In a similar way, the expected number of surviving granddaughters is estimated as:
+
+$$
+\int_{\alpha}^a \left[\int_{\alpha}^{a-x}l_y(t^*) \cdot m_y(t'_x) \cdot l_{a-x-y}(t'_x)dy \right] m_x(t^*) dx
+$$
+
+where $t'$ is the year in which the daughters who were born when the woman was age $x$ reach mean child bearing age. This year changes based on the age $x$. 
+
+For the older kin, i.e. mothers and grandmothers, we utilize Goodman's original formulation where the age distribution of women of reproductive age is a function of time, i.e. $W(x|t-a)$. Thus the formulas are as above in the previous section. Both survival quantities are indexed to time $t$. In future work we will investigate other methods for time-indexing the survival quantities. 
+
+In Figure 1, we plot total kin counts (i.e. the sum of grandmothers, mothers, daughters, and grand-daughters) over age for a selection of countries in 1990 and 2010. We compare the original Goodman method (labeled "stable") and the non-stable method presented above (labeled "non_stable"). Period fertility and mortality rates, and age distributions are obtained from the 2017 edition of the World Population Prospects, produced by the United Nations.^[All data are available online: https://population.un.org/wpp/] 
 
 ![Fig.1 Comparison of kin availability estimates under stable versus non-stable rate assumptions.](stable_nonstable.png){width=600px}
 
-In Figure 1, we plot total kin counts (i.e. the sum of grandmothers, mothers, daughters, and grand-daughters) over age and period for a selection of countries. We do this using both the original Goodman method (labeled "stable") and our extended method (labeled "non_stable"). What we observe is... 
+For most countries, there is a noticeable difference in the estimates produced by the two methods. The exception is Nigeria in 1990, where fertility and mortality rates were such that the population was almost stable, so the two methods are very similar. By 2010, Nigeria's fertility had decline, and so the stable method does not account for higher fertility in the past, as illustrated by the discrepancy at older ages. The same is true for Kenya. For Japan, there are discrepancies at both young and old ages, due to both a decline in fertility and mortality rates. In the USA, noticeably the stable method in 1990 does not account for the baby boom, which substantially increases the number of kin for 50-60 year olds. 
 
-{>> Monica, can you complete? Perhaps speculate a bit about why we observe the differences that we do (e.g. Nigeria's vital rates have remained largely stable for a while, while Japan's has not... something like that?) and why our curve is more right than Goodman's. <<}
+Figure 2 shows the expected number of surviving kin over age for a selection of countries in the year 2010, broken down by kin type. 
+
+![Fig. 2 Number of surviving kin by age of ego and type of kin, 2010.](kin_country_facet_2010.png){width=800px}
+
+The most striking feature of these plots is the much larger expected numbers of daughters and grand-daughters in Kenya and Nigeria (versus the USA or Japan) at each age. This is, of course, a function of historically higher birth rates in these countries. On the other hand, we observe much higher expected numbers (i.e. survival probabilities) of mothers and grand-mothers in the USA and Japan (versus Kenya or Nigeria) at each age. This is a consequence of historically lower death rates in these countries. Thus, we see how both the fertility and mortality experiences of these populations are naturally reflected in these kin availability estimates.  
 
 ## The Kin Dependency Ratio (KDR)
 
@@ -87,11 +111,19 @@ $$
 
 These age boundaries are based on our own sense of plausible values, but could---in better practice---be defined in any number of more scientifically-rigorous ways. However, for the sake of demonstration, they suit our needs well enough.
 
-The following is a plot of KDR over ages for a selection of countries in the year 2010 (Figure 2).
+To consider the kin dependency ratio over the whole population, we take the weighted average of the age-specific KDRs, where the weights are based on the age distribution:
 
-![Fig.2 Comparison of kin availability estimates under stable versus non-stable rate assumptions.](kin_country_facet_2010.png){width=800px}
+$$
+KDR = \sum_{x=0}^{85} \frac{KDR(x) \cdot w_x}{\sum w_x}
+$$
 
-The most striking feature of these plots is the much larger expected numbers of daughters and grand-daughters in Kenya and Nigeria (versus the USA or Japan) at each age. This is, of course, a function of historically higher birth rates in these countries. On the other hand, we observe much higher expected numbers (i.e. survival probabilities) of mothers and grand-mothers in the USA and Japan (versus Kenya or Nigeria) at each age. This is a consequence of historically lower death rates in these countries. Thus, we see how both the fertility and mortality experiences of these populations are naturally reflected in these kin availability estimates.  
+where $w_x$ is the proportion of the female population aged $x$. 
+
+The following is a plot of KDR for a selection of countries over the period 1990--2010 (Figure 3). For Kenya and the United States, the KDR has decreased over time as fertility has declined. In Nigeria, while fertility has declined, mortality has also declined, which has led to an increase in the KDR. In Japan, where both fertility and mortality are very low, the KDR has remained relatively constant. 
+
+![Fig. 3 Kin dependency ratios, 1990--2010.](kdr_ts.png){width=700px}
+
+
 
 ## KDR vs. TADR
 
@@ -99,13 +131,13 @@ A more general version of the _old age dependency ratio_ (OADR) is called the _t
 
 The following is a plot of the mean KDR (measured over ages 14-64) and the TADR over the period 1990--2010 for a selection of countries that vary in their demography and relative levels of economic development.
 
-![Fig.3 TADR versus KDR in select countries, 1990-2010.](kdr_tadr_scatter_all.png){width=800px}
+![Fig. 4 TADR versus KDR in select countries, 1990-2010.](kdr_tadr_scatter_all.png){width=800px}
 
-In general, we observe what we expect: KDR tends to increase along with TADR. That is to say, as the ratio of "dependent" age groups to the "working-age" group increases, so too does the ratio of "dependent" kin to non-"dependent" kin. However, this association does not hold perfectly in all cases. If we look closely at the plot in Figure 3, we see that the relationship between KDR and TADR varies greatly across different national contexts (Figure 4). 
+In general, we observe what we expect: KDR tends to increase along with TADR. That is to say, as the ratio of "dependent" age groups to the "working-age" group increases, so too does the ratio of "dependent" kin to non-"dependent" kin. However, this association does not hold perfectly in all cases. If we look closely at the plot in Figure 4, we see that the relationship between KDR and TADR varies greatly across different national contexts (Figure 5). 
 
-![Fig.4 Time trends in the association between TADR and KDR for select countries, 1990-2010.](kdr_tadr_scatter_facet.png){width=800px}
+![Fig.5 Time trends in the association between TADR and KDR for select countries, 1990-2010.](kdr_tadr_scatter_facet.png){width=800px}
 
-In Kenya, for example, we see a positive, linear correlation between KDR and TADR. This aligns well with the general trend observed in Figure 3: TADR and KDR increases or declines at roughly similar speeds. In all of our other countries, however, we see deviations from this canonical pattern. In the USA, there is also a net positive relationship between KDR and TADR, but that relationship does not appear to be linear---KDR does not always move in the same direction as TADR. In Nigeria, there appears to be a weakly _negative_ relationship between KDR and TADR; and in Japan, this relationship appears to be strongly negative and very nearly linear---KDR actually declines as TADR increases.
+In Kenya, for example, we see a positive, linear correlation between KDR and TADR. This aligns well with the general trend observed in Figure 4: TADR and KDR increases or declines at roughly similar speeds. In all of our other countries, however, we see deviations from this canonical pattern. In the USA, there is also a net positive relationship between KDR and TADR, but that relationship does not appear to be linear---KDR does not always move in the same direction as TADR. In Nigeria, there appears to be a weakly _negative_ relationship between KDR and TADR; and in Japan, this relationship appears to be strongly negative and very nearly linear---KDR actually declines as TADR increases.
 
 In summary, the relationship between KDR and TADR is not constant. It can vary dramatically over time and across different national populations. To the extent that KDR and TADR can be interpreted as measures of, respectively, the _private_ and _public_ support burdens faced by countries, understanding the shape and source of the variation in the KDR-TADR relationship may help inform the future work of researchers and policy-makers as they prepare for the aging of their populations. 
 
