@@ -140,7 +140,7 @@ In Kenya, for example, we see a positive, linear correlation between KDR and TAD
 In summary, the relationship between KDR and TADR is not constant. It can vary dramatically over time and across different national populations. To the extent that KDR and TADR can be interpreted as measures of, respectively, the _private_ and _public_ support burdens faced by countries, understanding the shape and source of the variation in the KDR-TADR relationship may help inform the future work of researchers and policy-makers as they prepare for the aging of their populations. 
 
 ## Next Steps
-In the final paper, we plan to expand the scope of this project in three directions.
+In the final paper, we plan to expand the scope of this project in four directions.
 
 1. **Account for additional kin relations**: For the purposes of this extended abstract, we have only considered grandmothers, mothers, daughters, and granddaughters in our calculations, but in the final paper we intend to broaden our scope to include equations for other types of kin: sisters, aunts, cousins, and nieces. 
 
