@@ -1,5 +1,5 @@
-# The Quantum and Tempo of Kinship
+# Kin Dependency Ratios: An Extension and Application of the Goodman Method for Estimating the Availability of Kin
 
 (_with [Monica Alexander](https://github.com/MJAlexander)_)
 
-This project is an elaboration of formal demographic methods to estimate the density and timing of kinship transitions using readily available national data. This work develops a set of easily-calculable lifetable equations that return reasonable estimates of total family size (not to be confused with parity) implied by different demographic rate regimes.
+This project is an elaboration of formal demographic methods first introduced by Goodman and Colleagues (1974) to estimate the availability of kin using readily available national data. This work develops a set of easily-calculable lifetable equations that return reasonable estimates of total family size (not to be confused with parity) implied by different demographic rate regimes. We demonstrate a practical application of this technique: the derivation of a _kin dependency ratio_ (KDR)---a measure of expected kin support burden---which we compare to the _total age dependency ratio_ (TADR), a commonly-reported measure of public support burden in aging populations.

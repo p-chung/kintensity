@@ -61,7 +61,7 @@ The main extension of Goodman's method, which we present here, is to allow rates
 
 If cohort rates were readily available, we would be able to calculate the above expressions representing the true changes in fertility and mortality over time. However, in practice usually only period data are readily available across a wide range of counties. In addition, the cohort approach quickly becomes rather data intensive, given the number of different cohorts involved in each of the calculations. For example, if we were trying to calculate the expected number of daughters to a mother aged 50, we would need the full set of cohort fertility rates for that mother, plus survival information for seven separate cohorts for the daughters. 
 
-To best utilize the period data available, we index Goodman's methods based on the mean age at childbearing. This centers the period fertility schedule so that the fertility rates at the time of peak childbearing (25-30 years) is correct for that particular cohort of women. For daughters, the equation becomes
+To best utilize the period data available, we index Goodman's method to the mean age at childbearing. This centers the period fertility schedule so that the fertility rates at the time of peak childbearing (25-30 years) is correct for that particular cohort of women. For daughters, the equation becomes
 
 $$
 \int_{\alpha}^a l_{a-x}(t^*) \cdot m_x(t^*) dx
@@ -122,8 +122,6 @@ where $w_x$ is the proportion of the female population aged $x$.
 The following is a plot of KDR for a selection of countries over the period 1990--2010 (Figure 3). For Kenya and the United States, the KDR has decreased over time as fertility has declined. In Nigeria, while fertility has declined, mortality has also declined, which has led to an increase in the KDR. In Japan, where both fertility and mortality are very low, the KDR has remained relatively constant. 
 
 ![Fig. 3 Kin dependency ratios, 1990--2010.](kdr_ts.png){width=700px}
-
-
 
 ## KDR vs. TADR
 
