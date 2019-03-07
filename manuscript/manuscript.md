@@ -209,6 +209,12 @@ In summary, the relationship between KDR and TADR is not constant. It can vary d
 
 So what accounts for the non-uniform relationship between KDR and TADR across different national contexts? The answer, in brief, is national differences in the historical trajectory of fertility and mortality rates. 
 
+-Declining mortality rates will tend to increase both TADR and KDR over time by increasing the number of surviving adolescents (younger generation kin) and post-retirement individuals (older generation kin) relative to those in their working-ages.
+
+-In contrast, declining fertility rates will tend to decrease both TADR and KDR
+
+-The difference is that while TADR is sensitive to only the 
+
 -x: TFR
 -y: TADR
 
@@ -219,6 +225,12 @@ So what accounts for the non-uniform relationship between KDR and TADR across di
     -x1: TFR
     -x2: e0
     -y: KDR
+
+To illustrate 
+
+-how fast fertility and mortality changes influences TADR and KDR differently; one reacts "faster" than the other
+
+-this signals the very nature of the difference that is likely to be experienced by families vs. the public/government.
 
 # Conclusion
 
