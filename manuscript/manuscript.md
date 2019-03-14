@@ -137,7 +137,7 @@ The most striking feature of these plots is the much larger expected numbers of 
 
 Having established a method to estimate historically-plausible counts of surviving kin, we now use it to construct a measure of within-family support burden, which we label the _kin dependency ratio (KDR)_. We will examine the relationship between this KDR and the _total age dependency ratio (TADR)_, a well-established index of public support burden. The motivation for a measure like the TADR is that it can be viewed as a rough measure of the support burden faced by public programs funded largely by the working age population. The KDR, can be viewed similarly as a rough measure of the _private_ support burden faced by families. Thus, comparing the TADR and the KDR can provide a useful (even if rough) summary of the likely _public_ versus _private_ support burden that comes with population aging. 
 
-For data, we rely on the United Nations' World Population Prospects [@DepartmentofEconomicandSocialAffairs2017], which reports fertility rates, mortality rates, and age distributions for all its member nations. In the present study, we select a small, but demographically-varied, subset to examine in detail: Japan, Kenya, Nigeria, and the United States.
+For data, we rely on the United Nations' World Population Prospects [@DepartmentofEconomicandSocialAffairs2017], which reports fertility rates, mortality rates, and age distributions for all its member nations. In the present study, we select a small, but demographically-varied, subset to examine in detail: Japan, Kenya, Nigeria, Peru, and the United States.
 
 ## Total Age Dependency Ratio (TADR)
 
@@ -147,7 +147,7 @@ $$
 TADR(y) = \frac{\text{people aged 0-14 & 65+ in year y}}{\text{people aged 15-64 in year y}}
 $$
 
-Figure 3 illustrates the TADR for our selected countries over the period 1990--2010. Across all years, we observe higher TADR in Kenya and Nigeria than in the United States and Japan. This is primarily due to a history of much higher fertility in the former set of countries, which has lead to a much larger proportion of younger individuals. Over time, the TADR in Kenya has decreased due to slowing birth rates, while in Japan, the TADR has increased due to consistently low birth and mortality rates, which has resulted in a rapidly aging population. In Nigeria and the United States, the TADR has remained relatively constant.
+Figure 3 illustrates the TADR for our selected countries over the period 1990--2010. Across all years, we observe higher TADR in Kenya and Nigeria than in the United States and Japan. Peru, for most of this period, has fallen somewhere in between. These patterns are primarily due to a history of much higher fertility in the former set of countries, which has lead to a much larger proportion of younger individuals. Over time, the TADR in Kenya and Peru has decreased due to slowing birth rates and declining mortality, while in Japan, the TADR has increased due to consistently low birth and mortality rates, which has resulted in a rapidly aging population. In Nigeria and the United States, the TADR has remained relatively constant.
 
 ![Fig. 3 Total dependency ratios, 1990--2010.](figs/tadr_ts.png){width=700px}
 
@@ -183,7 +183,7 @@ $$
 
 where $w_x$ is the proportion of the female population aged $x$. 
 
-The following is a plot of KDR for our selected countries over the period 1990--2010 (Figure 4). For Kenya and the United States, the KDR has decreased over time as fertility has declined. In Nigeria, while fertility has declined, mortality has also declined, which has led to an increase in the KDR. In Japan, where both fertility and mortality are very low, the KDR has remained relatively constant. 
+The following is a plot of KDR for our selected countries over the period 1990--2010 (Figure 4). For Kenya and Peru, the KDR has decreased over time as both fertility and mortality has declined. In Nigeria, while fertility has also declined, it has declined much more slowly, which coupled with persistently high mortality rates, has led to an increase in the KDR. In Japan, declining mortality rates couples with historically low fertility rates has lead to lower KDR, while in the United States the KDR has remained relatively constant. 
 
 ![Fig. 4 Kin dependency ratios, 1990--2010.](figs/kdr_ts.png){width=700px}
 
@@ -195,43 +195,50 @@ To enhance the accessibility of the KDR index, we have developed an R package ('
 
 The following is a plot of the mean KDR (measured over ages 14-64) and the TADR over the period 1990--2010 for a selection of countries that vary in their demography and relative levels of economic development.
 
-![Fig. 5 TADR versus KDR in select countries, 1990-2010.](figs/kdr_tadr_scatter_all.png){width=800px}
+![Fig. 5 TADR versus KDR in select countries, 1990--2010.](figs/kdr_tadr_scatter_all.png){width=800px}
 
 In general, we observe what we expect: KDR tends to increase along with TADR. That is to say, as the ratio of "dependent" age groups to the "working-age" group increases, so too does the ratio of "dependent" kin to non-"dependent" kin. However, this association does not hold perfectly in all cases. If we look closely at the plot in Figure 5, we see that the relationship between KDR and TADR varies greatly across different national contexts (Figure 6). 
 
-![Fig.6 Time trends in the association between TADR and KDR for select countries, 1990-2010.](figs/kdr_tadr_scatter_facet.png){width=800px}
+![Fig.6 Time trends in the association between TADR and KDR for select countries, 1990--2010.](figs/kdr_tadr_scatter_facet.png){width=800px}
 
-In Kenya, for example, we see a positive, linear correlation between KDR and TADR. This aligns well with the general trend observed in Figure 5: TADR and KDR increases or declines at roughly similar speeds. In all of our other countries, however, we see deviations from this canonical pattern. In the USA, there is also a net positive relationship between KDR and TADR, but that relationship does not appear to be linear---KDR does not always move in the same direction as TADR. In Nigeria, there appears to be a weakly _negative_ relationship between KDR and TADR; and in Japan, this relationship appears to be strongly negative and very nearly linear---KDR actually declines as TADR increases.
+In Kenya, for example, we see a positive, nearly linear correlation between KDR and TADR over time. This aligns well with the general trend observed in Figure 5: TADR and KDR increases or declines at roughly similar speeds. In Japan, this relationship appears to flip altogether---KDR actually declines linearly as TADR increases over time. In all of our other countries, however, we see deviations from either of these simpler patterns. In the USA and Nigeria, there is a markedly non-linear relationship between KDR and TADR over time---KDR does not always move in the same direction as TADR. 
 
 In summary, the relationship between KDR and TADR is not constant. It can vary dramatically over time and across different national populations. To the extent that KDR and TADR can be interpreted as measures of, respectively, the _private_ and _public_ support burdens faced by countries, understanding the shape and source of the variation in the KDR-TADR relationship may help inform the future work of researchers and policy-makers as they prepare for the aging of their populations. <!-- Maybe move this paragraph to the 'Conclusion'? -->
 
 ## Explaining the Relationship between KDR and TADR
 
-So what accounts for the non-uniform relationship between KDR and TADR across different national contexts? The answer, in brief, is national differences in the historical trajectory of fertility and mortality rates. 
+So what accounts for the non-uniform relationship between KDR and TADR across different national contexts? The answer, in brief, is national differences in the historical trajectory of fertility and mortality rates. These differences can be described along two dimensions: (1) differences in _levels_; and (2) differences in the _rate of change_. 
 
--Declining mortality rates will tend to increase both TADR and KDR over time by increasing the number of surviving adolescents (younger generation kin) and post-retirement individuals (older generation kin) relative to those in their working-ages.
+If the _levels_ of fertility and mortality in a particular population are such that they combine to produce a rapidly growing population (i.e. a large intrinsic growth rate), than both TADR and KDR will tend to increase over time. This is because the higher rate at which new individuals are born into the population and/or existing individuals survive into their older ages, results in a greater proportion of youth and elderly in the population. However, if the levels of fertility and mortality in that population combine to produce a slowly growing, or even shrinking, population (i.e. a small or negative intrinsic rate of growth), than both TADR and KDR will tend to become lower over time. This is because the rate at which new individuals are born into the population is not much greater (or even less) than the rate at which existing individuals pass away, leading to a more uniform age distribution, which results in fewer youth (also, younger-generation kin) and post-retirement age adults (also, older-generation kin) relative to the number of working-age adults. 
 
--In contrast, declining fertility rates will tend to decrease both TADR and KDR
+Figure 7 illustrates this general trend: countries with greater mean annual growth rates ($r$) tend to have both higher TADRs and KDRs.
 
--The difference is that while TADR is sensitive to only the 
+![Fig.7 Time trends in the association between TADR and KDR for select countries (with mean annual growth rates), 1990--2010.](figs/kdr_tadr_r_all.png){width=800px}
 
--x: TFR
--y: TADR
+While the absolute levels of fertility and mortality in a population determine, broadly-speaking, the _magnitudes_ of the TADR and KDR in that population, the levels alone cannot predict the population time trend in the _association_ between the TADR and KDR. Recall, for example, in some countries (e.g. Kenya) the TADR and KDR are positively associated, while in other countries (e.g. Japan) the TADR and the KDR are negatively associated. This dynamic is driven by differences in the _rate of change_ of fertility and mortality in these populations. In other words, the speed and direction of changes in fertility and mortality affects TADR and KDR differently.
 
--x: e0
--y: KDR
+To explore this phenomenon in greater detail, we conduct a simulation exercise using the 1950 world population (as reported in the United Nations' World Population Prospects data) as our baseline model. Figure 8 illustrates the age distribution, 5-year age-specific fertility rates, and 5-year age specific mortality risks for this population.
 
--3d Plot?
-    -x1: TFR
-    -x2: e0
-    -y: KDR
+![Fig.8 Age distribution, 5-year age-specific fertility rates, and 5-year mortality risks for the world population, 1950.](figs/world_1950_summary.png){width=800px}
 
-To illustrate 
+Starting from this baseline, we construct a new set of age-specific fertility and mortality rates assuming...
 
--how fast fertility and mortality changes influences TADR and KDR differently; one reacts "faster" than the other
+
+![](figs/world_kdr_tadr_nf_fert.png)
+
+![](figs/world_kdr_tadr_nf_mort.png)
+
+![](figs/world_kdr_tadr_f_fert.png)
+
+![](figs/world_kdr_tadr_f_mort.png)
+
+-how fast fertility and mortality changes influences TADR and KDR differently; TADR reacts "faster" than the other
 
 -this signals the very nature of the difference that is likely to be experienced by families vs. the public/government.
+    -policy changes that quickly alter period fertility and/or mortality can have immediate repercussions 
 
 # Conclusion
+
+-Limitation: we assume closed populations (no migration)
 
 # References

@@ -35,6 +35,7 @@ scale_rates = function(rates,scale,steps=1,mult=T){
 # ages  = vector of ages (lower-bounds)
 # n     = age interval
 # l0    = radix
+# ex    = expectation of life at age x
 
 gen_lt = function(nqx,ages,n,l0=1){
 	px = 1-nqx
@@ -46,7 +47,12 @@ gen_lt = function(nqx,ages,n,l0=1){
 
 	Lx = lx[2:length(lx)]*n + .5*(lx[1:(length(lx)-1)]-lx[2:length(lx)])
 
-	return(data.frame(x=ages,lx=lx[-length(lx)],px=px,qx=nqx,Lx=Lx))
+	ex = NULL
+	for(i in 1:length(ages)){
+		ex = c(ex,sum(Lx[i:length(ages)])/l0)
+	}
+
+	return(data.frame(x=ages,lx=lx[-length(lx)],px=px,qx=nqx,Lx=Lx,ex=ex))
 }
 
 
@@ -200,7 +206,7 @@ sim_kdr = function(years, ages, n, nqx, nFx, i.pop){
 	# set up sim data
 	s1 = NULL
   	for(y in years){
-	    tt = gen_lt(dat$qx[dat$year == y],ages, n=n, l0=100000) %>% select(age = x,Lx)
+	    tt = gen_lt(dat$qx[dat$year == y],ages, n=n, l0=100000) %>% select(age = x,Lx,ex)
 	    tt$Fx = dat$Fx[dat$year == y]
 	    tt$year = y
 

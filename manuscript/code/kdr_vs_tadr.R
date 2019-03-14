@@ -8,113 +8,15 @@ library(ggrepel)
 # load all the functions
 source(here("code", "analysis_functions.R"))
 
-# select countries and years
-countries <- c("United States of America", 
-               "Japan", 
-               "Nigeria", 
-               "Kenya")
-
+# the years we want to examine KDR and TADR for
 years <- c(1990, 1995, 2000, 2005, 2010)
 
-
-######################
-## Prepare WPP Data ##
-######################
-
-# read in lifetable, fertility schedule, and age distribution
-lt = read_csv(here("data", "wpp_lt.csv"))
-fx = read_csv(here("data", "wpp_fx.csv"))
-pop = read_csv(here("data", "wpp_pop.csv"))
-
-# combine into a single dataset
-top_agecats = c("80-84","85-89","90-94","95-99","100+")
-df_pop <- pop %>% 
-  # tidy up names
-  rename(year = `Reference date (as of 1 July)`,
-         region = `Region, subregion, country or area *`) %>% 
-  select(year, region, `0-4`:`100+`) %>% 
-  gather(age_group, pop, -year, -region) %>% 
-  mutate(pop = as.numeric(pop))
-
-# combine 80-100+ age counts into a single 80+ category
-# (this only effects periods starting in 1990)
-for(c in countries){
-  for(y in seq(1990,2015,5)){
-    df_pop$pop[df_pop$age_group == "80+" & df_pop$year == y & df_pop$region == c] = sum(df_pop$pop[df_pop$age_group %in% top_agecats & df_pop$year == y & df_pop$region == c])
-  }
-}
-
-df_pop = df_pop %>% filter(!(age_group %in% top_agecats)) %>%
-  mutate(age = as.numeric(substring(age_group, 1, 2)))
-df_pop$age[df_pop$age_group == "0-4"] = 0
-df_pop$age[df_pop$age_group == "5-9"] = 5  
-
-df_fert <- fx %>% 
-  rename(year = Period,
-         region = `Region, subregion, country or area *`) %>% 
-  select(year, region, `15-19`:`45-49`) %>% 
-  gather(age_group, Fx, -year, -region) %>% 
-  rename(period = year) %>% 
-  mutate(year = as.numeric(substring(period, 1,4))) %>% 
-  mutate(age = as.numeric(substring(age_group, 1, 2))) %>%
-  arrange(region,year,age) %>% select(-period,-age_group)
-
-df_mort <- lt %>% 
-  rename(year = Period,
-         region = `Region, subregion, country or area *`,
-         age = `Age (x)`, 
-         Lx = `Number of person-years lived L(x,n)`,
-         px = `Probability of surviving p(x,n)`,
-         qx = `Probability of dying q(x,n)`,
-         ex = `Expectation of life e(x)`) %>% 
-  rename(period = year) %>% 
-  mutate(year = as.numeric(substring(period, 1,4))) %>% 
-  select(year, region, age, Lx, px, qx, ex) %>% 
-  arrange(region,year,age) %>% filter(age != 85) %>% 
-  mutate(qx = as.numeric(qx), px = as.numeric(px))
-
-# combine: 1p0 and 4p1 into 5p0 and flip it into 5q0
-#          and 1L0 and 4L1 into 5L0
-for(c in countries){
-  for(y in unique(df_mort$year)){
-    df_mort$px[df_mort$region == c & df_mort$year == y & df_mort$age == 0] = df_mort$px[df_mort$region == c & df_mort$year == y & df_mort$age == 0] * df_mort$px[df_mort$region == c & df_mort$year == y & df_mort$age == 1]
-    df_mort$qx[df_mort$region == c & df_mort$year == y & df_mort$age == 0] = 1 - df_mort$px[df_mort$region == c & df_mort$year == y & df_mort$age == 0]
-
-    df_mort$Lx[df_mort$region == c & df_mort$year == y & df_mort$age == 0] = df_mort$Lx[df_mort$region == c & df_mort$year == y & df_mort$age == 0] + df_mort$Lx[df_mort$region == c & df_mort$year == y & df_mort$age == 1]
-  }
-}
-
-df_mort = df_mort %>% filter(age != 1)
-
-# combine everything into a single data object
-df_data = df_mort %>% left_join(df_fert) %>% left_join(df_pop) %>%
-  filter(region %in% countries) %>% ungroup()
-
-# calculate mean age of childbearing by region and year
-mac_data = df_data %>% group_by(region,year) %>% summarize(mac = sum(Fx*age,na.rm=T)/sum(Fx,na.rm=T))
-
-
-########################################
-## Prepare Observed TADR and KDR Data ##
-########################################
-
-# read in world bank indicator data (TADRS)
-tadr_data = readRDS(here("data/world_bank","all_indicators.rds"))
-
-tadr_data = tadr_data %>% 
-  filter(cntry_lab %in% c("United States","Japan","Kenya","Nigeria") & ind == "tadr") %>% 
-  mutate(region = case_when(
-    cntry_lab == "United States" ~ "United States of America", 
-    TRUE ~ cntry_lab
-  ))
-
-# calculate KDRs
-kdr_data = NULL
-for(r in unique(df_data$region)){
-  tt = get_kdr(df_data %>% filter(region == r),years)
-  tt$region = r
-  kdr_data = rbind(kdr_data, tt)
-}
+###############
+## Load Data ##
+###############
+df_data = readRDS(here("data", "main_data.RDS"))
+tadr_data = readRDS(here("data", "tadr_data.RDS"))
+kdr_data  = readRDS(here("data", "kdr_data.RDS"))
 
 
 ############################
@@ -123,104 +25,166 @@ for(r in unique(df_data$region)){
 
 # historical e0
 df_data %>% filter(age == 0) %>%
-  ggplot(aes(x=year,y=ex,col=region)) + geom_line()
+  ggplot(aes(x=year,y=ex,col=region)) + geom_line() + labs(title="Historical e0")
 
 # historical tfr
 df_data %>% group_by(region,year) %>% summarize(tfr = sum(Fx/1000,na.rm=T)*5) %>%
-  ggplot(aes(x=year,y=tfr,col=region)) + geom_line()
+  ggplot(aes(x=year,y=tfr,col=region)) + geom_line() + labs(title = "Historical TFR")
+
+# historical growth rate (r) 1950-2010
+hist_r = df_data %>% filter(year %in% c(1950,2010)) %>% group_by(year,region) %>% summarize(n = sum(pop)) %>% spread(year,n) %>% 
+   mutate(r = (log(`2010`) - log(`1950`))/60) %>% arrange(r)
 
 
 ##################################
 ## Plot TADR and KDR, 1990-2010 ##
 ##################################
 
-# historical TADR (self-calculated)
-df_data %>% group_by(region,year) %>% filter(year %in% years) %>% summarize(tadr = get_tadr(pop,age)) %>%
-  ggplot(aes(x=year,y=tadr,col=region)) + geom_line()
-
 # historical TADR (from World Bank)
-tadr_data %>% filter(region == "Japan", year %in% years) %>%
-  ggplot(aes(x=year,y=value)) + geom_line()
+tadr_data %>%
+  ggplot(aes(x=year,y=tadr,col=region)) + geom_line()
 
 # historical KDR
 kdr_data %>% 
   ggplot(aes(x=year,y=kdr,col=region)) + geom_line()
 
 # historical KDR v. TADR
+hist_r$x = .75
+
 tadr_data %>% filter(year %in% years) %>% left_join(kdr_data) %>%
-  ggplot(aes(x=kdr,y=value,col=region,label=year)) + geom_path() + geom_text_repel()
+  ggplot(aes(x=kdr,y=tadr,col=region,label=year)) + geom_path() + geom_text_repel() + 
+  geom_text_repel(hist_rae)
 
 tadr_data %>% filter(year %in% years) %>% left_join(kdr_data) %>% 
-  ggplot(aes(x=kdr,y=value,label=year)) + geom_point() + geom_path() + geom_text_repel() + facet_wrap(~region, scale="free") 
+  ggplot(aes(x=kdr,y=tadr,label=year)) + geom_point() + geom_path() + geom_text_repel() + facet_wrap(~region, scale="free") 
 
 
-################################################
-## Use Japan to study kdr v. tadr association ##
-################################################
+############################################
+## Simulation Study: the World Population ##
+############################################
 
-# select Japan data
-j.d = df_data %>% filter(region == "Japan")
+# subset world data
+w.d = df_data %>% filter(region == "WORLD")
 
-# extract 1950 population (by age) vector
-j.pop = j.d %>% filter(year == 1950) %>% select(pop)
+## Varying Fertility Sim ##
+fert.s = list(
+    s_95 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=.95,steps=12)),
+    s_96 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=.96,steps=12)),
+    s_97 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=.97,steps=12)),
+    s_98 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=.98,steps=12)),
+    s_99 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=.99,steps=12)),
+    s_100 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=1.0,steps=12)),
+    s_101 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=1.01,steps=12)),
+    s_102 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=1.02,steps=12)),
+    s_103 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=1.03,steps=12)),
+    s_104 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=1.04,steps=12)),
+    s_105 = c(w.d$Fx[w.d$year == 1950],scale_rates(w.d$Fx[w.d$year == 1950],scale=1.05,steps=12))
+  )
 
-## Simulate Japanese population 1950-2010 ##
-## under different qx and Fx rate regimes ##
+# sims.f = NULL
+# for(i in 1:length(fert.s)){
+#   tt = sim_kdr(years = seq(1950,2010,5),
+#           ages  = unique(w.d$age),
+#           n     = 5,
+#           nqx   = rep(w.d$qx[w.d$year == 1950],13),
+#           nFx   = fert.s[[i]],
+#           i.pop = w.d$pop[w.d$year == 1950]
+#          )
+#   sims.f = c(sims.f,list(tt))
+# }
 
-# Scenario #1: Observed fertility + Constant 1950 mortality
-s1 = sim_kdr(years = seq(1950,2010,5),
-        ages  = unique(j.d$age),
-        n     = 5,
-        nqx   = rep(j.d$qx[j.d$year == 1950],13),
-        nFx   = j.d$Fx,
-        i.pop = j.pop$pop
-       )
-s1$inds %>% ggplot(aes(x=kdr,y=tadr,label=year)) + geom_path() + geom_text_repel()
+## Varying Mortality Sim ##
+mort.s = list(
+    s_95 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=.95,steps=12)),
+    s_96 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=.96,steps=12)),
+    s_97 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=.97,steps=12)),
+    s_98 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=.98,steps=12)),
+    s_99 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=.99,steps=12)),
+    s_100 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=1.0,steps=12)),
+    s_101 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=1.01,steps=12)),
+    s_102 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=1.02,steps=12)),
+    s_103 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=1.03,steps=12)),
+    s_104 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=1.04,steps=12)),
+    s_105 = c(w.d$qx[w.d$year == 1950],scale_rates(w.d$qx[w.d$year == 1950],scale=1.05,steps=12))
+  )
 
-# Scenario #2: Constant 1950 fertility + Observed mortality
-s2 = sim_kdr(years = seq(1950,2010,5),
-        ages  = unique(j.d$age),
-        n     = 5,
-        nqx   = j.d$qx,
-        nFx   = rep(j.d$Fx[j.d$year == 1950],13),
-        i.pop = j.pop$pop
-       )
-s2$inds %>% ggplot(aes(x=kdr,y=tadr,label=year)) + geom_path() + geom_text_repel()
+# sims.m = NULL
+# for(i in 1:length(mort.s)){
+#   tt = sim_kdr(years = seq(1950,2010,5),
+#           ages  = unique(w.d$age),
+#           n     = 5,
+#           nqx   = mort.s[[i]],
+#           nFx   = w.d$Fx[w.d$year == 1950],
+#           i.pop = w.d$pop[w.d$year == 1950]
+#          )
+#   sims.m = c(sims.m,list(tt))
+# }
 
-# Scenario #3: Constant 1950 fertility + Constant 1950 mortality
-s3 = sim_kdr(years = seq(1950,2010,5),
-        ages  = unique(j.d$age),
-        n     = 5,
-        nqx   = rep(j.d$qx[j.d$year == 1950],13),
-        nFx   = rep(j.d$Fx[j.d$year == 1950],13),
-        i.pop = j.pop$pop
-       )
-s3$inds %>% ggplot(aes(x=kdr,y=tadr,label=year)) + geom_path() + geom_text_repel()
+# Varying both Fertility and Mortality
+sims.b = NULL
+for(i in 1:length(mort.s)){
+  for(j in 1:length(fert.s)){
+    tt = sim_kdr(years = seq(1950,2010,5),
+            ages  = unique(w.d$age),
+            n     = 5,
+            nqx   = mort.s[[i]],
+            nFx   = fert.s[[j]],
+            i.pop = w.d$pop[w.d$year == 1950]
+           )
+    sims.b = c(sims.b,list(tt))
+  }
+}
 
-# Scenario #4: Increasing fertility + Observed mortality
-s.Fx = c(j.d$Fx[j.d$year == 1950],scale_rates(j.d$Fx[j.d$year == 1950],scale=1.05,steps=12))
-s4 = sim_kdr(years = seq(1950,2010,5),
-        ages  = unique(j.d$age),
-        n     = 5,
-        nqx   = j.d$qx,
-        nFx   = s.Fx,
-        i.pop = j.pop$pop
-       )
-s4$inds %>% ggplot(aes(x=kdr,y=tadr,label=year)) + geom_path() + geom_text_repel()
-
-# Scenario #5: Observed fertility + Increasing mortality
-s.qx = c(j.d$qx[j.d$year == 1950],scale_rates(j.d$qx[j.d$year == 1950],scale=1.05,steps=12))
-s5 = sim_kdr(years = seq(1950,2010,5),
-        ages  = unique(j.d$age),
-        n     = 5,
-        nqx   = s.qx,
-        nFx   = j.d$Fx,
-        i.pop = j.pop$pop
-       )
-s5$inds %>% ggplot(aes(x=kdr,y=tadr,label=year)) + geom_path() + geom_text_repel()
+# save(sims.f,sims.m,sims.b,file=here("data","sim_data.RData"))
 
 
+###########################
+## Plot simulation data  ##
+###########################
+load(here("data","sim_data.RData"))
 
-# plot: Historical KDR v. TADR
-tadr_data %>% filter(year %in% years & region == "Japan") %>% left_join(kdr_data) %>% 
-ggplot(aes(x=kdr,y=value,label=year)) + geom_point() + geom_path() + geom_text_repel() + labs(title="Historical")
+# stack sim data into tidier dataframes for plotting
+plot.sim = NULL
+for(i in 1:length(sims.b)){
+  tt = sims.b[[i]]$inds
+  plot.sim = rbind(plot.sim,tt)
+}
+plot.sim$m = rep(seq(.95,1.05,.01),each=11*5)
+plot.sim$f = rep(rep(seq(.95,1.05,.01),each=5),11)
+
+plot.sim_r = NULL
+for(i in 1:length(sims.b)){
+  tt = sims.b[[i]]$sim.dat %>% filter(year %in% c(1990,2010)) %>% group_by(year) %>% summarize(n = sum(pop)) %>% summarize(r=(log(n[2])-log(n[1]))/20) %>% pull(r)
+  plot.sim_r = c(plot.sim_r,tt)
+}
+
+plot.sim$r = paste0(as.factor(round(rep(plot.sim_r,each=5)*100,1)),"%")
+
+# plot: non-faceted
+plot.sim %>% filter(m == 1) %>%
+  ggplot(aes(x=kdr,y=tadr,col=r)) + geom_path() + geom_point() + 
+  theme_bw(base_size = 14) + scale_color_viridis_d(direction = -1) + 
+  guides(color = guide_legend(reverse=T)) + 
+  labs(title="Scaling ASFR-5 (-1%/yr to +1%/yr) + Fixed 5qx")
+ggsave(here("manuscript/figs","world_kdr_tadr_nf_fert.png"),width=8,height=6)
+
+plot.sim %>% filter(f == 1) %>%
+  ggplot(aes(x=kdr,y=tadr,col=r)) + geom_path() + geom_point() + 
+  theme_bw(base_size = 14) + scale_color_viridis_d(direction = -1) + 
+  guides(color = guide_legend(reverse=T)) + 
+  labs(title="Scaling 5qx (-1%/yr to +1%/yr) + Fixed ASFR-5")
+ggsave(here("manuscript/figs","world_kdr_tadr_nf_mort.png"),width=8,height=6)
+
+# plot: faceted
+plot.sim %>% filter(m == 1) %>%
+  ggplot(aes(x=kdr,y=tadr,col=year)) + geom_path() + geom_point() + facet_wrap(~paste0("r = ",r), scales="free") +
+  labs(title="Scaling ASFR-5 (-1%/yr to +1%/yr) + Fixed 5qx") +
+  scale_color_viridis_c(direction=-1) + theme_bw()
+ggsave(here("manuscript/figs","world_kdr_tadr_f_fert.png"),width=8,height=6)
+
+plot.sim %>% filter(f == 1) %>%
+  ggplot(aes(x=kdr,y=tadr,col=year)) + geom_path() + geom_point() + facet_wrap(~paste0("r = ",r), scales="free") +  
+  labs(title="Scaling 5qx (-1%/yr to +1%/yr) + Fixed ASFR-5") +
+  scale_color_viridis_c(direction=-1) + theme_bw()
+ggsave(here("manuscript/figs","world_kdr_tadr_f_mort.png"),width=8,height=6)
+
