@@ -158,18 +158,23 @@ for(i in 1:length(sims.b)){
   plot.sim_r = c(plot.sim_r,tt)
 }
 
-plot.sim$r = paste0(as.factor(round(rep(plot.sim_r,each=5)*100,1)),"%")
+plot.sim$r = rep(plot.sim_r,each=5)
+
+plot.sim$label_f = paste0(round((plot.sim$f-1)/5*100,1),"% (r = ",round(plot.sim$r*100,1),")")
+plot.sim$label_f = factor(plot.sim$label_f, levels = unique(plot.sim$label_f))
+plot.sim$label_m = paste0(round((plot.sim$m-1)/5*100,1),"% (r = ",round(plot.sim$r*100,1),")")
+plot.sim$label_m = factor(plot.sim$label_m, levels = unique(plot.sim$label_m))
 
 # plot: non-faceted
 plot.sim %>% filter(m == 1) %>%
-  ggplot(aes(x=kdr,y=tadr,col=r)) + geom_path() + geom_point() + 
+  ggplot(aes(x=kdr,y=tadr,col=label_f)) + geom_path() + geom_point() + 
   theme_bw(base_size = 14) + scale_color_viridis_d(direction = -1) + 
   guides(color = guide_legend(reverse=T)) + 
   labs(title="Scaling ASFR-5 (-1%/yr to +1%/yr) + Fixed 5qx")
 ggsave(here("manuscript/figs","world_kdr_tadr_nf_fert.png"),width=8,height=6)
 
 plot.sim %>% filter(f == 1) %>%
-  ggplot(aes(x=kdr,y=tadr,col=r)) + geom_path() + geom_point() + 
+  ggplot(aes(x=kdr,y=tadr,col=label_m)) + geom_path() + geom_point() + 
   theme_bw(base_size = 14) + scale_color_viridis_d(direction = -1) + 
   guides(color = guide_legend(reverse=T)) + 
   labs(title="Scaling 5qx (-1%/yr to +1%/yr) + Fixed ASFR-5")
@@ -177,13 +182,13 @@ ggsave(here("manuscript/figs","world_kdr_tadr_nf_mort.png"),width=8,height=6)
 
 # plot: faceted
 plot.sim %>% filter(m == 1) %>%
-  ggplot(aes(x=kdr,y=tadr,col=year)) + geom_path() + geom_point() + facet_wrap(~paste0("r = ",r), scales="free") +
+  ggplot(aes(x=kdr,y=tadr,col=year)) + geom_path() + geom_point() + facet_wrap(~label_f, scales="free") +
   labs(title="Scaling ASFR-5 (-1%/yr to +1%/yr) + Fixed 5qx") +
   scale_color_viridis_c(direction=-1) + theme_bw()
 ggsave(here("manuscript/figs","world_kdr_tadr_f_fert.png"),width=8,height=6)
 
 plot.sim %>% filter(f == 1) %>%
-  ggplot(aes(x=kdr,y=tadr,col=year)) + geom_path() + geom_point() + facet_wrap(~paste0("r = ",r), scales="free") +  
+  ggplot(aes(x=kdr,y=tadr,col=year)) + geom_path() + geom_point() + facet_wrap(~label_m, scales="free") +  
   labs(title="Scaling 5qx (-1%/yr to +1%/yr) + Fixed ASFR-5") +
   scale_color_viridis_c(direction=-1) + theme_bw()
 ggsave(here("manuscript/figs","world_kdr_tadr_f_mort.png"),width=8,height=6)
