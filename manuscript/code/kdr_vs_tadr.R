@@ -53,7 +53,7 @@ hist_r$x = .75
 
 tadr_data %>% filter(year %in% years) %>% left_join(kdr_data) %>%
   ggplot(aes(x=kdr,y=tadr,col=region,label=year)) + geom_path() + geom_text_repel() + 
-  geom_text_repel(hist_rae)
+  geom_text_repel(hist_r)
 
 tadr_data %>% filter(year %in% years) %>% left_join(kdr_data) %>% 
   ggplot(aes(x=kdr,y=tadr,label=year)) + geom_point() + geom_path() + geom_text_repel() + facet_wrap(~region, scale="free") 
@@ -160,6 +160,14 @@ for(i in 1:length(sims.b)){
 
 plot.sim$r = rep(plot.sim_r,each=5)
 
+plot.sim_r_1950 = NULL
+for(i in 1:length(sims.b)){
+  tt = sims.b[[i]]$sim.dat %>% filter(year %in% c(1950,2010)) %>% group_by(year) %>% summarize(n = sum(pop)) %>% summarize(r=(log(n[2])-log(n[1]))/60) %>% pull(r)
+  plot.sim_r_1950 = c(plot.sim_r_1950,tt)
+}
+
+plot.sim$r_1950 = rep(plot.sim_r_1950,each=5)
+
 plot.sim$label_f = paste0(round((plot.sim$f-1)/5*100,1),"% (r = ",round(plot.sim$r*100,1),")")
 plot.sim$label_f = factor(plot.sim$label_f, levels = unique(plot.sim$label_f))
 plot.sim$label_m = paste0(round((plot.sim$m-1)/5*100,1),"% (r = ",round(plot.sim$r*100,1),")")
@@ -193,3 +201,31 @@ plot.sim %>% filter(f == 1) %>%
   scale_color_viridis_c(direction=-1) + theme_bw()
 ggsave(here("manuscript/figs","world_kdr_tadr_f_mort.png"),width=8,height=6)
 
+
+######################################################
+## Examine Corr(KDR,TADR) v. growth rate(1950-2010) ##
+######################################################
+
+tt = plot.sim %>% group_by(m,f) %>% summarize(cor = cor(tadr,kdr), r = r_1950[1])
+# tt = plot.sim %>% group_by(m,f) %>% summarize(slope = mean_slope(tadr,kdr), r = r_1950[1])
+
+tt %>% filter(m == 1) %>% 
+  ggplot(aes(x=round((f-1)/5*100,1),y=cor)) + geom_point() + geom_line() + geom_hline(aes(yintercept=0,col=I("Red"),lty=I(2))) + labs(title="Correlation(KDR,TADR), 1950-2010:\nVarying fertility, constant mortality",y="corr(KDR,TADR)",x="Annual Fertility Change (%)") + 
+  theme_bw()
+
+tt %>% filter(f == 1) %>% 
+  ggplot(aes(x=round((m-1)/5*100,1),y=cor)) + geom_point() + geom_line() + geom_hline(aes(yintercept=0,col=I("Red"),lty=I(2))) + labs(title="Varying fertility, constant mortality",y="corr(KDR,TADR)",x="Annual Mortality Change (%)") + 
+  theme_bw() 
+
+
+
+
+
+# plot: scaling factor vs. mean slope(TADR/KDR)
+mean_slope = function(y,x){
+  tt = NULL
+  for(i in 2:length(y)){
+    tt = c(tt, (y[i]-y[i-1])/(x[i]-x[i-1]))
+  }
+  return(mean(tt))
+}

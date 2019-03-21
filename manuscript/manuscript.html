@@ -110,7 +110,7 @@ M_2(a) = \int_{\alpha}^{\beta} M_1(a+x) W(x|t-a)dx
 <p>For most countries, there is a noticeable difference in the estimates produced by the two methods. The exception is Nigeria in 1990, where fertility and mortality rates were such that the population was almost stable, so the two methods are very similar. By 2010, Nigeria’s fertility had declined, and so the stable method does not account for higher fertility in the past, as illustrated by the discrepancy at older ages. The same is true for Kenya. For Japan, there are discrepancies at both young and old ages, due to both a decline in fertility and mortality rates. In the USA, noticeably the stable method in 1990 does not account for the baby boom, which substantially increases the number of kin for 50-60 year olds.</p>
 <p>Figure 2 shows the expected number of surviving kin over age for a selection of countries in the year 2010, broken down by kin type.</p>
 <figure>
-<img src="figs/kin_country_facet_2010.png" alt="Fig. 2 Number of surviving kin by age of ego and type of kin, 2010." width="800" /><figcaption>Fig. 2 Number of surviving kin by age of ego and type of kin, 2010.</figcaption>
+<img src="figs/kin_country_facet_2010.png" alt="Fig.2 Number of surviving kin by age of ego and type of kin, 2010." width="800" /><figcaption>Fig.2 Number of surviving kin by age of ego and type of kin, 2010.</figcaption>
 </figure>
 <p>The most striking feature of these plots is the much larger expected numbers of daughters and grand-daughters in Kenya and Nigeria (versus the USA or Japan) at each age. This is, of course, a function of historically higher birth rates in these countries. On the other hand, we observe much higher expected numbers (i.e. survival probabilities) of mothers and grand-mothers in the USA and Japan (versus Kenya or Nigeria) at each age. This is a consequence of historically lower death rates in these countries. Thus, we see how both the fertility and mortality experiences of these populations are naturally reflected in these kin availability estimates.</p>
 <h1 id="comparing-public-and-private-support-burden">Comparing Public and Private Support Burden</h1>
@@ -123,7 +123,7 @@ TADR(y) = \frac{\text{people aged 0-14 &amp; 65+ in year y}}{\text{people aged 1
 \]</span></p>
 <p>Figure 3 illustrates the TADR for our selected countries over the period 1990–2010. Across all years, we observe higher TADR in Kenya and Nigeria than in the United States and Japan. Peru, for most of this period, has fallen somewhere in between. These patterns are primarily due to a history of much higher fertility in the former set of countries, which has lead to a much larger proportion of younger individuals. Over time, the TADR in Kenya and Peru has decreased due to slowing birth rates and declining mortality, while in Japan, the TADR has increased due to consistently low birth and mortality rates, which has resulted in a rapidly aging population. In Nigeria and the United States, the TADR has remained relatively constant.</p>
 <figure>
-<img src="figs/tadr_ts.png" alt="Fig. 3 Total dependency ratios, 1990–2010." width="700" /><figcaption>Fig. 3 Total dependency ratios, 1990–2010.</figcaption>
+<img src="figs/tadr_ts.png" alt="Fig.3 Total dependency ratios, 1990–2010." width="700" /><figcaption>Fig.3 Total dependency ratios, 1990–2010.</figcaption>
 </figure>
 <h2 id="kin-dependency-ratio-kdr">Kin Dependency Ratio (KDR)</h2>
 <p>We define a <em>kin dependency ratio</em> (KDR) as the number of plausibly dependent kin at age <span class="math inline">\(x\)</span> divided by the number of plausibly non-dependent kin at age <span class="math inline">\(x\)</span>:</p>
@@ -168,14 +168,14 @@ KDR = \sum_{x=0}^{85} \frac{KDR(x) \cdot w_x}{\sum w_x}
 <p>where <span class="math inline">\(w_x\)</span> is the proportion of the female population aged <span class="math inline">\(x\)</span>.</p>
 <p>The following is a plot of KDR for our selected countries over the period 1990–2010 (Figure 4). For Kenya and Peru, the KDR has decreased over time as both fertility and mortality has declined. In Nigeria, while fertility has also declined, it has declined much more slowly, which coupled with persistently high mortality rates, has led to an increase in the KDR. In Japan, declining mortality rates couples with historically low fertility rates has lead to lower KDR, while in the United States the KDR has remained relatively constant.</p>
 <figure>
-<img src="figs/kdr_ts.png" alt="Fig. 4 Kin dependency ratios, 1990–2010." width="700" /><figcaption>Fig. 4 Kin dependency ratios, 1990–2010.</figcaption>
+<img src="figs/kdr_ts.png" alt="Fig.4 Kin dependency ratios, 1990–2010." width="700" /><figcaption>Fig.4 Kin dependency ratios, 1990–2010.</figcaption>
 </figure>
 <h3 id="the-kindr-package">The ‘kindr’ Package</h3>
 <p>To enhance the accessibility of the KDR index, we have developed an R package (‘kindr’), which automates the calculation given age-specific fertility rates, mortality rates, population counts, and user-specified <span class="math inline">\(a_1\)</span>/<span class="math inline">\(a_2\)</span> parameter values. Further details regarding <em>kindr</em> (its installation and use) are provided in the technical appendix.</p>
 <h2 id="kdr-vs.tadr">KDR vs. TADR</h2>
 <p>The following is a plot of the mean KDR (measured over ages 14-64) and the TADR over the period 1990–2010 for a selection of countries that vary in their demography and relative levels of economic development.</p>
 <figure>
-<img src="figs/kdr_tadr_scatter_all.png" alt="Fig. 5 TADR versus KDR in select countries, 1990–2010." width="800" /><figcaption>Fig. 5 TADR versus KDR in select countries, 1990–2010.</figcaption>
+<img src="figs/kdr_tadr_scatter_all.png" alt="Fig.5 TADR versus KDR in select countries, 1990–2010." width="800" /><figcaption>Fig.5 TADR versus KDR in select countries, 1990–2010.</figcaption>
 </figure>
 <p>In general, we observe what we expect: KDR tends to increase along with TADR. That is to say, as the ratio of “dependent” age groups to the “working-age” group increases, so too does the ratio of “dependent” kin to non-“dependent” kin. However, this association does not hold perfectly in all cases. If we look closely at the plot in Figure 5, we see that the relationship between KDR and TADR varies greatly across different national contexts (Figure 6).</p>
 <figure>
@@ -191,21 +191,32 @@ KDR = \sum_{x=0}^{85} \frac{KDR(x) \cdot w_x}{\sum w_x}
 <img src="figs/kdr_tadr_r_all.png" alt="Fig.7 Time trends in the association between TADR and KDR for select countries (with mean annual growth rates), 1990–2010." width="800" /><figcaption>Fig.7 Time trends in the association between TADR and KDR for select countries (with mean annual growth rates), 1990–2010.</figcaption>
 </figure>
 <p>While the absolute levels of fertility and mortality in a population determine, broadly-speaking, the <em>magnitudes</em> of the TADR and KDR in that population, the levels alone cannot predict the population time trend in the <em>association</em> between the TADR and KDR. Recall, for example, in some countries (e.g. Kenya) the TADR and KDR are positively associated, while in other countries (e.g. Japan) the TADR and the KDR are negatively associated. This dynamic is driven by differences in the <em>rate of change</em> of fertility and mortality in these populations. In other words, the speed and direction of changes in fertility and mortality affects TADR and KDR differently.</p>
-<p>To explore this phenomenon in greater detail, we conduct a simulation exercise using the 1950 world population (as reported in the United Nations’ World Population Prospects data) as our baseline model. Figure 8 illustrates the age distribution, 5-year age-specific fertility rates, and 5-year age specific mortality risks for this population.</p>
+<p>To explore this phenomenon in greater detail, we conduct a projection exercise using the 1950 world population (as reported in the United Nations’ World Population Prospects data) as our baseline model. Figure 8 illustrates the age distribution, 5-year age-specific fertility rates, and 5-year age-specific mortality risks for this population.</p>
 <figure>
 <img src="figs/world_1950_summary.png" alt="Fig.8 Age distribution, 5-year age-specific fertility rates, and 5-year mortality risks for the world population, 1950." width="800" /><figcaption>Fig.8 Age distribution, 5-year age-specific fertility rates, and 5-year mortality risks for the world population, 1950.</figcaption>
 </figure>
-<p>Starting from this baseline, we construct a new set of age-specific fertility and mortality rates assuming…</p>
-<p><img src="figs/world_kdr_tadr_nf_fert.png" /></p>
-<p><img src="figs/world_kdr_tadr_nf_mort.png" /></p>
-<p><img src="figs/world_kdr_tadr_f_fert.png" /></p>
-<p><img src="figs/world_kdr_tadr_f_mort.png" /></p>
-<p>-how fast fertility and mortality changes influences TADR and KDR differently; TADR reacts “faster” than the other</p>
-<p>-this signals the very nature of the difference that is likely to be experienced by families vs. the public/government. -policy changes that quickly alter period fertility and/or mortality can have immediate repercussions</p>
+<p>Starting from this baseline, we construct synthetic age-specific fertility and mortality rates assuming that the observed 1950 rates decline or increase at some fixed proportion every year for 60 years (i.e. until 2010). This fixed proportion is determined by a set of multiplicative scalars, one for fertility (<span class="math inline">\(f\)</span>) and one for mortality (<span class="math inline">\(m\)</span>)—these are chosen to vary between 0.99 (corresponding to a 1% decrease) and 1.01 (corresponding to a 1% increase) in increments of 0.002 (0.2%). We then carry out a series of population forecasts via Leslie Matrix projection <span class="citation" data-cites="Caswell2018 Wachter2014">(Caswell 2018; Wachter 2014)</span> using our scaled age-specific fertility and mortality rates and the 1950 world age distribution as inputs (see the technical appendix for more details about how we specify our Leslie matrix model).</p>
+<p>To separate out the relative contribution of changes in fertility and mortality, we generate two sets of population forecasts: one holding mortality rates constant (<span class="math inline">\(m = 1.00\)</span>), while allowing fertility rates to vary over time (<span class="math inline">\(f \in [0.99,1.01]\)</span>); and the other holding fertility rates constant (<span class="math inline">\(f = 1.00\)</span>), while allowing mortality rates to vary over time (<span class="math inline">\(m \in [0.99,1.01]\)</span>). The following plots illustrate the resulting time patterns in KDR and TADR in each of these forecast scenarios.</p>
+<figure>
+<img src="figs/world_sim_facet.png" alt="Fig.9 Projected time trends in the association between TADR and KDR, 1990–2010, varying fertility and mortality rates." width="800" /><figcaption>Fig.9 Projected time trends in the association between TADR and KDR, 1990–2010, varying fertility and mortality rates.</figcaption>
+</figure>
+<p>The general finding here is that by systematically varying the rates of change in fertility and mortality in our model population, we are able to reproduce the full range of time patterns in the association between KDR and TADR we observed earlier (Figure 6). For example, the positive relationship we observed for Kenya where both KDR and TADR decrease linearly with time is also observed in our forecasts where fertility rates are decreased anywhere between 0.4% and 1% annually (with constant mortality rates); and in our forecasts where mortality rates are increased anywhere between 0.4$% to 1% annually (with constant fertility rates). Similarly, the negative relationship we observed for Japan where TADR increases, while KDR decreases linearly over time is also observed in our forecasts where mortality rates are decreased by 0.2% annually (with constant fertility rates). Finally, the types of non-linear relationships we observed for Nigeria and the United States are mirrored in our forecasts where the annual rates of change in fertility and mortality are relatively low.</p>
+<p>To further clarify the effect that the rate of fertility and mortality change has on the association between KDR and TADR, we plot the correlation coefficient between these two indices as a function of the annual percent change in fertility and mortality (Figure 10).</p>
+<figure>
+<img src="figs/world_sim_corr_annotated.png" alt="Fig.10 Correlation between KDR and TADR, 1950–2010, varying fertility and mortality rates. Inset plots show time trends in KDR (x-axis) versus TADR (y-axis) for a selection of forecast scenarios." width="800" /><figcaption>Fig.10 Correlation between KDR and TADR, 1950–2010, varying fertility and mortality rates. Inset plots show time trends in KDR (x-axis) versus TADR (y-axis) for a selection of forecast scenarios.</figcaption>
+</figure>
+<p>What we observe is that the slower the rate at which fertility and mortality changes over time, the more negative becomes the correlation between KDR and TADR. Put another way, when a population grows or shrinks very slowly, the KDR and TADR become <em>decoupled</em>: they start to move in opposite directions. This signals a situation where the <em>public</em> support burden (as proxied by the TADR) decreases while the <em>private</em> support burden (as proxied by the KDR) increases, or <em>vice versa</em>.</p>
 <h1 id="conclusion">Conclusion</h1>
+<p>-to the extent that the KDR provides a rough measure of the private support burden faced by families and the TADR provides a rough measure of the public support burden faced by governments; the fact that these two quantities do not always trend in the same direction raises some important considerations for policymakers. -in populations that are quickly growing or shrinking, societal resources devoted to supporting families (private support burden) and individuals (public support burden) are likely to be equally effective over time -in populations that are growing or shrinking slowly, societal resources may be more efficaciously spent supporting <em>either</em> families <em>or</em> individuals (but not both). -in Japan, for example, the fact that the TADR has been increasing over time as the KDR declines suggest that family-based welfare programs are likely to be less effective than universal age-based programs. -something about how in countries where the main source of material support has traditionally been the family, this type of finding may prove useful for re-calibrating expectations.</p>
+<p>-the fact that the decoupling of the private and public support burden tends to occur in populations with historically slow rates of fertility and mortality change is also important (?) because more countries are beginning to follow that pattern (?)</p>
+<p>-we started this paper by (PROPOSING IMPROVED GOODMAN METHOD). This allowed us to further define a rough measure of family support burden, the KDR, that can be calculated using readily available demographic data. We then demonstrated the utility of such a measure by identifying the general conditions under which the KDR ceases to track the TADR.</p>
+<p>-the KDR allows us to track the likely private support burden faced by populations; it can also, in conjunction with the TADR, allow us to identify populations where the support burden faced by families is likely to differ dramatically from that faced by the public at large.</p>
 <p>-Limitation: we assume closed populations (no migration)</p>
 <h1 id="references" class="unnumbered">References</h1>
 <div id="refs" class="references">
+<div id="ref-Caswell2018">
+<p>Caswell, Hal. 2018. “Age-classified matrix models.” In <em>Matrix Population Models: Construction, Analysis, and Interpretation</em>, 2nd ed., 8–34.</p>
+</div>
 <div id="ref-Chung2018">
 <p>Chung, Pil H., and Peter Hepburn. 2018. “Mass imprisonment and the extended family.” <em>Sociological Science</em> 5:335–60. <a href="https://doi.org/10.15195/v5.a15" class="uri">https://doi.org/10.15195/v5.a15</a>.</p>
 </div>
@@ -253,6 +264,9 @@ KDR = \sum_{x=0}^{85} \frac{KDR(x) \cdot w_x}{\sum w_x}
 </div>
 <div id="ref-Verdery2017">
 <p>Verdery, Ashton M., and Rachel Margolis. 2017. “Projections of white and black older adults without living kin in the United States, 2015 to 2060.” <em>Proceedings of the National Academy of Sciences</em> 114 (2):11109–14. <a href="https://doi.org/10.1073/pnas.1710341114" class="uri">https://doi.org/10.1073/pnas.1710341114</a>.</p>
+</div>
+<div id="ref-Wachter2014">
+<p>Wachter, Kenneth W. 2014. <em>Essential Demographic Methods</em>. Harvard University Press. <a href="https://doi.org/10.1017/CBO9781107415324.004" class="uri">https://doi.org/10.1017/CBO9781107415324.004</a>.</p>
 </div>
 <div id="ref-Watkins1987">
 <p>Watkins, Susan Cotts, Jane A. Menken, and John Bongaarts. 1987. “Demographic foundations of family change.”</p>
