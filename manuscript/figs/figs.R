@@ -73,12 +73,12 @@ plot.sim$label_m_simple = factor(plot.sim$label_m_simple, levels = unique(plot.s
 
 ## FIG 3 ##
 # tadr over years (for select countries)
-ggplot(tadr_data %>% filter(year %in% years),aes(x=year,y=tadr/100,col=region)) + geom_line() + geom_point() + theme_bw() + labs(title="Total age dependency ratios, 1990-2010",y="TADR")
+ggplot(tadr_data %>% filter(year %in% years & region != "WORLD"),aes(x=year,y=tadr/100,col=region)) + geom_line() + geom_point() + theme_bw() + labs(title="Total age dependency ratios, 1990-2010",y="TADR")
 # ggsave(here("manuscript/figs","tadr_ts.png"), width = 6, height = 4) 
 
 ## FIG 4 ##
 # kdr over years (for select countries)
-ggplot(kdr_data %>% filter(year %in% years),aes(x=year,y=kdr,col=region)) + geom_line() + geom_point() + theme_bw() + labs(title="Kin dependency ratios, 1990-2010",y="KDR")
+ggplot(kdr_data %>% filter(year %in% years & region != "WORLD"),aes(x=year,y=kdr,col=region)) + geom_line() + geom_point() + theme_bw() + labs(title="Kin dependency ratios, 1990-2010",y="KDR")
 # ggsave(here("manuscript/figs","kdr_ts.png"), width = 6, height = 4) 
 
 ## FIG 5 ## 
