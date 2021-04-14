@@ -1,0 +1,82 @@
+---
+title: "Non-stable approximation to surviving daughters"
+author: "Monica Alexander"
+output: pdf_document
+fontsize: 11pt
+header-includes:
+  - \usepackage{setspace} \onehalfspacing
+---
+
+The Goodman-Keyfitz equation for the number of surviving daughters to a women aged $a$ is 
+
+$$
+\int_{0}^a \ell_{a-x} m_x dx
+$$
+
+where $m_x$ are the female stable population fertility rates and $l_{a-x}$ is the stable survival function. 
+
+The goal is to come up with an approximation to the non-stable case (i.e. a period approximation to the cohort case).
+
+Ignoring $\ell_x$ for now, a non-stable version of the fertility rates could be indexed by $t$
+$$
+\int_0^a \ell_{a-x}  m_x(t-a + x)  dx 
+$$ 
+or just writing cohort $g = t- a$
+$$
+\int_0^a \ell_{a-x}  m_x(g + x)  dx 
+$$ 
+So we would use the age-specific fertility rates in year $g+x$. We want to find approximation to these cohort rates such that we can just index to one year i.e.
+$$
+\int_0^a \ell_{a-x}  m_x(g + A_m)  dx 
+$$ 
+
+## What is $A_m$?
+
+Seems likely that $A_m$ is the mean age at childbearing $\mu$.
+
+QUESTION I: Can I do this? Expand $m_x(t)$ around $t-x+\mu$, which gives
+
+$$
+m_x(t) \approx m_x(t - x + \mu) + (x - \mu)m'(t-x+\mu)
+$$
+Then
+$$
+\int_0^a \ell_{a-x}  m_x(g + x)  dx \approx \int_0^a \ell_{a-x}\left [m_x(g+\mu) + (x - \mu)m_x'(g+\mu) \right] dx 
+$$
+$$
+ = \int_0^a \ell_{a-x}m_x(g+\mu) + \int_0^a \ell_{a-x} (x - \mu)m_x'(g+\mu) dx 
+$$
+Can I cancel out the second term because of the $x-\mu$ bit? Which would give me what I want
+$$
+\int_0^a \ell_{a-x}  m_x(g + x)  dx \approx \int_0^a \ell_{a-x}m_x(g+\mu) dx 
+$$
+This would only solve the fertilty piece, would also need to work out survival piece...
+
+
+<!-- QUESTION II: How to approach a non-stable version of $\ell_x$? Easiest to work from hazards? -->
+
+<!-- and so the fertility rates $m_x(t-a)$ refer to cohort fertility rates for women in cohort $t-a$. This non-stable version could theoretically be calculated but practically becomes very data intensive very quickly. It would be nice to have an non-stable approximation -->
+
+<!-- $$ -->
+<!-- \int_{0}^a \ell_{a-x}(A+x) m_x(A) dx -->
+<!-- $$ -->
+
+<!-- where $t- A$ represents a single period which best approximates the nonstable version, i.e. minimizes the difference -->
+
+<!-- $$ -->
+<!-- \int_{0}^a \ell_{a-x}(t-(a-x)) m_x(t-a) dx - \int_{0}^a \ell_{a-x}(A+x) m_x(A) dx -->
+<!-- $$ -->
+
+<!-- ## What is $A$? -->
+
+<!-- My guess is that $A$ is probably the mean age at childbearing, $\mu$, for women in cohort $t-a$. But I'm not sure how to show this. I've got as far as doing a Taylor Series expansion around $\mu$ for the stable case: -->
+
+<!-- $$ -->
+<!-- \begin{aligned} -->
+<!-- \int_{0}^a l_{a-x} m_x dx & \approx l_{a-\mu} \int_{0}^{a} m_{x} d x+\left(l_{a-\mu}\right)^{\prime} \int_{0}^{a}(x-\mu) m_{x} d x+\left(l_{a-\mu}\right)^{\prime \prime} \int_{0}^{a} \frac{(x-\mu)^{2}}{2} m_{x} d x \\ -->
+<!-- & \approx F_{a} l_{a-\mu}+\frac{\sigma^{2}}{2} F_{a}\left(l_{a-\mu}\right)^{\prime \prime} \\ -->
+<!-- & \approx F_{a} l_{a-\mu}\left[1+\frac{\sigma^{2}}{2} \frac{\left(l_{a-\mu}\right)^{\prime \prime}}{l_{a-\mu}}\right] -->
+<!-- \end{aligned} -->
+<!-- $$ -->
+
+<!-- where $F_a = \int m_x dx$. I'm not sure that this helps me, although if we considered the cohort fertility rates then one could imagine the best approximation to $F_a$ would be the period $F_a$ in the year in which the cohort reaches the mean age at childbearing.  -->
