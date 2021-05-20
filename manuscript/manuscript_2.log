@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.23)  30 MAR 2021 13:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.23)  20 MAY 2021 12:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -591,146 +591,121 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 {/Users/monicaalexander/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdfte
 x.map}] [2] [3] [4] [5] [6]
-Overfull \hbox (7.92267pt too wide) detected at line 395
-\OML/lmm/m/it/12 l[]\OT1/lmr/m/n/12 (\OML/lmm/m/it/12 t \OMS/lmsy/m/n/12 ^^@ \O
-T1/lmr/m/n/12 20)\OML/lmm/m/it/12 m[]\OT1/lmr/m/n/12 (\OML/lmm/m/it/12 t \OMS/l
-msy/m/n/12 ^^@ \OT1/lmr/m/n/12 20) + \OML/lmm/m/it/12 l[]\OT1/lmr/m/n/12 (\OML/
-lmm/m/it/12 t \OMS/lmsy/m/n/12 ^^@ \OT1/lmr/m/n/12 15)\OML/lmm/m/it/12 m[]\OT1/
-lmr/m/n/12 (\OML/lmm/m/it/12 t \OMS/lmsy/m/n/12 ^^@ \OT1/lmr/m/n/12 15) + \OML/
-lmm/m/it/12 l[]\OT1/lmr/m/n/12 (\OML/lmm/m/it/12 t \OMS/lmsy/m/n/12 ^^@ \OT1/lm
-r/m/n/12 10)\OML/lmm/m/it/12 m[]\OT1/lmr/m/n/12 (\OML/lmm/m/it/12 t \OMS/lmsy/m
-/n/12 ^^@ \OT1/lmr/m/n/12 10) + \OML/lmm/m/it/12 l[]\OT1/lmr/m/n/12 (\OML/lmm/m
-/it/12 t \OMS/lmsy/m/n/12 ^^@ \OT1/lmr/m/n/12 5)\OML/lmm/m/it/12 m[]\OT1/lmr/m/
-n/12 (\OML/lmm/m/it/12 t \OMS/lmsy/m/n/12 ^^@ \OT1/lmr/m/n/12 5) + \OML/lmm/m/i
-t/12 l[]\OT1/lmr/m/n/12 (\OML/lmm/m/it/12 t\OT1/lmr/m/n/12 )\OML/lmm/m/it/12 m[
-]\OT1/lmr/m/n/12 (\OML/lmm/m/it/12 t\OT1/lmr/m/n/12 )
- []
-
-<figs/stable_nonstable.png, id=116, 2107.875pt x 1806.75pt>
+<figs/stable_nonstable.png, id=112, 2107.875pt x 1806.75pt>
 File: figs/stable_nonstable.png Graphic file (type png)
 <use figs/stable_nonstable.png>
-Package pdftex.def Info: figs/stable_nonstable.png  used on input line 425.
+Package pdftex.def Info: figs/stable_nonstable.png  used on input line 430.
 (pdftex.def)             Requested size: 451.6726pt x 387.14795pt.
-<figs/kin_country_facet_2010.png, id=118, 3011.25pt x 1505.625pt>
+[7] [8 <./figs/stable_nonstable.png>]
+<figs/kin_country_facet_2010.png, id=126, 3011.25pt x 1505.625pt>
 File: figs/kin_country_facet_2010.png Graphic file (type png)
 <use figs/kin_country_facet_2010.png>
-Package pdftex.def Info: figs/kin_country_facet_2010.png  used on input line 44
-7.
-(pdftex.def)             Requested size: 602.23933pt x 301.11966pt.
-
-Overfull \hbox (132.48431pt too wide) in paragraph at lines 447--449
- [][] 
- []
-
-[7] [8 <./figs/stable_nonstable.png>] [9 <./figs/kin_country_facet_2010.png>] [
-10]
-<figs/tadr_ts.png, id=143, 433.62pt x 289.08pt>
+Package pdftex.def Info: figs/kin_country_facet_2010.png  used on input line 45
+2.
+(pdftex.def)             Requested size: 451.66801pt x 225.834pt.
+[9 <./figs/kin_country_facet_2010.png>]
+<figs/tadr_ts.png, id=134, 433.62pt x 289.08pt>
 File: figs/tadr_ts.png Graphic file (type png)
 <use figs/tadr_ts.png>
-Package pdftex.def Info: figs/tadr_ts.png  used on input line 514.
+Package pdftex.def Info: figs/tadr_ts.png  used on input line 519.
 (pdftex.def)             Requested size: 527.0373pt x 351.35818pt.
 
-Overfull \hbox (57.28227pt too wide) in paragraph at lines 514--515
+Overfull \hbox (57.28227pt too wide) in paragraph at lines 519--520
  [][] 
  []
 
-[11 <./figs/tadr_ts.png>] [12]
-<figs/kdr_ts.png, id=157, 433.62pt x 289.08pt>
+[10] [11 <./figs/tadr_ts.png>] [12]
+<figs/kdr_ts.png, id=153, 433.62pt x 289.08pt>
 File: figs/kdr_ts.png Graphic file (type png)
 <use figs/kdr_ts.png>
-Package pdftex.def Info: figs/kdr_ts.png  used on input line 609.
+Package pdftex.def Info: figs/kdr_ts.png  used on input line 614.
 (pdftex.def)             Requested size: 527.0373pt x 351.35818pt.
 
-Overfull \hbox (57.28227pt too wide) in paragraph at lines 609--610
+Overfull \hbox (57.28227pt too wide) in paragraph at lines 614--615
  [][] 
  []
 
-<figs/kdr_tadr_scatter_all.png, id=158, 722.7pt x 433.62pt>
+<figs/kdr_tadr_scatter_all.png, id=154, 722.7pt x 433.62pt>
 File: figs/kdr_tadr_scatter_all.png Graphic file (type png)
 <use figs/kdr_tadr_scatter_all.png>
-Package pdftex.def Info: figs/kdr_tadr_scatter_all.png  used on input line 631.
+Package pdftex.def Info: figs/kdr_tadr_scatter_all.png  used on input line 627.
 
 (pdftex.def)             Requested size: 602.25586pt x 361.35352pt.
 
-Overfull \hbox (132.50084pt too wide) in paragraph at lines 631--632
+Overfull \hbox (132.50084pt too wide) in paragraph at lines 627--628
  [][] 
  []
 
-<figs/kdr_tadr_scatter_facet.png, id=159, 722.7pt x 433.62pt>
+<figs/kdr_tadr_scatter_facet.png, id=155, 722.7pt x 433.62pt>
 File: figs/kdr_tadr_scatter_facet.png Graphic file (type png)
 <use figs/kdr_tadr_scatter_facet.png>
 Package pdftex.def Info: figs/kdr_tadr_scatter_facet.png  used on input line 64
-5.
+1.
 (pdftex.def)             Requested size: 602.25586pt x 361.35352pt.
 
-Overfull \hbox (132.50084pt too wide) in paragraph at lines 645--647
+Overfull \hbox (132.50084pt too wide) in paragraph at lines 641--643
  [][] 
  []
 
 [13] [14 <./figs/kdr_ts.png>] [15 <./figs/kdr_tadr_scatter_all.png (PNG copy)>]
 [16 <./figs/kdr_tadr_scatter_facet.png (PNG copy)>]
-<figs/kdr_tadr_r_all.png, id=185, 722.7pt x 433.62pt>
+<figs/kdr_tadr_r_all.png, id=180, 722.7pt x 433.62pt>
 File: figs/kdr_tadr_r_all.png Graphic file (type png)
 <use figs/kdr_tadr_r_all.png>
-Package pdftex.def Info: figs/kdr_tadr_r_all.png  used on input line 702.
+Package pdftex.def Info: figs/kdr_tadr_r_all.png  used on input line 698.
 (pdftex.def)             Requested size: 602.25586pt x 361.35352pt.
 
-Overfull \hbox (132.50084pt too wide) in paragraph at lines 702--704
- [][] 
- []
-
-<figs/world_1950_summary.png, id=186, 803.0pt x 401.5pt>
-File: figs/world_1950_summary.png Graphic file (type png)
-<use figs/world_1950_summary.png>
-Package pdftex.def Info: figs/world_1950_summary.png  used on input line 726.
-(pdftex.def)             Requested size: 602.28528pt x 301.14262pt.
-
-Overfull \hbox (132.53026pt too wide) in paragraph at lines 726--728
+Overfull \hbox (132.50084pt too wide) in paragraph at lines 698--700
  [][] 
  []
 
 [17] [18 <./figs/kdr_tadr_r_all.png (PNG copy)>]
-<figs/world_sim_facet.png, id=197, 803.0pt x 1003.75pt>
+<figs/world_1950_summary.png, id=191, 803.0pt x 401.5pt>
+File: figs/world_1950_summary.png Graphic file (type png)
+<use figs/world_1950_summary.png>
+Package pdftex.def Info: figs/world_1950_summary.png  used on input line 722.
+(pdftex.def)             Requested size: 451.69864pt x 225.8493pt.
+[19 <./figs/world_1950_summary.png>]
+<figs/world_sim_facet.png, id=199, 803.0pt x 1003.75pt>
 File: figs/world_sim_facet.png Graphic file (type png)
 <use figs/world_sim_facet.png>
-Package pdftex.def Info: figs/world_sim_facet.png  used on input line 755.
+Package pdftex.def Info: figs/world_sim_facet.png  used on input line 751.
 (pdftex.def)             Requested size: 520.36322pt x 650.45403pt.
 
-Overfull \hbox (50.6082pt too wide) in paragraph at lines 755--757
+Overfull \hbox (50.6082pt too wide) in paragraph at lines 751--753
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 41.35733pt on input line 758.
+LaTeX Warning: Float too large for page by 41.35733pt on input line 754.
 
-[19 <./figs/world_1950_summary.png>]
-<figs/world_sim_corr_annotated.png, id=205, 602.25pt x 752.8125pt>
+<figs/world_sim_corr_annotated.png, id=200, 602.25pt x 752.8125pt>
 File: figs/world_sim_corr_annotated.png Graphic file (type png)
 <use figs/world_sim_corr_annotated.png>
 Package pdftex.def Info: figs/world_sim_corr_annotated.png  used on input line 
-784.
+780.
 (pdftex.def)             Requested size: 520.37851pt x 650.47314pt.
 
-Overfull \hbox (50.62349pt too wide) in paragraph at lines 784--787
+Overfull \hbox (50.62349pt too wide) in paragraph at lines 780--783
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 53.54314pt on input line 788.
+LaTeX Warning: Float too large for page by 53.54314pt on input line 784.
 
 [20] [21 <./figs/world_sim_facet.png>] [22 <./figs/world_sim_corr_annotated.png
 >] [23] [24] [25] (./manuscript_2.aux)
 Package rerunfilecheck Info: File `manuscript_2.out' has not changed.
-(rerunfilecheck)             Checksum: 7F59780D96C8D0CB101BE6281CA83DA0;2496.
+(rerunfilecheck)             Checksum: 1EE2169FDBEBFEAC0D199C48840B7AAC;2327.
  ) 
 Here is how much of TeX's memory you used:
- 10712 strings out of 481008
- 156001 string characters out of 5907779
- 462192 words of memory out of 5000000
- 27603 multiletter control sequences out of 15000+600000
+ 10709 strings out of 481008
+ 155940 string characters out of 5907779
+ 462948 words of memory out of 5000000
+ 27602 multiletter control sequences out of 15000+600000
  483793 words of font info for 80 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 71i,8n,74p,398b,355s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 71i,8n,74p,398b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
 pdfTeX warning (dest): name{Hfootnote.8} has been referenced but does not exi
 st, replaced by a fixed one
 
@@ -778,10 +753,10 @@ monicaalexander/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></U
 sers/monicaalexander/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pf
 b></Users/monicaalexander/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy
 8.pfb>
-Output written on manuscript_2.pdf (25 pages, 1264391 bytes).
+Output written on manuscript_2.pdf (25 pages, 1263326 bytes).
 PDF statistics:
- 346 PDF objects out of 1000 (max. 8388607)
- 283 compressed objects within 3 object streams
- 92 named destinations out of 1000 (max. 500000)
- 155 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 340 PDF objects out of 1000 (max. 8388607)
+ 277 compressed objects within 3 object streams
+ 90 named destinations out of 1000 (max. 500000)
+ 147 words of extra memory for PDF output out of 10000 (max. 10000000)
 
