@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.23)  20 MAY 2021 12:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.3.23)  20 MAY 2021 12:35
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -699,8 +699,8 @@ Package rerunfilecheck Info: File `manuscript_2.out' has not changed.
 (rerunfilecheck)             Checksum: 1EE2169FDBEBFEAC0D199C48840B7AAC;2327.
  ) 
 Here is how much of TeX's memory you used:
- 10709 strings out of 481008
- 155940 string characters out of 5907779
+ 10710 strings out of 481008
+ 155955 string characters out of 5907779
  462948 words of memory out of 5000000
  27602 multiletter control sequences out of 15000+600000
  483793 words of font info for 80 fonts, out of 8000000 for 9000
@@ -753,10 +753,10 @@ monicaalexander/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb></U
 sers/monicaalexander/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pf
 b></Users/monicaalexander/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy
 8.pfb>
-Output written on manuscript_2.pdf (25 pages, 1263326 bytes).
+Output written on manuscript_2.pdf (25 pages, 1263403 bytes).
 PDF statistics:
- 340 PDF objects out of 1000 (max. 8388607)
- 277 compressed objects within 3 object streams
- 90 named destinations out of 1000 (max. 500000)
+ 342 PDF objects out of 1000 (max. 8388607)
+ 279 compressed objects within 3 object streams
+ 91 named destinations out of 1000 (max. 500000)
  147 words of extra memory for PDF output out of 10000 (max. 10000000)
 
